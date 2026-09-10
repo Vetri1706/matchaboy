@@ -1,14 +1,8 @@
 #include "dmg/netplay.hpp"
+#include "dmg/socket_platform.hpp"
 #include <algorithm>
-#include <cerrno>
 #include <chrono>
-#include <cstring>
 #include <stdexcept>
-#include <arpa/inet.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
 
 namespace dmg::netplay {
 namespace {
@@ -73,7 +67,10 @@ bool decode(const std::uint8_t *b, std::size_t n, Packet &p) noexcept {
 
 struct Channel::Impl {
     struct Pending { Packet packet{}; Clock::time_point sent{}; bool used{}, transmitted{}; };
-    int fd{-1};
+    // Destruction order closes the socket before releasing this channel's
+    // Winsock reference. Both also unwind if constructor validation throws.
+    socket_platform::Runtime runtime;
+    socket_platform::Socket fd{socket_platform::create_datagram()};
     sockaddr_in peer{};
     std::uint16_t local_port{};
     std::uint64_t session{};
@@ -84,40 +81,34 @@ struct Channel::Impl {
     Statistics stats{};
     Impl(std::uint16_t port, const std::string &address, std::uint16_t remote,
          std::uint64_t id, std::uint32_t interval, const std::string &bind_address) : session(id), retry(interval) {
+        if (!fd.valid()) throw std::runtime_error("UDP socket: " + socket_platform::describe_error(socket_platform::last_error()));
         if (session == 0 || remote == 0 || interval == 0)
             throw std::invalid_argument("UDP session, peer port and retry interval must be nonzero");
         peer.sin_family = AF_INET; peer.sin_port = htons(remote);
         if (inet_pton(AF_INET, address.c_str(), &peer.sin_addr) != 1)
             throw std::invalid_argument("UDP peer must be a numeric IPv4 address");
-        fd = socket(AF_INET, SOCK_DGRAM, 0);
-        if (fd < 0) throw std::runtime_error("UDP socket: " + std::string(std::strerror(errno)));
         sockaddr_in local{}; local.sin_family = AF_INET; local.sin_port = htons(port);
-        if (inet_pton(AF_INET, bind_address.c_str(), &local.sin_addr) != 1) {
-            close(fd); fd = -1; throw std::invalid_argument("invalid numeric bind IPv4 address");
-        }
+        if (inet_pton(AF_INET, bind_address.c_str(), &local.sin_addr) != 1)
+            throw std::invalid_argument("invalid numeric bind IPv4 address");
         // Explicit bind avoids silently exposing a test peer on all interfaces.
         // Internet deployments require a deliberate interface/routing policy.
-        if (bind(fd, reinterpret_cast<const sockaddr *>(&local), sizeof(local)) != 0 ||
-            fcntl(fd, F_SETFL, O_NONBLOCK) != 0 || fcntl(fd, F_SETFD, FD_CLOEXEC) != 0) {
-            const auto reason = std::string(std::strerror(errno)); close(fd); fd = -1;
-            throw std::runtime_error("UDP bind/nonblocking: " + reason);
+        if (bind(fd.get(), reinterpret_cast<const sockaddr *>(&local), sizeof(local)) != 0 ||
+            !socket_platform::nonblocking(fd.get())) {
+            throw std::runtime_error("UDP bind/nonblocking: " + socket_platform::describe_error(socket_platform::last_error()));
         }
-        socklen_t length = sizeof(local);
-        if (getsockname(fd, reinterpret_cast<sockaddr *>(&local), &length) != 0) {
-            const auto reason = std::string(std::strerror(errno)); close(fd); fd = -1;
-            throw std::runtime_error("UDP getsockname: " + reason);
+        socket_platform::AddressLength length = sizeof(local);
+        if (getsockname(fd.get(), reinterpret_cast<sockaddr *>(&local), &length) != 0) {
+            throw std::runtime_error("UDP getsockname: " + socket_platform::describe_error(socket_platform::last_error()));
         }
         local_port = ntohs(local.sin_port);
     }
-    ~Impl() { if (fd >= 0) close(fd); }
     bool transmit(Packet &p) {
         p.ack = latest; p.ack_bits = mask;
         Datagram d;
         if (!encode(p, d)) throw std::logic_error("invalid outgoing UDP packet");
-        const auto sent = sendto(fd, d.bytes.data(), d.size, 0,
-                                 reinterpret_cast<const sockaddr *>(&peer), sizeof(peer));
-        if (sent == static_cast<ssize_t>(d.size)) { ++stats.sent; return true; }
-        if (sent < 0 && (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)) return false;
+        const auto sent = socket_platform::send_datagram(fd.get(), d.bytes.data(), d.size, peer);
+        if (sent == static_cast<std::ptrdiff_t>(d.size)) { ++stats.sent; return true; }
+        if (sent < 0 && socket_platform::temporary_error(socket_platform::last_error())) return false;
         ++stats.socket_errors;
         return false;
     }
@@ -197,20 +188,21 @@ bool Channel::receive(Packet &out) {
     // A hostile sender cannot monopolize one simulation polling call.
     for (unsigned budget = 0; budget < 128; ++budget) {
         std::array<std::uint8_t, max_payload + 57> bytes{};
-        sockaddr_in sender{}; socklen_t length = sizeof(sender);
-        const auto count = recvfrom(s.fd, bytes.data(), bytes.size(), 0,
-                                    reinterpret_cast<sockaddr *>(&sender), &length);
-        if (count < 0) {
-            if (errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR) ++s.stats.socket_errors;
+        sockaddr_in sender{}; socket_platform::AddressLength length = sizeof(sender);
+        const auto received = socket_platform::receive_datagram(s.fd.get(), bytes.data(), bytes.size(), sender, length);
+        if (received.size < 0) {
+            if (!socket_platform::temporary_error(socket_platform::last_error())) ++s.stats.socket_errors;
             return false;
         }
         ++s.stats.received;
-        if (length < sizeof(sender) || sender.sin_family != AF_INET ||
+        if (length < static_cast<socket_platform::AddressLength>(sizeof(sender)) || sender.sin_family != AF_INET ||
             sender.sin_port != s.peer.sin_port || sender.sin_addr.s_addr != s.peer.sin_addr.s_addr) {
             ++s.stats.wrong_sender; continue;
         }
         Packet p;
-        if (!decode(bytes.data(), static_cast<std::size_t>(count), p)) { ++s.stats.malformed; continue; }
+        if (received.truncated || !decode(bytes.data(), static_cast<std::size_t>(received.size), p)) {
+            ++s.stats.malformed; continue;
+        }
         if (p.session != s.session) { ++s.stats.wrong_session; continue; }
         s.acknowledge(p);
         if (p.kind == PacketKind::Ack) continue;

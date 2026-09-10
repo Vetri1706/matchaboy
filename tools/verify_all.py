@@ -21,9 +21,11 @@ def sha(path):
 
 def inventory():
     paths = [ROOT / "Makefile"]
+    if (ROOT / "CMakeLists.txt").is_file():
+        paths.append(ROOT / "CMakeLists.txt")
     if (ROOT / "matcha_gym.py").is_file():
         paths.append(ROOT / "matcha_gym.py")
-    for directory in ("include", "src", "tests", "tools"):
+    for directory in ("include", "src", "tests", "tools", "cmake", ".github"):
         paths.extend(p for p in (ROOT / directory).rglob("*")
                      if p.is_file() and "__pycache__" not in p.parts)
     return {str(p.relative_to(ROOT)): sha(p) for p in sorted(paths)}

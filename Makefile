@@ -39,7 +39,7 @@ build/gym_benchmark_lto: $(CORE) src/gym.cpp src/gym_benchmark.cpp $(HEADERS) | 
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -flto -pthread $(CORE) src/gym.cpp src/gym_benchmark.cpp -o $@
 build/gym_tests: $(CORE) src/gym.cpp tests/gym_tests.cpp $(HEADERS) | build
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $(CORE) src/gym.cpp tests/gym_tests.cpp -o $@
-build/netplay_tests: src/netplay.cpp tests/netplay_tests.cpp include/dmg/netplay.hpp | build
+build/netplay_tests: src/netplay.cpp tests/netplay_tests.cpp include/dmg/netplay.hpp include/dmg/socket_platform.hpp | build
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread src/netplay.cpp tests/netplay_tests.cpp -o $@
 build/netplay: $(CORE) src/netplay.cpp src/netplay_main.cpp $(HEADERS) | build
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $(CORE) src/netplay.cpp src/netplay_main.cpp -o $@

@@ -1,5 +1,7 @@
 # Matchaboy
 
+[Download builds or build with Clang on Windows, Linux, and macOS](DOWNLOADS.md).
+
 A C++20 Game Boy DMG emulator built from scratch, using only the C++ standard
 library. The executable has no SDL, emulator-library, package-manager, or
 dynamic framework dependency. The optional verification scripts use Python's
@@ -19,6 +21,9 @@ The [current-host platform report](PLATFORM_VERIFICATION.md) records 131 passing
 ROM checks, a passing 1,000-frame UDP fault run, and a valid M3 baseline of
 4,408 aggregate frames/s. The 50,000-FPS and sub-millisecond rollback targets
 remain unmet.
+
+CMake and native Windows portability were added after that frozen baseline;
+see [DOWNLOADS.md](DOWNLOADS.md) for current build and CI coverage.
 
 **Previous frozen FIFO milestone:** all ten requested Mooneye tests and all 65 selected DMG
 acceptance ROMs; 20 Blargg CPU/timing ROMs; all eight aggregate OAM modules;

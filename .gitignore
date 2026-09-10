@@ -1,4 +1,6 @@
 /build/
+/stage/
+/dist/
 /roms/
 /artifacts/
 /.venv/

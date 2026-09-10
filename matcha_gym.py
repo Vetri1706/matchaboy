@@ -7,6 +7,7 @@ step on that same batch. The convenience observations() call explicitly copies.
 """
 from __future__ import annotations
 import ctypes as C
+import os
 from pathlib import Path
 import sys
 import threading
@@ -19,8 +20,19 @@ except ImportError:
 
 
 def _library(path=None):
-    extension = "dylib" if sys.platform == "darwin" else "so"
-    lib = C.CDLL(str(Path(path) if path else Path(__file__).parent / "build" / f"libmatcha.{extension}"))
+    extension = "dll" if sys.platform == "win32" else "dylib" if sys.platform == "darwin" else "so"
+    root = Path(__file__).resolve().parent
+    explicit = path if path is not None else os.environ.get("MATCHA_LIBRARY")
+    candidates = [Path(explicit).resolve()] if explicit else [
+        root / f"libmatcha.{extension}",
+        root / "build" / f"libmatcha.{extension}",
+        root / "build" / "Release" / f"libmatcha.{extension}",
+    ]
+    library = next((candidate for candidate in candidates if candidate.is_file()), None)
+    if library is None:
+        raise FileNotFoundError("Matcha library not found. Build with CMake or set MATCHA_LIBRARY. Tried: " +
+                                ", ".join(str(candidate) for candidate in candidates))
+    lib = C.CDLL(str(library))
     pointer = C.POINTER(C.c_uint8)
     signatures = {
         "gym_create": (C.c_void_p, [C.c_char_p, C.c_int]),

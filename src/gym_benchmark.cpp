@@ -8,11 +8,26 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#include <psapi.h>
+#else
 #include <sys/resource.h>
+#endif
 
 namespace {
 using Clock = std::chrono::steady_clock;
 std::uint64_t resident_peak() {
+#ifdef _WIN32
+    PROCESS_MEMORY_COUNTERS usage{};
+    usage.cb = static_cast<DWORD>(sizeof(usage));
+    if (GetProcessMemoryInfo(GetCurrentProcess(), &usage, usage.cb) == 0)
+        throw std::runtime_error("GetProcessMemoryInfo failed");
+    return static_cast<std::uint64_t>(usage.PeakWorkingSetSize);
+#else
     rusage usage{};
     if (getrusage(RUSAGE_SELF, &usage) != 0)
         throw std::runtime_error("getrusage failed");
@@ -20,6 +35,7 @@ std::uint64_t resident_peak() {
     return static_cast<std::uint64_t>(usage.ru_maxrss);
 #else
     return static_cast<std::uint64_t>(usage.ru_maxrss) * 1024;
+#endif
 #endif
 }
 std::string hex(std::span<const std::uint8_t> data) {

@@ -1,5 +1,10 @@
 # Matcha: current-host verification
 
+This is the historical M3 baseline at commit `f25eb24`, before the CMake/Windows
+portability additions. Its original reports remain unchanged. For current
+downloads and platform coverage, see [DOWNLOADS.md](DOWNLOADS.md); reproduce
+the frozen revision before comparing against its exact source inventory.
+
 The frozen platform campaign passes its correctness checks. The requested
 50,000 aggregate FPS, unconditional 100-microsecond snapshot bound, and
 0.5-millisecond rollback target have **not** been achieved. These are measured

@@ -2,10 +2,12 @@
 """Black-box protocol rejection tests: native CPU peer and real UDP adversarial client."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import socket
 import struct
 import subprocess
+import sys
 import tempfile
 import time
 import unittest
@@ -27,6 +29,7 @@ def bundle(revision=1, dependency=0, count=0, part=0, chunks=1, end=70224, event
 
 class ProtocolTests(unittest.TestCase):
     def probe(self, payloads, expected, stopped=False):
+        (ROOT / "artifacts").mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(prefix="netplay-protocol-", dir=ROOT / "artifacts") as directory:
             out = Path(directory)
             rom = out / "link.gb"
@@ -38,7 +41,8 @@ class ProtocolTests(unittest.TestCase):
             peer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             peer.bind(("127.0.0.1", remote))
             peer.settimeout(2)
-            command = [str(ROOT / "build/netplay"), "--rom", str(rom), "--peer-rom", str(rom),
+            binary = os.environ.get("MATCHA_NETPLAY", str(ROOT / "build" / ("netplay.exe" if sys.platform == "win32" else "netplay")))
+            command = [binary, "--rom", str(rom), "--peer-rom", str(rom),
                        "--port", str(port), "--peer-port", str(remote), "--side", "0", "--frames", "4",
                        "--session", "777", "--pace-ms", "1", "--timeout", "3", "--output", str(out / "peer")]
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
