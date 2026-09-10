@@ -55,6 +55,8 @@ def main():
                                       "--output", str(output / "windows-dashboard")])
             run("windows-player", ["tools/verify_autopsy.py", "--player", "--binary", str(binaries / "Matchaboy.exe"),
                                    "--output", str(output / "windows-player")])
+            run("windows-audio", ["tools/test_audio_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
+                                  "--output", str(output / "windows-audio")])
             run("windows-gba", ["tools/test_gba_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
                                 "--output", str(output / "windows-gba")])
             run("windows-controls", ["tools/test_autopsy_windows.py", "--binary", str(binaries / "Matchaboy.exe"),

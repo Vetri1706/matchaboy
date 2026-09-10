@@ -74,7 +74,7 @@ S/F/D step one instruction/frame/peripheral dot in Inspector. Scroll moves throu
 Arrows, Z/X, Enter and Shift supply joypad input. F12 saves the displayed OpenGL
 viewport to `autopsy-capture.png` and its hardware-state JSON in the working
 directory. Use `--capture PATH` to select another capture destination. The
-scopes inspect digital outputs; this dashboard does not play sound to speakers.
+scopes inspect digital outputs. The Windows player outputs 48 kHz stereo through Windows itself; M or Audio > Sound on toggles playback.
 
 These builds are not signed with a paid Windows publisher certificate or
 notarized with an Apple Developer identity. Operating-system trust prompts can
@@ -161,7 +161,7 @@ The Windows player accepts `.gb` and `.gba` files. Game Boy games use the
 original Matchaboy engine; GBA games use the statically bundled mGBA 0.10.5 core.
 No separate emulator, external BIOS, Qt, SDL or runtime installation is needed.
 GBA adds Q/W for L/R shoulder buttons. Its Inspector is unavailable, and the
-player currently has no speaker playback or GBA netplay.
+player supports speaker playback; GBA netplay is not implemented.
 
 GBA cartridge saves use `<game>.matchaboy.sav` beside the ROM, flushed on normal
 close or game switch. Keep games in a writable folder. Existing mGBA `.sav`
@@ -172,3 +172,12 @@ for C++, with the static MSVC runtime already configured by CMake.
 `python tools/test_gba_windows.py --binary build/Matchaboy.exe --output artifacts/gba`
 checks an authored ARM ROM, actual A/L/R hardware input, and save/reload from
 an isolated folder with a system-only PATH. This is not a clean Windows VM test.
+
+Windows sound uses built-in WinMM at 48 kHz stereo with a short buffer queue.
+Pause, mute and opening another game clear queued audio. Application gain is
+50%; the system volume is never changed. Inspector tracing is collected while
+inspecting; normal play skips that instrumentation. If no output device is
+available, the game continues silently and the Audio menu reports it.
+`test_audio_windows.py --require-device` verifies nonzero GB/GBA PCM and actual
+Windows buffer consumption, plus pause/mute. Without that flag CI records device
+availability and still checks PCM generation. F12 writes `.audio.json` diagnostics.

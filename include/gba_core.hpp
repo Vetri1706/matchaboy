@@ -14,6 +14,8 @@ public:
     void flush_save();
     std::uint64_t frames() const;
     std::span<const std::uint32_t> pixels() const;
+    void enable_audio();
+    std::size_t drain_audio(std::span<std::int16_t> destination);
 private:
     struct Impl;
     std::unique_ptr<Impl> impl;

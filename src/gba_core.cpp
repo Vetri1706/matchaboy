@@ -4,6 +4,7 @@
 #include <mgba/core/log.h>
 #include <mgba-util/vfs.h>
 #include <array>
+#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <stdexcept>
@@ -20,6 +21,7 @@ mLogger logger{log_message, nullptr};
 struct GbaCore::Impl {
     mCore *core = nullptr;
     bool initialized = false, configured = false;
+    bool audio_enabled = false;
     std::array<std::uint32_t, 240*160> video{};
     std::filesystem::path save_path;
     std::vector<char> previous_save;
@@ -49,6 +51,7 @@ GbaCore::GbaCore(const std::filesystem::path &path) : impl(std::make_unique<Impl
     mCoreInitConfig(core, "matchaboy");
     impl->configured = true;
     mCoreConfigSetDefaultIntValue(&core->config, "skipBios", 1);
+    mCoreConfigSetDefaultIntValue(&core->config, "volume", 0x100);
     mCoreLoadConfig(core);
     core->setVideoBuffer(core, impl->video.data(), 240);
     if (!core->isROM(vf) || !core->loadROM(core, vf)) {
@@ -72,10 +75,28 @@ GbaCore::GbaCore(const std::filesystem::path &path) : impl(std::make_unique<Impl
 GbaCore::~GbaCore() = default;
 void GbaCore::run_frame() {
     impl->core->runFrame(impl->core);
-    // The current native player has no speaker output. Drain the audio buffers
-    // rather than accumulating samples while it runs.
-    blip_clear(impl->core->getAudioChannel(impl->core, 0));
-    blip_clear(impl->core->getAudioChannel(impl->core, 1));
+    if (!impl->audio_enabled) {
+        blip_clear(impl->core->getAudioChannel(impl->core, 0));
+        blip_clear(impl->core->getAudioChannel(impl->core, 1));
+    }
+}
+void GbaCore::enable_audio() {
+    impl->core->setAudioBufferSize(impl->core, 2048);
+    for (int channel=0; channel<2; ++channel) {
+        auto *buffer = impl->core->getAudioChannel(impl->core, channel);
+        blip_clear(buffer);
+        blip_set_rates(buffer, impl->core->frequency(impl->core), 48000);
+    }
+    impl->audio_enabled = true;
+}
+std::size_t GbaCore::drain_audio(std::span<std::int16_t> destination) {
+    auto *left = impl->core->getAudioChannel(impl->core, 0);
+    auto *right = impl->core->getAudioChannel(impl->core, 1);
+    const auto count = std::min({static_cast<int>(destination.size()/2), blip_samples_avail(left), blip_samples_avail(right)});
+    if (count <= 0) return 0;
+    blip_read_samples(left, destination.data(), count, true);
+    blip_read_samples(right, destination.data()+1, count, true);
+    return static_cast<std::size_t>(count)*2;
 }
 void GbaCore::set_buttons(std::uint16_t buttons) { impl->core->setKeys(impl->core, buttons); }
 std::uint64_t GbaCore::frames() const { return impl->core->frameCounter(impl->core); }

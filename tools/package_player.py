@@ -39,12 +39,12 @@ additional emulator, external BIOS or runtime package is needed.
 
 Arrows: move. Z: A. X: B. Enter: Start. Shift: Select.
 GBA: Q is L shoulder, W is R shoulder.
-Space: pause. C: hide/show controls. Ctrl+O: open another game.
+Space: pause. C: hide/show controls. M: mute/unmute. Ctrl+O: open another game.
 
 GBA cartridge saves use <game>.matchaboy.sav beside the ROM and are written
 when closing normally or switching games. Use a writable game folder.
-Game Boy Color-only games are not supported. Speaker audio and GBA netplay
-are not implemented. The hardware Inspector is for the original Game Boy.
+Game Boy Color-only games and GBA netplay are not supported. Speaker audio
+uses Windows built-in playback; no audio package installation is needed. The hardware Inspector is for the original Game Boy.
 
 source.zip and licenses are included for attribution and rebuilding/relinking;
 they do not need to be extracted or installed to play. See THIRD_PARTY.md.

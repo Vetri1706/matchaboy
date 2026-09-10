@@ -9,6 +9,7 @@
 #include <GL/gl.h>
 #include "dmg/autopsy.hpp"
 #include "gba_core.hpp"
+#include "windows_audio.hpp"
 #include "dmg/cpu.hpp"
 #include "dmg/mmu.hpp"
 #include <algorithm>
@@ -102,7 +103,12 @@ class Runtime {
     bool green_palette = false;
     bool controls_visible = true;
     unsigned lcd_left() const { return controls_visible ? 48 : 240; }
+    bool sound_muted = false;
     bool paused = false;
+    void enable_audio() { if (gba) gba->enable_audio(); else bus->apu.set_sample_rate(48000); }
+    std::size_t drain_audio(std::span<std::int16_t> samples) {
+        return gba ? gba->drain_audio(samples) : bus->apu.drain_samples(samples);
+    }
     unsigned trace_scroll = 0;
     std::uint16_t buttons = 0;
     unsigned lcd_width() const { return gba ? 240 : 160; }
@@ -137,16 +143,19 @@ class Runtime {
         bus = std::make_unique<dmg::Bus>(std::move(rom));
         cpu = std::make_unique<dmg::Cpu>(*bus);
         bus->autopsy = inspector.get();
-        bus->apu.set_sample_rate(0); // Real digital scopes, as on macOS; no speaker playback.
+        bus->apu.set_sample_rate(0); // Headless warm-up does not queue old audio.
     }
-    void step() { cpu->step(); }
+    void step() { bus->autopsy = inspector.get(); cpu->step(); }
     void run_frame() {
         if (gba) { gba->run_frame(); return; }
+        // Disassembly/heatmap/scopes are inspection work, not part of playing.
+        // Keep the player fast enough to feed the audio device continuously.
+        bus->autopsy = inspector_view ? inspector.get() : nullptr;
         const auto target = bus->ppu.frames() + 1;
         const auto deadline = bus->cycles() + 70224 * 2;
         while (bus->ppu.frames() < target && bus->cycles() < deadline) {
             const auto before = bus->cycles();
-            step();
+            cpu->step();
             if (bus->cycles() == before) break; // STOP must leave the UI responsive for joypad wake.
         }
     }
@@ -206,7 +215,8 @@ class Runtime {
         text(context, 900, 691, "A/B actions depend on the game.", 14, muted);
         text(context, 900, 757, "Ctrl+O  Choose another game", 14, muted);
         text(context, 900, 786, gba ? "C       Toggle controls" : "Tab     Toggle Inspector", 14, muted);
-        text(context, 900, 815, "F12     Save screenshot", 14, muted);
+        text(context, 900, 815, "F12     Save screenshot", 14, ::muted);
+        text(context, 900, 844, "M       Toggle sound", 14, ::muted);
         }
         fill(context, 48, 872, 160, 36, {0.16, 0.34, 0.32});
         text(context, 75, 880, paused ? "Resume" : "Pause", 17, foreground);
@@ -351,6 +361,31 @@ class Window {
     std::filesystem::path capture;
     bool window_test{}, failed{};
     bool capture_requested{};
+    WindowsAudio audio;
+    bool audio_suspended = true;
+    std::uint64_t generated_frames = 0;
+    unsigned generated_peak = 0;
+    void sync_audio() {
+        const bool suspended = runtime.paused || runtime.sound_muted;
+        if (suspended == audio_suspended) return;
+        audio.reset();
+        std::array<std::int16_t, 8192> discarded{};
+        while (runtime.drain_audio(discarded)) {}
+        audio_suspended = suspended;
+    }
+    void pump_audio() {
+        std::array<std::int16_t, 8192> samples{};
+        while (const auto count = runtime.drain_audio(samples)) {
+            generated_frames += count/2;
+            for (std::size_t i=0; i<count; ++i) generated_peak = std::max(generated_peak, static_cast<unsigned>(std::abs(static_cast<int>(samples[i]))));
+            if (!runtime.sound_muted && !runtime.paused) audio.submit(std::span(samples).first(count));
+        }
+    }
+    void toggle_sound() {
+        runtime.sound_muted = !runtime.sound_muted;
+        CheckMenuItem(GetMenu(handle), 1006, MF_BYCOMMAND | (runtime.sound_muted ? MF_UNCHECKED : MF_CHECKED));
+        sync_audio();
+    }
     std::chrono::steady_clock::time_point next_frame = std::chrono::steady_clock::now();
     explicit Window(Runtime &r) : runtime(r) {}
     void toggle_controls() {
@@ -361,6 +396,7 @@ class Window {
     void open_game() {
         const bool was_paused = runtime.paused;
         runtime.paused = true;
+        sync_audio();
         runtime.set_buttons(0);
         std::array<wchar_t, 32768> file{};
         OPENFILENAMEW dialog{}; dialog.lStructSize = sizeof(dialog); dialog.hwndOwner = handle;
@@ -372,10 +408,12 @@ class Window {
             try {
                 runtime.flush_save();
                 Runtime replacement(file.data());
+                replacement.sound_muted = runtime.sound_muted;
                 replacement.green_palette = runtime.green_palette;
                 replacement.controls_visible = runtime.controls_visible;
                 replacement.run_frame();
                 runtime = std::move(replacement);
+                if (!window_test) runtime.enable_audio();
                 chrome_valid = false;
                 SetWindowTextW(handle, (L"Matchaboy - " + wide(runtime.title)).c_str());
             } catch (const std::exception &error) {
@@ -398,6 +436,7 @@ class Window {
             else if (cx >= 1076 && cx <= 1240 && cy >= 20 && cy <= 68) runtime.toggle_inspector();
             else if (cx >= 48 && cx <= 208 && cy >= 872 && cy <= 908) runtime.paused = !runtime.paused;
         }
+        sync_audio();
         InvalidateRect(handle, nullptr, FALSE);
     }
     ~Window() {
@@ -423,6 +462,7 @@ class Window {
             if (key == 'O' && (GetKeyState(VK_CONTROL) & 0x8000)) { open_game(); return; }
             if (key == VK_TAB) runtime.toggle_inspector();
             else if (key == 'C') toggle_controls();
+            else if (key == 'M') toggle_sound();
             else if (key == VK_SPACE) runtime.paused = !runtime.paused;
             else if (key == 'S' && runtime.inspector_view) { runtime.paused = true; runtime.step(); }
             else if (key == 'F' && runtime.inspector_view) { runtime.paused = true; runtime.run_frame(); }
@@ -435,6 +475,7 @@ class Window {
             else runtime.buttons &= static_cast<std::uint16_t>(~(1U << bit));
             runtime.set_buttons(runtime.buttons);
         }
+        sync_audio();
         InvalidateRect(handle, nullptr, FALSE);
     }
     void paint() {
@@ -514,6 +555,12 @@ class Window {
             }
             Gdiplus::Bitmap bitmap(vw, vh, vw*4, PixelFormat32bppARGB, bgra.data());
             runtime.save(capture.empty() ? L"autopsy-capture.png" : capture, bitmap, true);
+            const auto audio_path = capture.empty() ? std::filesystem::path(L"autopsy-capture.png.audio.json") : std::filesystem::path(capture.wstring()+L".audio.json");
+            std::ofstream audio_report(audio_path);
+            const auto queued = audio.queued();
+            audio_report << format("{\"device_open\":%s,\"muted\":%s,\"paused\":%s,\"queued_buffers\":%u,\"submitted_frames\":%llu,\"completed_frames\":%llu,\"peak\":%u,\"sample_rate\":48000,\"generated_frames\":%llu,\"generated_peak\":%u}\n",
+                audio.available() ? "true" : "false", runtime.sound_muted ? "true" : "false", runtime.paused ? "true" : "false", queued,
+                audio.submitted_frames, audio.completed_frames, audio.peak, generated_frames, generated_peak);
             capture_requested = false;
         }
         if (!SwapBuffers(dc)) throw std::runtime_error("OpenGL presentation failed");
@@ -533,11 +580,13 @@ class Window {
                 case WM_COMMAND:
                     if (LOWORD(wp) == 1001) self->open_game();
                     else if (LOWORD(wp) == 1002) self->runtime.toggle_inspector();
+                    else if (LOWORD(wp) == 1006) self->toggle_sound();
                     else if (LOWORD(wp) == 1005) self->toggle_controls();
                     else if (LOWORD(wp) == 1003 || LOWORD(wp) == 1004) {
                         self->runtime.green_palette = LOWORD(wp) == 1004;
                         CheckMenuRadioItem(GetMenu(hwnd), 1003, 1004, LOWORD(wp), MF_BYCOMMAND);
                     }
+                    self->sync_audio();
                     InvalidateRect(hwnd, nullptr, FALSE); return 0;
                 case WM_ERASEBKGND: return 1;
                 case WM_PAINT: {
@@ -555,7 +604,7 @@ class Window {
                         static_cast<int>(self->runtime.trace_scroll) + GET_WHEEL_DELTA_WPARAM(wp)/WHEEL_DELTA * 3, 0, 107));
                     InvalidateRect(hwnd, nullptr, FALSE); return 0;
                 case WM_SIZE: InvalidateRect(hwnd, nullptr, FALSE); return 0;
-                case WM_CLOSE: self->runtime.flush_save(); ShowWindow(hwnd, SW_HIDE); PostQuitMessage(0); return 0;
+                case WM_CLOSE: self->audio.reset(); self->runtime.flush_save(); ShowWindow(hwnd, SW_HIDE); PostQuitMessage(0); return 0;
             }
         } catch (const std::exception &error) {
             self->failed = true;
@@ -575,7 +624,7 @@ class Window {
         const double scale = window_test ? 1.0 : std::min({1.0, (work.right-work.left-60)/double(canvas_width), (work.bottom-work.top-80)/double(canvas_height)});
         RECT bounds{0, 0, static_cast<LONG>(canvas_width*scale), static_cast<LONG>(canvas_height*scale)};
         AdjustWindowRect(&bounds, WS_OVERLAPPEDWINDOW, TRUE);
-        HMENU menu = CreateMenu(), file_menu = CreatePopupMenu(), view_menu = CreatePopupMenu();
+        HMENU menu = CreateMenu(), file_menu = CreatePopupMenu(), view_menu = CreatePopupMenu(), audio_menu = CreatePopupMenu();
         AppendMenuW(file_menu, MF_STRING, 1001, L"&Open game...\tCtrl+O");
         AppendMenuW(view_menu, MF_STRING, 1002, L"Toggle &Inspector\tTab");
         AppendMenuW(view_menu, MF_STRING | MF_CHECKED, 1005, L"Show &controls\tC");
@@ -585,6 +634,8 @@ class Window {
         CheckMenuRadioItem(view_menu, 1003, 1004, runtime.green_palette ? 1004 : 1003, MF_BYCOMMAND);
         AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(file_menu), L"&File");
         AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(view_menu), L"&View");
+        AppendMenuW(audio_menu, MF_STRING | MF_CHECKED, 1006, L"&Sound on\tM");
+        AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(audio_menu), L"&Audio");
         const auto title = L"Matchaboy - " + wide(runtime.title);
         handle = CreateWindowW(wc.lpszClassName, title.c_str(), WS_OVERLAPPEDWINDOW,
             work.left+20, work.top+20, bounds.right-bounds.left, bounds.bottom-bounds.top,
@@ -607,6 +658,12 @@ class Window {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 160, 144, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        if (!window_test) {
+            if (!audio.open()) {
+                ModifyMenuW(audio_menu, 1006, MF_BYCOMMAND | MF_STRING | MF_GRAYED, 1006, L"No audio device available");
+            }
+            runtime.enable_audio();
+        }
         ShowWindow(handle, SW_SHOW); UpdateWindow(handle);
         // WM_TIMER is coarse and resetting its deadline each frame loses time.
         // Keep an absolute hardware-rate schedule and wait without blocking input.
@@ -621,12 +678,13 @@ class Window {
                 if (msg.message == WM_QUIT) return failed ? 1 : static_cast<int>(msg.wParam);
                 TranslateMessage(&msg); DispatchMessageW(&msg);
             }
+            sync_audio();
             auto now = std::chrono::steady_clock::now();
             if (runtime.paused) next_frame = now + frame_period;
             else if (now >= next_frame) {
                 // Bound recovery after a stalled host or window drag.
                 if (now-next_frame > frame_period*4) next_frame = now;
-                do { runtime.run_frame(); next_frame += frame_period; }
+                do { runtime.run_frame(); pump_audio(); next_frame += frame_period; }
                 while (next_frame <= now);
                 InvalidateRect(handle, nullptr, FALSE);
                 UpdateWindow(handle);
