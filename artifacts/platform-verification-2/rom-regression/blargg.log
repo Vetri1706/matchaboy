@@ -1,0 +1,136 @@
+RUN cpu_instrs/individual/01-special.gb
+01-special
+
+
+Passed
+RESULT passed (9797080 T-cycles)
+RUN cpu_instrs/individual/02-interrupts.gb
+02-interrupts
+
+
+Passed
+RESULT passed (1791500 T-cycles)
+RUN cpu_instrs/individual/03-op sp,hl.gb
+03-op sp,hl
+
+
+Passed
+RESULT passed (9867060 T-cycles)
+RUN cpu_instrs/individual/04-op r,imm.gb
+04-op r,imm
+
+
+Passed
+RESULT passed (11482124 T-cycles)
+RUN cpu_instrs/individual/05-op rp.gb
+05-op rp
+
+
+Passed
+RESULT passed (15766524 T-cycles)
+RUN cpu_instrs/individual/06-ld r,r.gb
+06-ld r,r
+
+
+Passed
+RESULT passed (2423704 T-cycles)
+RUN cpu_instrs/individual/07-jr,jp,call,ret,rst.gb
+07-jr,jp,call,ret,rst
+
+
+Passed
+RESULT passed (2985248 T-cycles)
+RUN cpu_instrs/individual/08-misc instrs.gb
+08-misc instrs
+
+
+Passed
+RESULT passed (2283444 T-cycles)
+RUN cpu_instrs/individual/09-op r,r.gb
+09-op r,r
+
+
+Passed
+RESULT passed (38308088 T-cycles)
+RUN cpu_instrs/individual/10-bit ops.gb
+10-bit ops
+
+
+Passed
+RESULT passed (58181792 T-cycles)
+RUN cpu_instrs/individual/11-op a,(hl).gb
+11-op a,(hl)
+
+
+Passed
+RESULT passed (73771216 T-cycles)
+RUN cpu_instrs/cpu_instrs.gb
+cpu_instrs
+
+01:ok  02:ok  03:ok  04:ok  05:ok  06:ok  07:ok  08:ok  09:ok  10:ok  11:ok  
+
+Passed all tests
+RESULT passed (224437256 T-cycles)
+RUN instr_timing/instr_timing.gb
+instr_timing
+
+
+Passed
+RESULT passed (2704452 T-cycles)
+RUN mem_timing/individual/01-read_timing.gb
+01-read_timing
+
+
+Passed
+RESULT passed (1931988 T-cycles)
+RUN mem_timing/individual/02-write_timing.gb
+02-write_timing
+
+
+Passed
+RESULT passed (1861752 T-cycles)
+RUN mem_timing/individual/03-modify_timing.gb
+03-modify_timing
+
+
+Passed
+RESULT passed (2072444 T-cycles)
+RUN mem_timing-2/rom_singles/01-read_timing.gb
+[cartridge RAM test log]
+01-read_timing
+
+
+Passed
+RESULT passed (2007876 T-cycles)
+RUN mem_timing-2/rom_singles/02-write_timing.gb
+[cartridge RAM test log]
+02-write_timing
+
+
+Passed
+RESULT passed (1933648 T-cycles)
+RUN mem_timing-2/rom_singles/03-modify_timing.gb
+[cartridge RAM test log]
+03-modify_timing
+
+
+Passed
+RESULT passed (2143524 T-cycles)
+RUN halt_bug.gb
+[cartridge RAM test log]
+halt bug
+
+IE IF IF DE
+01 10 F1 0C04 
+01 00 E1 0C04 
+01 01 E1 0411 
+11 00 E1 0C04 
+11 10 F1 0411 
+11 11 F1 0411 
+E1 00 E1 0C04 
+E1 E0 E1 0C04 
+E1 E1 E1 0411 
+
+Passed
+RESULT passed (7418568 T-cycles)
+PASS 20 ROMs; evidence: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/blargg

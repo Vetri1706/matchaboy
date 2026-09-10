@@ -1,0 +1,6 @@
+
+[cartridge RAM test log]
+02-len ctr
+
+0 1 2 3 
+Passed

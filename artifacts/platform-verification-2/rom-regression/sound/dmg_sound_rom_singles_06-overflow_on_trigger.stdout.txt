@@ -1,0 +1,7 @@
+
+[cartridge RAM test log]
+06-overflow on trigger
+
+0555 0666 071C 0787 07C1 07E0 07F0 
+0556 0667 071D 0788 07C2 07E1 07F1 
+Passed

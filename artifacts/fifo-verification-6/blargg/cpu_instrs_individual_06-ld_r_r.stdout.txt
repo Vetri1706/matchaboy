@@ -1,0 +1,4 @@
+06-ld r,r
+
+
+Passed

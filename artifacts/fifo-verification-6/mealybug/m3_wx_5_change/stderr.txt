@@ -1,0 +1,16 @@
+
+{
+  "status": "captured",
+  "mechanism": "Mealybug LD B,B framebuffer capture; not a test verdict",
+  "t_cycles": 423648,
+  "m_cycles": 105912,
+  "instructions": 63712,
+  "frames": 4,
+  "seconds": 0.00636075,
+  "serial_bytes": 0,
+  "cartridge_ram_bytes": 0,
+  "ram_override": false,
+  "registers": {"pc": 1607, "sp": 65532, "a": 3, "f": 192, "b": 0, "c": 75, "d": 136, "e": 0, "h": 1, "l": 138},
+  "ppu": {"mode": 1, "dot": 81, "ly": 144, "stat": 161, "fifo_depth": 6, "fetch_phase": 1, "output_x": 160},
+  "bus": {"dma": false, "vram_locked": false, "oam_locked": false, "ie": 3, "if": 226}
+}

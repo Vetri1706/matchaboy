@@ -1,0 +1,16 @@
+
+[cartridge RAM test log]
+halt bug
+
+IE IF IF DE
+01 10 F1 0C04 
+01 00 E1 0C04 
+01 01 E1 0411 
+11 00 E1 0C04 
+11 10 F1 0411 
+11 11 F1 0411 
+E1 00 E1 0C04 
+E1 E0 E1 0C04 
+E1 E1 E1 0411 
+
+Passed

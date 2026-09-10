@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "mismatching_pixels": 0,
+  "total_pixels": 23040,
+  "rom": {
+    "repository": "https://github.com/mattcurrie/dmg-acid2",
+    "release": "v1.0",
+    "revision": "dc2295408f881637ff69f784d8d93f3d2db30181",
+    "files": {
+      "dmg-acid2.gb": {
+        "url": "https://github.com/mattcurrie/dmg-acid2/releases/download/v1.0/dmg-acid2.gb",
+        "sha256": "464e14b7d42e7feea0b7ede42be7071dc88913f75b9ffa444299424b63d1dff1",
+        "bytes": 32768
+      },
+      "reference-dmg.png": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/img/reference-dmg.png",
+        "sha256": "ca966d50895c7efef05838590d148c2cbfd7fba57dab986f25b35b4da71abb57",
+        "bytes": 787
+      },
+      "LICENSE": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/LICENSE",
+        "sha256": "2b5ed6f8abbded3913a08ebe8f4eedb340735efc3b024570244d6efa73418044",
+        "bytes": 1068
+      },
+      "README.md": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/README.md",
+        "sha256": "0837d50ac1c686b61d7b86bc7d9a0fb5a0539bf9f65805ee11f3eeea66ad377a",
+        "bytes": 7426
+      }
+    }
+  },
+  "first_mismatches": [],
+  "run": {
+    "status": "completed",
+    "mechanism": "requested frames; not a test verdict",
+    "t_cycles": 8953228,
+    "m_cycles": 2238307,
+    "instructions": 100179,
+    "frames": 120,
+    "seconds": 0.246142,
+    "serial_bytes": 0,
+    "cartridge_ram_bytes": 0,
+    "ram_override": false,
+    "registers": {
+      "pc": 541,
+      "sp": 53247,
+      "a": 144,
+      "f": 64,
+      "b": 148,
+      "c": 0,
+      "d": 147,
+      "e": 128,
+      "h": 2,
+      "l": 204
+    },
+    "ppu": {
+      "mode": 1,
+      "dot": 1,
+      "ly": 144,
+      "stat": 192,
+      "fifo_depth": 5,
+      "fetch_phase": 1,
+      "output_x": 160
+    },
+    "bus": {
+      "dma": false,
+      "vram_locked": false,
+      "oam_locked": false,
+      "ie": 2,
+      "if": 225
+    }
+  },
+  "exit_code": 0,
+  "binary": "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/build/dmg",
+  "binary_sha256": "95e3b2480c541d2391be717238d27cf210d72d4170c36629e22fe790d50973ea",
+  "source_sha256": {
+    "src/apu.cpp": "90242ffc9bd36e3a8923c3f2facbc7d2e85c94f5c32674b50794432e323e8803",
+    "src/autopsy.cpp": "fdbd4abf616d13c047f00bb4e298b2f6e7dbd5dda9a0ec02d1526e1ab07fb003",
+    "src/cpu.cpp": "7cba9e21bc3d625d6296a3377d8de76237944bdaaedc92cb871fee70161d8e49",
+    "src/gym.cpp": "743266af4d19e8d1e60175b2cbe743008cc2f2aa3beef234f0cea41e7eb6cda8",
+    "src/gym_benchmark.cpp": "c962ef69835921d43ad536d46f74dde064672e3d6dc24524e7ac709b3451c0ca",
+    "src/harness.cpp": "ff766746827b528712b98c7798a28f8ce9b1c778111292b198e8011601134d51",
+    "src/mbc.cpp": "d05b584e350bc040e17553656b7a93337948fad404a4fa323bbda3a43785381d",
+    "src/mmu.cpp": "c1c58e98dc8217c85f2abeec00a2989c1f394373e3659d3e813047a90e2aaea1",
+    "src/netplay.cpp": "2ba000ffc0d010ac2f4217b7e861e1129d0422a553d3c9288e3e8a27a8d5c17b",
+    "src/netplay_main.cpp": "010c04e8480bb7e19169cf3b8e6ef9eed4db666671487579fe1e6971ce65cc9b",
+    "src/oam.cpp": "a0d6d217b0a32665a2ccf8de8d51ed587fcd17fce2a4b99b60cb8984d3de998d",
+    "src/ppu.cpp": "d6f36ede839ecb99b93234184d56b31db5fc603644bd2b2eba206cd6a0ce6ca4",
+    "src/snapshot.cpp": "1e5f588c5b772efd80a6dece2249e1bd50cde463a8990b22de59caf52c41ee48",
+    "src/timer.cpp": "1db31777f972f31c287318ddac709392da18fd69fa047c98ef9bd24eb2b961ac",
+    "include/dmg/apu.hpp": "a34689a080ef2b4d0f6602da5dfa8a2ee2b3eb5f1d528b0420d615564ceb6eb7",
+    "include/dmg/autopsy.hpp": "8c4858e318863099d1067f22dba44178d1da0c699c3e01cc48a15eff2dab1698",
+    "include/dmg/cpu.hpp": "236924a767cc4a0537f9f45ec154b3550ba090d370a8c51f8a715c812ad06552",
+    "include/dmg/gym.hpp": "f14a163ef07cc58c621323c00804b15b12b3f1ce7004720656a2eb864b0a862f",
+    "include/dmg/mbc.hpp": "7c31ce2f4f2c1f06c55f50bbcc44543708c9ee5d20ff8db44d0b1b9a9fb542d9",
+    "include/dmg/mmu.hpp": "5fbfe7119997a479b65764da1016ba9ab02cd0d3fccf995c503b89113aad874d",
+    "include/dmg/netplay.hpp": "651e035194c20abe75ab1ee907bf6d234cfda8bc2ef3e6ce0eb8b406f9e984c6",
+    "include/dmg/oam.hpp": "9d129958bebce13380a61e0e5211d5e932cf79b0b357fb9a95e8c6c42a14fd25",
+    "include/dmg/ppu.hpp": "a7ddcc0ad0110f6cc87148448a48c8061d89d01981f86840e9f354e36740e20a",
+    "include/dmg/serial_link.hpp": "b1c98a7802aff5533f1798e8ccaf67de0dcd7733787be59248e84b08ff04ca82",
+    "include/dmg/snapshot.hpp": "ba261b38671d9950c73e8ea2fc22ed4246a29d0aca118dc1882ef9896e22a87c",
+    "include/dmg/timer.hpp": "1a4abef01f0defb997d92b9ff4ea2f8f5163e8298dbdfe14e9f0725eb873e74f"
+  },
+  "integrity": {
+    "binary_unchanged": true,
+    "source_unchanged": true,
+    "oracle_unchanged": true
+  },
+  "scope": "PPU rendering/priority acceptance; acid2 does not certify precise mode-3 timing"
+}

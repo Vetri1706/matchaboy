@@ -1,0 +1,6 @@
+
+[cartridge RAM test log]
+08-len ctr during power
+
+33 44 11 22 
+Passed

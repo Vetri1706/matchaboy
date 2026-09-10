@@ -1,0 +1,23 @@
+RUN build
+PASS build; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/build.log
+RUN toolchain
+PASS toolchain; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/toolchain.log
+RUN unit
+PASS unit; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/unit.log
+RUN sanitizer
+PASS sanitizer; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/sanitizer.log
+RUN harness-io
+PASS harness-io; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/harness-io.log
+RUN mooneye
+PASS mooneye; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/mooneye.log
+RUN oam
+PASS oam; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/oam.log
+RUN blargg
+PASS blargg; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/blargg.log
+RUN sound
+PASS sound; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/sound.log
+RUN acid2
+PASS acid2; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/acid2.log
+RUN mealybug
+PASS mealybug; log: /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/mealybug.log
+PASS complete campaign; /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/summary.json

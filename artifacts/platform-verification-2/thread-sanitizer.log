@@ -1,0 +1,3 @@
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -pthread -fsanitize=thread src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp src/gym.cpp tests/gym_tests.cpp -o build/gym_tests_tsan
+./build/gym_tests_tsan
+PASS 80000 concurrent SPSC jobs across four producer/consumer pairs, full/empty/wrap; 16 independent machines x20 frames, worker-order replay, rewards, reset and termination

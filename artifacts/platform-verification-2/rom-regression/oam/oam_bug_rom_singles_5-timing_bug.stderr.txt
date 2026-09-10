@@ -1,0 +1,16 @@
+
+{
+  "status": "passed",
+  "mechanism": "cartridge RAM signature",
+  "t_cycles": 3977568,
+  "m_cycles": 994392,
+  "instructions": 414720,
+  "frames": 41,
+  "seconds": 0.0753588,
+  "serial_bytes": 0,
+  "cartridge_ram_bytes": 8192,
+  "ram_override": false,
+  "registers": {"pc": 51488, "sp": 57344, "a": 0, "f": 96, "b": 0, "c": 255, "d": 254, "e": 1, "h": 254, "l": 154},
+  "ppu": {"mode": 0, "dot": 293, "ly": 2, "stat": 128, "fifo_depth": 8, "fetch_phase": 0, "output_x": 160},
+  "bus": {"dma": false, "vram_locked": false, "oam_locked": false, "ie": 0, "if": 225}
+}

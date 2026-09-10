@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "outer_exit_code": 124,
+  "nested_child_pid": 67846,
+  "nested_child_state_after_cleanup": "absent"
+}

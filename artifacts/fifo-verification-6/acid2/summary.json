@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "mismatching_pixels": 0,
+  "total_pixels": 23040,
+  "rom": {
+    "repository": "https://github.com/mattcurrie/dmg-acid2",
+    "release": "v1.0",
+    "revision": "dc2295408f881637ff69f784d8d93f3d2db30181",
+    "files": {
+      "dmg-acid2.gb": {
+        "url": "https://github.com/mattcurrie/dmg-acid2/releases/download/v1.0/dmg-acid2.gb",
+        "sha256": "464e14b7d42e7feea0b7ede42be7071dc88913f75b9ffa444299424b63d1dff1",
+        "bytes": 32768
+      },
+      "reference-dmg.png": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/img/reference-dmg.png",
+        "sha256": "ca966d50895c7efef05838590d148c2cbfd7fba57dab986f25b35b4da71abb57",
+        "bytes": 787
+      },
+      "LICENSE": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/LICENSE",
+        "sha256": "2b5ed6f8abbded3913a08ebe8f4eedb340735efc3b024570244d6efa73418044",
+        "bytes": 1068
+      },
+      "README.md": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/README.md",
+        "sha256": "0837d50ac1c686b61d7b86bc7d9a0fb5a0539bf9f65805ee11f3eeea66ad377a",
+        "bytes": 7426
+      }
+    }
+  },
+  "first_mismatches": [],
+  "run": {
+    "status": "completed",
+    "mechanism": "requested frames; not a test verdict",
+    "t_cycles": 8953228,
+    "m_cycles": 2238307,
+    "instructions": 100179,
+    "frames": 120,
+    "seconds": 0.159731,
+    "serial_bytes": 0,
+    "cartridge_ram_bytes": 0,
+    "ram_override": false,
+    "registers": {
+      "pc": 541,
+      "sp": 53247,
+      "a": 144,
+      "f": 64,
+      "b": 148,
+      "c": 0,
+      "d": 147,
+      "e": 128,
+      "h": 2,
+      "l": 204
+    },
+    "ppu": {
+      "mode": 1,
+      "dot": 1,
+      "ly": 144,
+      "stat": 192,
+      "fifo_depth": 5,
+      "fetch_phase": 1,
+      "output_x": 160
+    },
+    "bus": {
+      "dma": false,
+      "vram_locked": false,
+      "oam_locked": false,
+      "ie": 2,
+      "if": 225
+    }
+  },
+  "exit_code": 0,
+  "binary": "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/build/dmg",
+  "binary_sha256": "d0715204b351b90814d1176856758656f6fd9509a193bed92b70c928d2e8baed",
+  "source_sha256": {
+    "src/cpu.cpp": "06a936e3450add786311da943e6c65081578a94bd84d18d86b5b9ec7ad524e3c",
+    "src/harness.cpp": "ff766746827b528712b98c7798a28f8ce9b1c778111292b198e8011601134d51",
+    "src/mbc.cpp": "5da2c1414260b5dd67446f4921cee14985bb3616d278c4bfc62c3c80e89b877a",
+    "src/mmu.cpp": "bd3c0f1cc94745e090596526fc5b05b87fa321bf94b49d59ab83d1274335bc47",
+    "src/oam.cpp": "a0d6d217b0a32665a2ccf8de8d51ed587fcd17fce2a4b99b60cb8984d3de998d",
+    "src/ppu.cpp": "d23be358c4ccea1ebf18bcbf193eb6f1bf56a4588834166131c3bb82a14bd9af",
+    "src/timer.cpp": "1db31777f972f31c287318ddac709392da18fd69fa047c98ef9bd24eb2b961ac",
+    "include/dmg/cpu.hpp": "d761ef85ac7a52b100e5a9e240142a5d08f16c8d496f8eab6f5b66474c4a7d2b",
+    "include/dmg/mbc.hpp": "de75c7a8f92a034ac21166e2e3673e243c82f78ded5a77fcc638dda6c21fd8ac",
+    "include/dmg/mmu.hpp": "fac0d93daa79098a5d18cfaf297ad5403d8aa87d740b7da53ff7db814ff06c2f",
+    "include/dmg/oam.hpp": "9d129958bebce13380a61e0e5211d5e932cf79b0b357fb9a95e8c6c42a14fd25",
+    "include/dmg/ppu.hpp": "e570d2b86a92f7b12a8cee0c99accd5eb51c008daa887833caa18df07a6cf88b",
+    "include/dmg/timer.hpp": "2c87ed4ce53be01459939f16f350036fce5e2348097c44e6e51373a2146883ee"
+  },
+  "integrity": {
+    "binary_unchanged": true,
+    "source_unchanged": true,
+    "oracle_unchanged": true
+  },
+  "scope": "PPU rendering/priority acceptance; acid2 does not certify precise mode-3 timing"
+}

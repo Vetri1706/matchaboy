@@ -1,0 +1,38 @@
+./build/unit_tests
+PASS exhaustive arithmetic
+PASS DAA and decimal BCD
+PASS signed SP
+PASS 256 CB opcodes
+PASS base and conditional timing
+PASS interrupt sequencing
+PASS instruction prefetch pipeline
+PASS HALT bug and STOP
+PASS timer edges and reload races
+PASS memory, serial, DMA
+PASS post-boot video memory
+PASS palette write bus
+PASS LCDC write bus
+PASS scroll write bus
+PASS initial LCD clock sampling
+PASS MBC1/MBC3/MBC5/RTC
+PASS PPU timing and LY153
+PASS PPU pixel layers
+PASS DMA startup and restart
+PASS RTC rollover and explicit RAM
+PASS PPU scroll/object/window timing sweeps
+PASS PPU 2-million-dot MMIO fuzz
+22/22 groups passed; 9407404 assertions
+./build/oam_tests
+PASS 365 OAM assertions
+./build/ppu_edge_tests
+PPU edge checks passed: 418 assertions
+./build/apu_tests
+APU: 36 checks passed
+./build/snapshot_tests
+Snapshot benchmark: 253408 canonical bytes; 500 warmed calls; 0 measured allocations
+save_us median=52.2295 p95=157.042 max=1100.54
+restore_us median=60.8335 p95=164.958 max=2178.75
+SNAPSHOT_BENCHMARK {"bytes":253408,"samples":500,"save_median_us":52.2295,"save_p95_us":157.042,"save_max_us":1100.54,"restore_median_us":60.8335,"restore_p95_us":164.958,"restore_max_us":2178.75,"allocations":0}
+PASS 298 snapshot assertions
+./build/gym_tests
+PASS 80000 concurrent SPSC jobs across four producer/consumer pairs, full/empty/wrap; 16 independent machines x20 frames, worker-order replay, rewards, reset and termination

@@ -1,0 +1,6 @@
+
+[cartridge RAM test log]
+03-trigger
+
+0 1 2 3 
+Passed

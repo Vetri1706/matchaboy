@@ -1,0 +1,6 @@
+
+[cartridge RAM test log]
+1-lcd_sync
+
+
+Passed

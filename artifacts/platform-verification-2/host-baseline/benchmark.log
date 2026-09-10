@@ -1,0 +1,26 @@
+{
+  "passed": false,
+  "rom_sha256": "464e14b7d42e7feea0b7ede42be7071dc88913f75b9ffa444299424b63d1dff1",
+  "instances": 16,
+  "workers": 8,
+  "warmup_seconds": 1,
+  "requested_seconds": 10,
+  "seconds": 10.004467042,
+  "minimum_fps": 50000,
+  "aggregate_fps": 4407.63109268,
+  "executed_t_cycles": 3096597504,
+  "instructions": 7616960,
+  "cycle_equivalent_frames": 44096,
+  "completed_ppu_frames": 43968,
+  "batch_steps": 2756,
+  "peak_resident_bytes": 7716864,
+  "frame_quantum_t_cycles": 70224,
+  "input_seed": 1296127043,
+  "audio_synthesis": false,
+  "ppu_enabled": true,
+  "accuracy_shortcuts": false,
+  "timed_instance0_snapshot_hash": 5894090286294123194,
+  "correctness_frames_per_instance": 64,
+  "correctness_hashes": [18196341541464589906, 1156332986670875035, 4978608713032355094, 8438820349854449208, 10171258828682698297, 7869514779770249200, 5712647635147757199, 18059973280550325439, 1665659500415231993, 12358666131266441827, 7600082370785640108, 8403887068362453072, 1665659500415231993, 15748298971772517705, 3040844305362430814, 3203118892721118058]
+}
+BELOW TARGET: 4407.63 aggregate executed frames/s across 16 machines

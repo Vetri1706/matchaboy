@@ -1,0 +1,5 @@
+Snapshot benchmark: 253408 canonical bytes; 500 warmed calls; 0 measured allocations
+save_us median=48.916 p95=52.5 max=65.167
+restore_us median=57.416 p95=61.917 max=68.333
+SNAPSHOT_BENCHMARK {"bytes":253408,"samples":500,"save_median_us":48.916,"save_p95_us":52.5,"save_max_us":65.167,"restore_median_us":57.416,"restore_p95_us":61.917,"restore_max_us":68.333,"allocations":0}
+PASS 298 snapshot assertions

@@ -1,0 +1,3 @@
+{
+  "passed": true, "side": 1, "frames": 20, "cycles": 1404480, "state_hash": 11405117318399616456, "presentation_hash": 2017692149238756978, "rollbacks": 17, "replayed_frames": 102, "revisions": 8, "max_rewind_frames": 11, "predicted_bits": 0, "sent": 1045, "received": 995, "retransmitted": 435, "duplicates": 450, "rollback_groups_measured": 9, "rollback_p50_ms": 18.5869, "rollback_p95_ms": 41.5211, "rollback_max_ms": 61.3261, "replayed_cycles": 7162848, "malformed": 0, "seconds": 1.39959
+}

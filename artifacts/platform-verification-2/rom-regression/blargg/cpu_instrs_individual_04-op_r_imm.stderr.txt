@@ -1,0 +1,16 @@
+
+{
+  "status": "passed",
+  "mechanism": "serial",
+  "t_cycles": 11482124,
+  "m_cycles": 2870531,
+  "instructions": 1282535,
+  "frames": 161,
+  "seconds": 0.267602,
+  "serial_bytes": 21,
+  "cartridge_ram_bytes": 0,
+  "ram_override": false,
+  "registers": {"pc": 49165, "sp": 57321, "a": 0, "f": 176, "b": 255, "c": 240, "d": 222, "e": 244, "h": 198, "l": 43},
+  "ppu": {"mode": 1, "dot": 197, "ly": 144, "stat": 129, "fifo_depth": 8, "fetch_phase": 0, "output_x": 160},
+  "bus": {"dma": false, "vram_locked": false, "oam_locked": false, "ie": 0, "if": 233}
+}

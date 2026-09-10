@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "mechanism": "requested frames; not a test verdict",
+  "t_cycles": 8953228,
+  "m_cycles": 2238307,
+  "instructions": 100179,
+  "frames": 120,
+  "seconds": 0.159731,
+  "serial_bytes": 0,
+  "cartridge_ram_bytes": 0,
+  "ram_override": false,
+  "registers": {"pc": 541, "sp": 53247, "a": 144, "f": 64, "b": 148, "c": 0, "d": 147, "e": 128, "h": 2, "l": 204},
+  "ppu": {"mode": 1, "dot": 1, "ly": 144, "stat": 192, "fifo_depth": 5, "fetch_phase": 1, "output_x": 160},
+  "bus": {"dma": false, "vram_locked": false, "oam_locked": false, "ie": 2, "if": 225}
+}

@@ -1,0 +1,28 @@
+./build/unit_tests
+PASS exhaustive arithmetic
+PASS DAA and decimal BCD
+PASS signed SP
+PASS 256 CB opcodes
+PASS base and conditional timing
+PASS interrupt sequencing
+PASS instruction prefetch pipeline
+PASS HALT bug and STOP
+PASS timer edges and reload races
+PASS memory, serial, DMA
+PASS post-boot video memory
+PASS palette write bus
+PASS LCDC write bus
+PASS scroll write bus
+PASS initial LCD clock sampling
+PASS MBC1/MBC3/MBC5/RTC
+PASS PPU timing and LY153
+PASS PPU pixel layers
+PASS DMA startup and restart
+PASS RTC rollover and explicit RAM
+PASS PPU scroll/object/window timing sweeps
+PASS PPU 2-million-dot MMIO fuzz
+22/22 groups passed; 9407404 assertions
+./build/oam_tests
+PASS 365 OAM assertions
+./build/ppu_edge_tests
+PPU edge checks passed: 418 assertions

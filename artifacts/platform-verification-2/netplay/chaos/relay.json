@@ -1,0 +1,14 @@
+{
+  "received": 528090,
+  "dropped": 26444,
+  "forwarded": 501646,
+  "reordered": 434161,
+  "peak_pending": 1833,
+  "base_one_way_delay_ms": 100,
+  "jitter_ms": 20,
+  "maximum_one_way_delay_ms": 120,
+  "expected_round_trip_ms": 200,
+  "configured_loss": 0.05,
+  "relay": "real recvfrom followed by delayed/dropped sendto; both directions",
+  "seconds": 124.21930712502217
+}

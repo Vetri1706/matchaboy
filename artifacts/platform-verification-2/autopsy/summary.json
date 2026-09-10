@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "binary_sha256": "f5a1b6c5cbdc3ab7544cbee778358831e27725e43bf262ef43fcad63236a7deb",
+  "rom_sha256": "464e14b7d42e7feea0b7ede42be7071dc88913f75b9ffa444299424b63d1dff1",
+  "commands": [
+    {
+      "command": [
+        "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/build/autopsy",
+        "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/roms/acid2/dmg-acid2.gb",
+        "--headless",
+        "--frames",
+        "120",
+        "--line",
+        "48",
+        "--dot",
+        "115",
+        "--capture",
+        "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/autopsy/headless.png"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/build/autopsy",
+        "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/roms/acid2/dmg-acid2.gb",
+        "--window-test",
+        "--frames",
+        "120",
+        "--line",
+        "48",
+        "--dot",
+        "115",
+        "--capture",
+        "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/autopsy/gpu.png"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "machine": {
+    "width": 1280,
+    "height": 920,
+    "gpu_readback": false,
+    "frames": 116,
+    "cycles": 8698904,
+    "ly": 48,
+    "dot": 125,
+    "mode": 3,
+    "fifo_depth": 7
+  },
+  "pixel_comparison": {
+    "samples": 883200,
+    "mean_channel_error": 0.026472132586050724,
+    "maximum_channel_error": 3.0,
+    "source_dimensions": [
+      1280,
+      920
+    ],
+    "gpu_dimensions": [
+      2560,
+      1840
+    ],
+    "passed": true
+  },
+  "binary_unchanged": true,
+  "rom_unchanged": true
+}

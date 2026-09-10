@@ -1,0 +1,72 @@
+{
+  "diagnosis": "The original standalone diagnostic overruns its text buffer into its own executing WRAM code before completing the trial sweep.",
+  "trial": 17,
+  "trials_required": 116,
+  "first_code_overwrite_instruction_start_t_cycles": 54306424,
+  "write_completes_t_cycles": 54306436,
+  "first_code_byte_original": 195,
+  "first_code_byte_new": 0,
+  "next_text_byte_write_start_t_cycles": 54307932,
+  "next_text_byte": 32,
+  "trace": "dmg/artifacts/oam-diagnose-55m/oam_bug_rom_singles_7-timing_effect.trace.txt.gz",
+  "events": [
+    {
+      "line": 916431,
+      "instruction": "T=54306424 PC=c3f2 SP=dfe2 A=bf F=40 BC=11ff DE=fe01 HL=c000 IME=0 IE=00 IF=e1 STAT=80 PPU=0 LY=0 DOT=0 DMA=0 VRAM_LOCK=0 OAM_LOCK=0  LD (HL),$00"
+    },
+    {
+      "line": 916602,
+      "instruction": "T=54307932 PC=c3fe SP=dfe4 A=20 F=60 BC=11ff DE=fe01 HL=c000 IME=0 IE=00 IF=e1 STAT=80 PPU=0 LY=0 DOT=0 DMA=0 VRAM_LOCK=0 OAM_LOCK=0  LD (HL),A"
+    }
+  ],
+  "source": "roms/blargg/oam_bug/source/common/shell.s write_text_out: increment text_out_addr, store NUL to new address, store character to old address, no bounds check; executable copied toC000 by copy_to_wram_then_run.",
+  "aggregate_report": {
+    "status": "passed",
+    "mechanism": "cartridge RAM signature",
+    "t_cycles": 83251356,
+    "m_cycles": 20812839,
+    "instructions": 8757248,
+    "frames": 447,
+    "seconds": 0.838423,
+    "serial_bytes": 0,
+    "cartridge_ram_bytes": 8192,
+    "ram_override": false,
+    "registers": {
+      "pc": 11218,
+      "sp": 57344,
+      "a": 0,
+      "f": 192,
+      "b": 0,
+      "c": 0,
+      "d": 64,
+      "e": 0,
+      "h": 255,
+      "l": 134
+    },
+    "ppu": {
+      "mode": 0,
+      "dot": 300,
+      "ly": 12,
+      "stat": 128
+    }
+  },
+  "aggregate_stdout": "\n[cartridge RAM test log]\noam_bug\n\n01:ok  02:ok  03:ok  04:ok  05:ok  06:ok  07:ok  08:ok  \n\nPassed\n",
+  "standalone_verdict": "inconclusive; do not mark passed",
+  "core_or_rom_modified_for_diagnosis": false,
+  "sha256": {
+    "build/dmg_long_oam": "cdb07009ba818b73e6a3597cafb6d370ded35cb9db5c089f2556900eaeeb326f",
+    "roms/blargg/oam_bug/rom_singles/7-timing_effect.gb": "b4bb86462a5701155d92ea7dafe826cbffae6faec2c48c10feef0a5f78154d6c",
+    "roms/blargg/oam_bug/oam_bug.gb": "21f0e7af73e525d14ca242ba28f97d4d381a40a61b3466dd6b4cae3e502e1ea1",
+    "roms/blargg/oam_bug/source/common/shell.s": "acfb6c7f6433fbb023103f299d6d26badf450671254c4c7e2e1d9ad1d4e11137",
+    "roms/blargg/oam_bug/source/7-timing_effect.s": "33ffb64449f5516dd1c8107886b3d2d174ce40a2c9e24b3b8848181e8ce92a2e",
+    "artifacts/oam-diagnose-55m/oam_bug_rom_singles_7-timing_effect.trace.txt": "7cf27e639c39eb9bc8148e9f35bf5dcab390d9a86ac3480c8a5fe9d07dc4dbe5",
+    "artifacts/oam-aggregate-diagnostic/oam_bug_oam_bug.json": "6204f1e619f0759781f3e06bb0bdcc7bab2fe22f033691034d1886d8781870e5",
+    "artifacts/oam-aggregate-diagnostic/oam_bug_oam_bug.stdout.txt": "da11975dd4f5fa41df2ec31f2df1dd198403f87a36ba61d8753e80d43fe6c4df"
+  },
+  "trace_compression": {
+    "format": "gzip",
+    "sha256": "42fdfe03037030cfa40a2e8fb7ee1ed64011376c48c075f514f547c9c0145717",
+    "uncompressed_sha256": "7cf27e639c39eb9bc8148e9f35bf5dcab390d9a86ac3480c8a5fe9d07dc4dbe5",
+    "original_trace_lines_preserved": true
+  }
+}

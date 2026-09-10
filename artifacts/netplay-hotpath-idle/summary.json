@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "binary": "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/build/netplay",
+  "binary_sha256": "262d7b8ca1c04e956890b003cb2383ba9bbb557c2da616286ad9f87a11edc206",
+  "oracle": "original homebrew two-console serial program; not commercial-ROM validation",
+  "scenario": "idle-peer",
+  "frames_per_console": 20,
+  "rom_sha256": [
+    "88735f0236b8a4250a54d03b2af59bcda52460d3c29ffafe0e3215fe62805a78",
+    "fb2361850b94032112ea7d8bdf321e7d86e55c21b7a065e02911dd82cfb0eb93"
+  ],
+  "clean": {
+    "received": 176,
+    "dropped": 0,
+    "forwarded": 176,
+    "reordered": 0,
+    "peak_pending": 3,
+    "base_one_way_delay_ms": 0,
+    "jitter_ms": 0,
+    "maximum_one_way_delay_ms": 0,
+    "expected_round_trip_ms": 0,
+    "configured_loss": 0,
+    "relay": "real recvfrom followed by delayed/dropped sendto; both directions",
+    "seconds": 0.8801096670213155,
+    "independent_serial_oracle": true
+  },
+  "chaos": {
+    "received": 2095,
+    "dropped": 99,
+    "forwarded": 1996,
+    "reordered": 1653,
+    "peak_pending": 398,
+    "base_one_way_delay_ms": 100,
+    "jitter_ms": 20,
+    "maximum_one_way_delay_ms": 120,
+    "expected_round_trip_ms": 200,
+    "configured_loss": 0.05,
+    "relay": "real recvfrom followed by delayed/dropped sendto; both directions",
+    "seconds": 1.7207287909695879,
+    "independent_serial_oracle": true
+  },
+  "binary_unchanged": true
+}

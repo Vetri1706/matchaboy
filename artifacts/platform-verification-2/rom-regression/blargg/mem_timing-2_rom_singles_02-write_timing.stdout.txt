@@ -1,0 +1,6 @@
+
+[cartridge RAM test log]
+02-write_timing
+
+
+Passed

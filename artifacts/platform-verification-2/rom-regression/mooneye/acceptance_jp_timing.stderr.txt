@@ -1,0 +1,16 @@
+
+{
+  "status": "passed",
+  "mechanism": "Mooneye LD B,B register protocol",
+  "t_cycles": 928784,
+  "m_cycles": 232196,
+  "instructions": 121098,
+  "frames": 6,
+  "seconds": 0.0171586,
+  "serial_bytes": 0,
+  "cartridge_ram_bytes": 0,
+  "ram_override": false,
+  "registers": {"pc": 18503, "sp": 57344, "a": 0, "f": 160, "b": 3, "c": 5, "d": 8, "e": 13, "h": 21, "l": 34},
+  "ppu": {"mode": 1, "dot": 121, "ly": 144, "stat": 129, "fifo_depth": 8, "fetch_phase": 0, "output_x": 160},
+  "bus": {"dma": false, "vram_locked": false, "oam_locked": false, "ie": 0, "if": 225}
+}

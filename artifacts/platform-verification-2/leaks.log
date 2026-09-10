@@ -1,0 +1,28 @@
+PASS 80000 concurrent SPSC jobs across four producer/consumer pairs, full/empty/wrap; 16 independent machines x20 frames, worker-order replay, rewards, reset and termination
+Process 74436 is not debuggable. Due to security restrictions, leaks can only show or save contents of readonly memory of restricted processes.
+
+Process:         gym_tests [74436]
+Path:            /Users/USER/Documents/*/gym_tests
+Load Address:    0x102660000
+Identifier:      gym_tests
+Version:         0
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  leaks [74435]
+Target Type:     live task
+
+Date/Time:       2026-09-10 13:05:30.649 +0530
+Launch Time:     2026-09-10 13:05:29.979 +0530
+OS Version:      macOS 26.5.1 (25F80)
+Report Version:  7
+Analysis Tool:   /usr/bin/leaks
+
+Physical footprint:         15.9M
+Physical footprint (peak):  16.1M
+Idle exit:                  untracked
+----
+
+leaks Report Version: 4.0, multi-line stacks
+Process 74436: 188 nodes malloced for 16 KB
+Process 74436: 0 leaks for 0 total leaked bytes.
+

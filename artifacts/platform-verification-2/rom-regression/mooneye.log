@@ -1,0 +1,131 @@
+RUN acceptance/add_sp_e_timing.gb
+PASS acceptance/add_sp_e_timing.gb: passed (943500 T-cycles)
+RUN acceptance/bits/mem_oam.gb
+PASS acceptance/bits/mem_oam.gb: passed (736244 T-cycles)
+RUN acceptance/bits/reg_f.gb
+PASS acceptance/bits/reg_f.gb: passed (732168 T-cycles)
+RUN acceptance/bits/unused_hwio-GS.gb
+PASS acceptance/bits/unused_hwio-GS.gb: passed (718112 T-cycles)
+RUN acceptance/boot_div-dmgABCmgb.gb
+PASS acceptance/boot_div-dmgABCmgb.gb: passed (733452 T-cycles)
+RUN acceptance/boot_hwio-dmgABCmgb.gb
+PASS acceptance/boot_hwio-dmgABCmgb.gb: passed (718080 T-cycles)
+RUN acceptance/boot_regs-dmgABC.gb
+PASS acceptance/boot_regs-dmgABC.gb: passed (734080 T-cycles)
+RUN acceptance/call_cc_timing.gb
+PASS acceptance/call_cc_timing.gb: passed (928748 T-cycles)
+RUN acceptance/call_cc_timing2.gb
+PASS acceptance/call_cc_timing2.gb: passed (1014348 T-cycles)
+RUN acceptance/call_timing.gb
+PASS acceptance/call_timing.gb: passed (928748 T-cycles)
+RUN acceptance/call_timing2.gb
+PASS acceptance/call_timing2.gb: passed (1014352 T-cycles)
+RUN acceptance/di_timing-GS.gb
+PASS acceptance/di_timing-GS.gb: passed (1069484 T-cycles)
+RUN acceptance/div_timing.gb
+PASS acceptance/div_timing.gb: passed (732492 T-cycles)
+RUN acceptance/ei_sequence.gb
+PASS acceptance/ei_sequence.gb: passed (732156 T-cycles)
+RUN acceptance/ei_timing.gb
+PASS acceptance/ei_timing.gb: passed (732180 T-cycles)
+RUN acceptance/halt_ime0_ei.gb
+PASS acceptance/halt_ime0_ei.gb: passed (718396 T-cycles)
+RUN acceptance/halt_ime0_nointr_timing.gb
+PASS acceptance/halt_ime0_nointr_timing.gb: passed (1013064 T-cycles)
+RUN acceptance/halt_ime1_timing.gb
+PASS acceptance/halt_ime1_timing.gb: passed (731868 T-cycles)
+RUN acceptance/halt_ime1_timing2-GS.gb
+PASS acceptance/halt_ime1_timing2-GS.gb: passed (1294584 T-cycles)
+RUN acceptance/if_ie_registers.gb
+PASS acceptance/if_ie_registers.gb: passed (732796 T-cycles)
+RUN acceptance/instr/daa.gb
+PASS acceptance/instr/daa.gb: passed (1560760 T-cycles)
+RUN acceptance/interrupts/ie_push.gb
+PASS acceptance/interrupts/ie_push.gb: passed (718808 T-cycles)
+RUN acceptance/intr_timing.gb
+PASS acceptance/intr_timing.gb: passed (732184 T-cycles)
+RUN acceptance/jp_cc_timing.gb
+PASS acceptance/jp_cc_timing.gb: passed (928784 T-cycles)
+RUN acceptance/jp_timing.gb
+PASS acceptance/jp_timing.gb: passed (928784 T-cycles)
+RUN acceptance/ld_hl_sp_e_timing.gb
+PASS acceptance/ld_hl_sp_e_timing.gb: passed (943480 T-cycles)
+RUN acceptance/oam_dma/basic.gb
+PASS acceptance/oam_dma/basic.gb: passed (739624 T-cycles)
+RUN acceptance/oam_dma/reg_read.gb
+PASS acceptance/oam_dma/reg_read.gb: passed (724760 T-cycles)
+RUN acceptance/oam_dma/sources-GS.gb
+PASS acceptance/oam_dma/sources-GS.gb: passed (2544448 T-cycles)
+RUN acceptance/oam_dma_restart.gb
+PASS acceptance/oam_dma_restart.gb: passed (942856 T-cycles)
+RUN acceptance/oam_dma_start.gb
+PASS acceptance/oam_dma_start.gb: passed (1028332 T-cycles)
+RUN acceptance/oam_dma_timing.gb
+PASS acceptance/oam_dma_timing.gb: passed (942860 T-cycles)
+RUN acceptance/pop_timing.gb
+PASS acceptance/pop_timing.gb: passed (733096 T-cycles)
+RUN acceptance/ppu/hblank_ly_scx_timing-GS.gb
+PASS acceptance/ppu/hblank_ly_scx_timing-GS.gb: passed (3316392 T-cycles)
+RUN acceptance/ppu/intr_1_2_timing-GS.gb
+PASS acceptance/ppu/intr_1_2_timing-GS.gb: passed (942848 T-cycles)
+RUN acceptance/ppu/intr_2_0_timing.gb
+PASS acceptance/ppu/intr_2_0_timing.gb: passed (872632 T-cycles)
+RUN acceptance/ppu/intr_2_mode0_timing.gb
+PASS acceptance/ppu/intr_2_mode0_timing.gb: passed (872632 T-cycles)
+RUN acceptance/ppu/intr_2_mode0_timing_sprites.gb
+PASS acceptance/ppu/intr_2_mode0_timing_sprites.gb: passed (16727044 T-cycles)
+RUN acceptance/ppu/intr_2_mode3_timing.gb
+PASS acceptance/ppu/intr_2_mode3_timing.gb: passed (872632 T-cycles)
+RUN acceptance/ppu/intr_2_oam_ok_timing.gb
+PASS acceptance/ppu/intr_2_oam_ok_timing.gb: passed (872632 T-cycles)
+RUN acceptance/ppu/lcdon_timing-GS.gb
+PASS acceptance/ppu/lcdon_timing-GS.gb: passed (2116580 T-cycles)
+RUN acceptance/ppu/lcdon_write_timing-GS.gb
+PASS acceptance/ppu/lcdon_write_timing-GS.gb: passed (3908196 T-cycles)
+RUN acceptance/ppu/stat_irq_blocking.gb
+PASS acceptance/ppu/stat_irq_blocking.gb: passed (788468 T-cycles)
+RUN acceptance/ppu/stat_lyc_onoff.gb
+PASS acceptance/ppu/stat_lyc_onoff.gb: passed (981448 T-cycles)
+RUN acceptance/ppu/vblank_stat_intr-GS.gb
+PASS acceptance/ppu/vblank_stat_intr-GS.gb: passed (1294576 T-cycles)
+RUN acceptance/push_timing.gb
+PASS acceptance/push_timing.gb: passed (943464 T-cycles)
+RUN acceptance/rapid_di_ei.gb
+PASS acceptance/rapid_di_ei.gb: passed (732788 T-cycles)
+RUN acceptance/ret_cc_timing.gb
+PASS acceptance/ret_cc_timing.gb: passed (998976 T-cycles)
+RUN acceptance/ret_timing.gb
+PASS acceptance/ret_timing.gb: passed (998976 T-cycles)
+RUN acceptance/reti_intr_timing.gb
+PASS acceptance/reti_intr_timing.gb: passed (732484 T-cycles)
+RUN acceptance/reti_timing.gb
+PASS acceptance/reti_timing.gb: passed (998976 T-cycles)
+RUN acceptance/rst_timing.gb
+PASS acceptance/rst_timing.gb: passed (943484 T-cycles)
+RUN acceptance/timer/div_write.gb
+PASS acceptance/timer/div_write.gb: passed (3597296 T-cycles)
+RUN acceptance/timer/rapid_toggle.gb
+PASS acceptance/timer/rapid_toggle.gb: passed (732152 T-cycles)
+RUN acceptance/timer/tim00.gb
+PASS acceptance/timer/tim00.gb: passed (732156 T-cycles)
+RUN acceptance/timer/tim00_div_trigger.gb
+PASS acceptance/timer/tim00_div_trigger.gb: passed (732184 T-cycles)
+RUN acceptance/timer/tim01.gb
+PASS acceptance/timer/tim01.gb: passed (732160 T-cycles)
+RUN acceptance/timer/tim01_div_trigger.gb
+PASS acceptance/timer/tim01_div_trigger.gb: passed (732152 T-cycles)
+RUN acceptance/timer/tim10.gb
+PASS acceptance/timer/tim10.gb: passed (732140 T-cycles)
+RUN acceptance/timer/tim10_div_trigger.gb
+PASS acceptance/timer/tim10_div_trigger.gb: passed (732156 T-cycles)
+RUN acceptance/timer/tim11.gb
+PASS acceptance/timer/tim11.gb: passed (732180 T-cycles)
+RUN acceptance/timer/tim11_div_trigger.gb
+PASS acceptance/timer/tim11_div_trigger.gb: passed (732140 T-cycles)
+RUN acceptance/timer/tima_reload.gb
+PASS acceptance/timer/tima_reload.gb: passed (733480 T-cycles)
+RUN acceptance/timer/tima_write_reloading.gb
+PASS acceptance/timer/tima_write_reloading.gb: passed (732836 T-cycles)
+RUN acceptance/timer/tma_write_reloading.gb
+PASS acceptance/timer/tma_write_reloading.gb: passed (732848 T-cycles)
+PASS 65/65 ROMs; /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/rom-regression/mooneye

@@ -1,0 +1,14 @@
+{
+  "peer0/final.snapshot": true,
+  "peer0/frames.txt": true,
+  "peer0/confirmed.video": true,
+  "peer0/confirmed.pcm": true,
+  "peer0/outgoing.bin": true,
+  "peer0/memory.bin": true,
+  "peer1/final.snapshot": true,
+  "peer1/frames.txt": true,
+  "peer1/confirmed.video": true,
+  "peer1/confirmed.pcm": true,
+  "peer1/outgoing.bin": true,
+  "peer1/memory.bin": true
+}

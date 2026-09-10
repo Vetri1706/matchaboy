@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "measurement_valid": true,
+  "performance_target_met": false,
+  "aggregate_fps": 4407.63109268,
+  "report": "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/platform-verification-2/host-baseline/host.json",
+  "comparison": null
+}

@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "tests": [
+    {
+      "case": "normal execution",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "case": "frame kernel write rejection",
+      "exit_code": 2,
+      "passed": true
+    },
+    {
+      "case": "trace kernel write rejection",
+      "exit_code": 2,
+      "passed": true
+    },
+    {
+      "case": "report kernel write rejection",
+      "exit_code": 2,
+      "passed": true
+    }
+  ],
+  "rom_sha256": "eba5d165aaa55e7d4a1d1d910ea312a55c78157923c29fbbc34031709390f1de",
+  "binary_sha256": "d0715204b351b90814d1176856758656f6fd9509a193bed92b70c928d2e8baed",
+  "mechanism": "POSIX RLIMIT_FSIZE, real filesystem write failures"
+}

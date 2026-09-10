@@ -1,0 +1,4582 @@
+{
+  "scope": "Compact original verification evidence; raw traces, executables, movies, PCM, and downloaded ROM collections stay local.",
+  "files": [
+    {
+      "path": "artifacts/FINAL_PIPELINE_FINDINGS.md",
+      "bytes": 5026,
+      "sha256": "6577e64d928757d1012f59931c2e75c721c34433b4e9c93484549dcb24e71aeb"
+    },
+    {
+      "path": "artifacts/autopsy-verification-1/four-channels.png",
+      "bytes": 161466,
+      "sha256": "8a35927a6eef8b1bf71a621c6eb57a9dc8d4d75f79b63eaab0c0259bcaf31ba5"
+    },
+    {
+      "path": "artifacts/compressed-traces.json",
+      "bytes": 1165713,
+      "sha256": "617fd6fc873f2982c1a3ee439562f6e640c80ad23059bb03547e1c1359907462"
+    },
+    {
+      "path": "artifacts/fifo-verification-2/summary.json",
+      "bytes": 317948,
+      "sha256": "53ab1b929db455da46fa615238d50c9e6a9aae062a985f8c16fb18a6acd68a14"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/INDEPENDENT_AUDIT.md",
+      "bytes": 1790,
+      "sha256": "d2d3e4d5576db2ab972c99a18def220354e3b8cf80e574c14769aa16223043da"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/acid2/run.json",
+      "bytes": 581,
+      "sha256": "46548d769f89264c044ac9d3f50d9785574ffb31762732a74a43f22068a35c26"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/acid2/stderr.txt",
+      "bytes": 582,
+      "sha256": "416bc588aa3e5772dd8587dfc504fc007b788654939281b11cb2b4ba77ceb76d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/acid2/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/acid2/summary.json",
+      "bytes": 3714,
+      "sha256": "855bb835d9fd25a65a3c3a7da1a4191d27d9e3c1099d90403f72e9d213fbd9d0"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/acid2.log",
+      "bytes": 159,
+      "sha256": "637836c2da3ed2bd537344e20335b8a72329d4d1496c01d9e13512d39e2746aa"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_cpu_instrs.json",
+      "bytes": 549,
+      "sha256": "ce70e41ddf773e1cfd6f57d63ad9564e0cc5390e9af987f283f78c543b168b9c"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_cpu_instrs.stderr.txt",
+      "bytes": 550,
+      "sha256": "4e45752580c00c574be59e20864eed9925c8aa23b7fb21d84f03a64e89068a34"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_cpu_instrs.stdout.txt",
+      "bytes": 108,
+      "sha256": "09e59dc28d15cff7df333208325c298979231313c6c90f3b961176f5cb019b5a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_01-special.json",
+      "bytes": 554,
+      "sha256": "e1d034c95912d89b44486cfdd538401d6bdddaeb96451a1473467fedc1705c7b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_01-special.stderr.txt",
+      "bytes": 555,
+      "sha256": "43d26219fe4573fc7653feb8269a67731e4f0010b69bb18564908040f4bb94ed"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_01-special.stdout.txt",
+      "bytes": 20,
+      "sha256": "ad073126857e4231fc8b7c162a9eae0d33833c41b073f1f7f84bfc889b9e41fd"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_02-interrupts.json",
+      "bytes": 550,
+      "sha256": "424da09c819f838d6d981cbb3b75b0a4361ae6276d8458da57c7fa6bcccf0cbb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_02-interrupts.stderr.txt",
+      "bytes": 551,
+      "sha256": "8f121d6d7bdfeaa7a7be6819c545a5c1d400b6dbd5d7cdc5e18d81dfb5e0ffb8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_02-interrupts.stdout.txt",
+      "bytes": 23,
+      "sha256": "6191c73012e4eec2cae7ae8c3b1b8a9f42048e3a3dbb77611a659548613afbe5"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_03-op_sp_hl.json",
+      "bytes": 556,
+      "sha256": "deb59acdc6215ff017c89c5c8723045ea0b2ecad4eeab4761f0519f6c017ad89"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_03-op_sp_hl.stderr.txt",
+      "bytes": 557,
+      "sha256": "c7f16e24b0c43875ed3eb073f88e5b6ed94d8e6e51228a44a09281f67ae48542"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_03-op_sp_hl.stdout.txt",
+      "bytes": 21,
+      "sha256": "0faae6397a99a6c34dcc274a9e8547ec6a630f9e680e9151535de01b03bef6f4"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_04-op_r_imm.json",
+      "bytes": 557,
+      "sha256": "d1ee04c28133327760e8dc716329ea20d2d1a73c410264d3a4965aa04c5b1210"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_04-op_r_imm.stderr.txt",
+      "bytes": 558,
+      "sha256": "3fb0692ac13674c939453abe73e74e80b415d570832a4f5992d99accc94b12ae"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_04-op_r_imm.stdout.txt",
+      "bytes": 21,
+      "sha256": "485640eeb632afc9ae901b3137c3e5b35846e8c81e5442381c85fdacaade53ac"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_05-op_rp.json",
+      "bytes": 556,
+      "sha256": "5c115e5dab9db30dbcfc5f34ad2781c28855bf57216d70370fcd01018350f313"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_05-op_rp.stderr.txt",
+      "bytes": 557,
+      "sha256": "569651a58580b1eb9305220b1055a28e98540c6b0572563782a1e5c7b68d4ad4"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_05-op_rp.stdout.txt",
+      "bytes": 18,
+      "sha256": "4e9a83d5399c2ca7f2b255e72247fa7bab216a535f9de3ced9f78ff6a4cad6f0"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_06-ld_r_r.json",
+      "bytes": 553,
+      "sha256": "09c45e9c44259540f47fdb97408e54ed535430b0071f3aa82c33a924d61a9279"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_06-ld_r_r.stderr.txt",
+      "bytes": 554,
+      "sha256": "47e2cd4579b73ae71422066c2d33febbbb9e917c8d3efd01ad987fde30d418b8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_06-ld_r_r.stdout.txt",
+      "bytes": 19,
+      "sha256": "3b310345b357ceef32c502b36d23ee73e077443202d3ad561dfe4e2db00eb9e0"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_07-jr_jp_call_ret_rst.json",
+      "bytes": 551,
+      "sha256": "f02df6b9ecf1d9d987c1efd3a793e29f20cfc5dd8aa5a377b13d15b1198588ef"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_07-jr_jp_call_ret_rst.stderr.txt",
+      "bytes": 552,
+      "sha256": "6b231e8cccf3f0e5f77de099954f7799da1e35a1cc4df50e18b0d9822f8e36e8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_07-jr_jp_call_ret_rst.stdout.txt",
+      "bytes": 31,
+      "sha256": "cb05c2966dbeb25d6d29b64482acdeb239efaff1c664062ff01bab172dab10de"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_08-misc_instrs.json",
+      "bytes": 552,
+      "sha256": "743a3c000b862af5f2a7aee23e716b62913ae51dee306dfe0b61bd7758db7f83"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_08-misc_instrs.stderr.txt",
+      "bytes": 553,
+      "sha256": "8d57b7bd770e3a37f4145f8d3f4b426f757da34caea666b39e9bde182d044996"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_08-misc_instrs.stdout.txt",
+      "bytes": 24,
+      "sha256": "5f3bf2a3351a3603671aa44eaccceb068c52011782be13e104eef4f7817e2eae"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_09-op_r_r.json",
+      "bytes": 554,
+      "sha256": "0eccb9da9ed3440546a1c30e2b0808266ba30ff8b556c0e9b64156498277133b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_09-op_r_r.stderr.txt",
+      "bytes": 555,
+      "sha256": "dfd743b5b068fcd49d81ef78b6e4c3881b26804cf1241333b331a02acdbbea08"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_09-op_r_r.stdout.txt",
+      "bytes": 19,
+      "sha256": "772927f29a92b20d187244046fd31c51f6da8cdefb768793347eec102d801c9b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_10-bit_ops.json",
+      "bytes": 554,
+      "sha256": "dd23cc5e520ea9b4a6ca4c07fb94d2a6f7b57ec833f56d743860512913ee788a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_10-bit_ops.stderr.txt",
+      "bytes": 555,
+      "sha256": "0ba02849a9a549504ead68a61f26148d1e4bd94a08b7875b208cefe7715f90eb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_10-bit_ops.stdout.txt",
+      "bytes": 20,
+      "sha256": "03d4f9ec4672f584192ce2277815f0e0326a00c93bdba7bca4fd29fb6cc5c832"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_11-op_a__hl_.json",
+      "bytes": 558,
+      "sha256": "c4ea4e604a9c8b9818cd0a7f9af61e1acfa22fa646549974f66a4e3076f5a8ab"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_11-op_a__hl_.stderr.txt",
+      "bytes": 559,
+      "sha256": "eea41a8c87b6ce10907a0362febbce3013234598f52f04fa2ed2660d3d2a3e79"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/cpu_instrs_individual_11-op_a__hl_.stdout.txt",
+      "bytes": 22,
+      "sha256": "f78a5b5da93b5f3f97b6684254733bf2fa9e5e5d42460c06e2c40eaab41a4ba6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/halt_bug.json",
+      "bytes": 569,
+      "sha256": "e36133ae1c57633969a5b427c8075cd53ed50f562e7a4ecbf0acfb93332d13da"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/halt_bug.stderr.txt",
+      "bytes": 570,
+      "sha256": "bb9e5b34e43c92e0c15481f5b1917957a2adc0703a454e86b5406c66dcc4cac6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/halt_bug.stdout.txt",
+      "bytes": 191,
+      "sha256": "0243d4448c601b29d0a3ba5f6242b96caa87e7f82626e2d164f9d7551c472dd5"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/instr_timing_instr_timing.json",
+      "bytes": 550,
+      "sha256": "d814b4d23543f090c64f481828c094656496d61d34253acdc74a5d0945206db5"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/instr_timing_instr_timing.stderr.txt",
+      "bytes": 551,
+      "sha256": "6475fac08116e222419c12043934aad8dd41169729d184223607f885d7b19d9c"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/instr_timing_instr_timing.stdout.txt",
+      "bytes": 22,
+      "sha256": "89ff5d52c0d9c79ca76edc6c5e1383238d3d695d5688c9aaa7bb25d4fbb9450a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_01-read_timing.json",
+      "bytes": 570,
+      "sha256": "6f7bc7732a1f830067bd2cad82d449ed8b133c44d4ebc2807698ef84be615673"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_01-read_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "92060543d54e737b85af29004ce75c5609fdd4121345b53158c86e86738f6fd5"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_01-read_timing.stdout.txt",
+      "bytes": 50,
+      "sha256": "8cfe40fe1dfb2f2c8852b5e08906ca817a4e5362165a2e563e18e8921c24a116"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_02-write_timing.json",
+      "bytes": 570,
+      "sha256": "c64828fecfe89cae1c61582fa276c6db7bb395fa43b775c2c7505dd3c37f6765"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_02-write_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "e46042b582c3dd2306d715fc8b652022ce6ca855c5a1191a7813abae4c27e060"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_02-write_timing.stdout.txt",
+      "bytes": 51,
+      "sha256": "54090429958e496970b2242d10adf15e1bba79d388f6f167d43373403435e1f6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_03-modify_timing.json",
+      "bytes": 567,
+      "sha256": "d02b94b4237aa23b9ac059467d8e26678ccf54b2a0a6587ad81cda797f954691"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_03-modify_timing.stderr.txt",
+      "bytes": 568,
+      "sha256": "f5c98dd4745631e5304b2c533b0a5962f291b7e9330a9af19247e421afc1aa4b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing-2_rom_singles_03-modify_timing.stdout.txt",
+      "bytes": 52,
+      "sha256": "e5982e5a4076fc330fd4521fa42486f2761a8da4dc7fd1adc1f401a09b728bc7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_01-read_timing.json",
+      "bytes": 551,
+      "sha256": "c3b7fc81117b679eb6709b448e3721630c90d476818a34aeaeeb2b8c643852a3"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_01-read_timing.stderr.txt",
+      "bytes": 552,
+      "sha256": "fc5dec7bc1f0a12142ab314fa4045b09bcd3066f908319f1509e55ba0957fcb1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_01-read_timing.stdout.txt",
+      "bytes": 24,
+      "sha256": "2c876eac776548566022a4900d245cc6addad610ae972678783ae0d9cd2d2e6d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_02-write_timing.json",
+      "bytes": 548,
+      "sha256": "492ce08beecd6554435d2019fe01ad55af8a23092b30e25089b977bdc04137bd"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_02-write_timing.stderr.txt",
+      "bytes": 549,
+      "sha256": "6fbfa2c2d94d2e18cba14746810610d99d0658b6ff32d20e3f222146ac0041ea"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_02-write_timing.stdout.txt",
+      "bytes": 25,
+      "sha256": "a19d5e3cee667085706cdecd0fe7c409e66e31d4306197f46a4642717333df9e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_03-modify_timing.json",
+      "bytes": 547,
+      "sha256": "5c6a2eb78cad79332bec6cc426f0d57d358d400d9e29f0cb01608f8e0cc2d3e9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_03-modify_timing.stderr.txt",
+      "bytes": 548,
+      "sha256": "4bf75299592967435f2b0d2b11eecc1e51592dafad07e24787767030aa17fe63"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/mem_timing_individual_03-modify_timing.stdout.txt",
+      "bytes": 26,
+      "sha256": "fd8c3b0a0f0998d6503b509e6fef8894b086fd3d5d42ff6400400a17907b58dc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg/summary.json",
+      "bytes": 57010,
+      "sha256": "5ea6dc4bc09637e0590bc93b4a526d705e85953c2056e8453448ea5ff0c4bafc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/blargg.log",
+      "bytes": 2408,
+      "sha256": "6d00a8ae0207e13cb9ab94c36aa930747cb56f76bb5f25deab93524270717d99"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/build.log",
+      "bytes": 733,
+      "sha256": "86257367aa3b22f2e2841f895b82ef0c483d664a6e27e29c55c38dd4bc9cca6f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io/control.stderr.txt",
+      "bytes": 570,
+      "sha256": "78c23517ef6a364fb024a8cde6f55296f65cc705ec7429924448673cdb53ea00"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io/control.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io/frame.stderr.txt",
+      "bytes": 33,
+      "sha256": "6f2ab5b2314ff9e189ada1b4254f86e3b977b996b464b229d85617ff010951e1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io/frame.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io/report.stderr.txt",
+      "bytes": 603,
+      "sha256": "c272f79aa8958a7da1eb24e56efe3a684582dc8b56d6e696a595f3d93cbfa98a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io/report.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io/summary.json",
+      "bytes": 675,
+      "sha256": "0c6199fdd616e67a45da054395608279bd5efb747782236f1e5f65ce0ee2c898"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/harness-io.log",
+      "bytes": 159,
+      "sha256": "08174a6c100b1848c09d2fab8c5cba448788c25f608b5432733e5f3bee1e0be8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m2_win_en_toggle/run.json",
+      "bytes": 597,
+      "sha256": "8b0a2769a08fb2f9a9b90b382f1c500ddbc0ee5a6bb8a2ac75447683a40dee96"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m2_win_en_toggle/stderr.txt",
+      "bytes": 598,
+      "sha256": "0f39151ec9a5c2d083396d67e82409a273a3774125d9aeebf4d8738b7b1c6462"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m2_win_en_toggle/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_bgp_change/run.json",
+      "bytes": 598,
+      "sha256": "5ba7ce672d379aa69a41187a0034c786ea0e91cef61574b38798009782247f23"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_bgp_change/stderr.txt",
+      "bytes": 599,
+      "sha256": "2d9afad9730775694c207e7ea8ad2fb1056079671ed2e184bc0e187e6f92b11c"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_bgp_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_bgp_change_sprites/run.json",
+      "bytes": 597,
+      "sha256": "cdbbc1cd9ffd5d9aa932fbfc6cec812a08cb88476d6b07d4b268783512fb2530"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_bgp_change_sprites/stderr.txt",
+      "bytes": 598,
+      "sha256": "18a284e398ade54ede20b5e9fd6bc003fa8034ce29bec4847efb9c75ca6eca07"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_bgp_change_sprites/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_bg_en_change/run.json",
+      "bytes": 600,
+      "sha256": "6ffe3d513bec29980e335154d4ba34aa57e0a801d30de72215663ca0dfc3225e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_bg_en_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "8035a7188ca09d328fc6fd121b03f6792f635fdfba1761eb6721774a33a38ded"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_bg_en_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_bg_map_change/run.json",
+      "bytes": 600,
+      "sha256": "3d2459ad0576bb347ad10f21430a6a65e232a4b72d3a494ee5b7238ac5cd9f49"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_bg_map_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "3a3d3ac270dbc723b0717f977473781cd35199673cc1e98e1b2f744d057b3cc2"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_bg_map_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_en_change/run.json",
+      "bytes": 597,
+      "sha256": "7d616c4eea43a9ff0749bafef346863daacb563820b43164f5b5ea8d2aa88702"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_en_change/stderr.txt",
+      "bytes": 598,
+      "sha256": "a939e1e8355d53003dd2b318a7d16200cb2e3efb950d6f2bb9a73c1dae5388e2"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_en_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_en_change_variant/run.json",
+      "bytes": 597,
+      "sha256": "df85f7418616b5f5d61cba70ad9c80553a9d5348d6a6c70dcd97208a712ba3c0"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_en_change_variant/stderr.txt",
+      "bytes": 598,
+      "sha256": "e6d7d33fa55c3ed41a18e16e71357142f99d9cd03b87a18afd548164217bcfce"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_en_change_variant/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_size_change/run.json",
+      "bytes": 600,
+      "sha256": "5a8e8c67f9c5214e8f18a37417df1514cad56ebdd90ebc51173f29870fb141e6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_size_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "90e1471dcfa7871523046e7b3f6eaac28372a6be670026aa241b1ffdc485d785"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_size_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_size_change_scx/run.json",
+      "bytes": 599,
+      "sha256": "3af800392ee8e8e4fe7c93fce86694f064db277ed7d79b74c57978975a083629"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_size_change_scx/stderr.txt",
+      "bytes": 600,
+      "sha256": "79f5e653f3427266baa106ae5db959e7e4fb866dcf06086e67bec9827e157c10"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_obj_size_change_scx/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_tile_sel_change/run.json",
+      "bytes": 600,
+      "sha256": "67a960618bbc0aef539fc5aa7d0f051fcd84dc8c5e8acd11a87c27801e4530b2"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_tile_sel_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "8ea4296f146cfd6412937c3684cc0b2203e7301fa8a7dba85026519a703ecf29"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_tile_sel_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_tile_sel_win_change/run.json",
+      "bytes": 600,
+      "sha256": "7166a16de047dd908a96a6a98999283ac2698f1941d95c665065332307b657a5"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_tile_sel_win_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "3984549e63f47fda50718d91102b9cf547b553f182a2889774d0874a2e1a2de9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_tile_sel_win_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_en_change_multiple/run.json",
+      "bytes": 600,
+      "sha256": "3eb518ed651871bc5d3e8afde971fd2e3d083a6b931b9530a0599ac72e8c895e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_en_change_multiple/stderr.txt",
+      "bytes": 601,
+      "sha256": "fa03521b5a01eb15d49a6a5c0ecca778a0155aa05557956e4af36ac1bd3c3b5b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_en_change_multiple/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_en_change_multiple_wx/run.json",
+      "bytes": 600,
+      "sha256": "e8acd6d35a4226904525d6969e220019ce46df7ba72e3729bc81a1dd4ca57826"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_en_change_multiple_wx/stderr.txt",
+      "bytes": 601,
+      "sha256": "268cdbf02ad77d441a2760fce8ba3074aabbf6e27b78d081e753d8dbec058860"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_en_change_multiple_wx/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_map_change/run.json",
+      "bytes": 600,
+      "sha256": "7cc9e3d48f4a4ee93761b5e654ac220027dbdb0a013563dfac07994610a74a8e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_map_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "3c715a4599ad3c62f3c8ff813b64b1dd325ec9322b1dbbd1cfeed5dcfe5c4485"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_lcdc_win_map_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_obp0_change/run.json",
+      "bytes": 596,
+      "sha256": "ec5a0b00ea199105933262752ffadd6aa2d33c7c794d2e563d1c4d463494ebed"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_obp0_change/stderr.txt",
+      "bytes": 597,
+      "sha256": "f072aec43b9a73e58f94f3ef602962910c23e2c1745c3ef13f99f583983ebeb9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_obp0_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scx_high_5_bits/run.json",
+      "bytes": 594,
+      "sha256": "ef014497a842e012aab0097e8ea0845be5bd9cb1a855968dc39b7ba5825a2b24"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scx_high_5_bits/stderr.txt",
+      "bytes": 595,
+      "sha256": "ef086fced068d86a95b8b57caf2b6128382da530b95bb55479a2f216ccf759af"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scx_high_5_bits/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scx_low_3_bits/run.json",
+      "bytes": 595,
+      "sha256": "99cf080dcbba0870a9e7f99fe84c4dc0be38995f97617658e35c3c680d957ba7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scx_low_3_bits/stderr.txt",
+      "bytes": 596,
+      "sha256": "6f76feeeccc7fff4b86e093bb1d32c630f53fb486e1f2a45e5390d2b2f894d8d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scx_low_3_bits/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scy_change/run.json",
+      "bytes": 594,
+      "sha256": "372fd16695a1df762f071eebce1c66c35a443d8d6c09dd197eac4cc169ae204e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scy_change/stderr.txt",
+      "bytes": 595,
+      "sha256": "efc1dbf7d4a95b537053d05fa61181e0acddd42601cf6814519eb39c42fd42d1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_scy_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_window_timing/run.json",
+      "bytes": 598,
+      "sha256": "366f2ccdea89eb4a0d9c56aa9ecbc1b1e883dfb212a0e24f1a776269f7a6eb68"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_window_timing/stderr.txt",
+      "bytes": 599,
+      "sha256": "53b5931f79a92cf8f701127a75bf3022fd77f72370bf4d32bf9c9f2def83ac6a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_window_timing/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_window_timing_wx_0/run.json",
+      "bytes": 598,
+      "sha256": "433b238ae4f27b623fdaecc4d61af17852b3139e27cf9e172b618cb19ad4a4a8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_window_timing_wx_0/stderr.txt",
+      "bytes": 599,
+      "sha256": "d21087fd73f3e6198529f06a6c154e9e34b227a34dd99ad21ece71f7d2c797fb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_window_timing_wx_0/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_4_change/run.json",
+      "bytes": 596,
+      "sha256": "de1c191326899eed905ab757feee6abc3edc7d196e069a7dee11189bc077ba48"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_4_change/stderr.txt",
+      "bytes": 597,
+      "sha256": "9cef395857b7d54bc75facfa0156950fecc312d96e6077eab535f99473967ecd"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_4_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_4_change_sprites/run.json",
+      "bytes": 598,
+      "sha256": "05833309abe0f2f256ef30fe610e5eb8caaed30b1831c966645891e5b7dbd823"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_4_change_sprites/stderr.txt",
+      "bytes": 599,
+      "sha256": "abb4f90f16b426e092c6a124dc349d487f35d3898ba5b2f255b6422dfa5ecf7b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_4_change_sprites/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_5_change/run.json",
+      "bytes": 594,
+      "sha256": "2cab015ec7618c8ea8e2edb8976216268ccfcb11b4b0bca0cad1ebd1cbcfa7ea"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_5_change/stderr.txt",
+      "bytes": 595,
+      "sha256": "f6f55868e68589121f90c21df80e7138fd3410d5f32d18db3a424e30821dc78c"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_5_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_6_change/run.json",
+      "bytes": 594,
+      "sha256": "e96b7f62cc36aea8eb526f018107ef0d3bfc1d65326f9858de75f6baff3e2c48"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_6_change/stderr.txt",
+      "bytes": 595,
+      "sha256": "aa5ec124b27e525a00a755767e5272663d85f0fe7c6a476e6c39c994d3afd3bc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/m3_wx_6_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug/summary.json",
+      "bytes": 94535,
+      "sha256": "604a410c9a8a52eb26de6bcd3ba2fcd50df35ce75f7136b39d9de5926bc97c35"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mealybug.log",
+      "bytes": 1275,
+      "sha256": "4c0653defd09648ad4808a776269d6111694620ab7c7259eb2ad945ea5c421e7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_add_sp_e_timing.json",
+      "bytes": 569,
+      "sha256": "8dc4f009162d1b112be3bb165ca37669c71cc1379cb35d021fefe4bc85137df2"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_add_sp_e_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "7ae59ea59276e9766f2c49ca249ccbcf1f343d20c5214ce605f727aa2c77fa33"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_add_sp_e_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "baaf19a9beaaa003634017e7d75e5a5cf436fc7312001ca5d6364a15ade4b52f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_mem_oam.json",
+      "bytes": 570,
+      "sha256": "932fe75256026e85096b0cc40519ff1227314ca7ed6c6bb445ed39d0fe920031"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_mem_oam.stderr.txt",
+      "bytes": 571,
+      "sha256": "8d02a5523bdb45af84bac09231be3f34f6659c76fd4299dfb91f2c1d708ecaf1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_mem_oam.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_reg_f.json",
+      "bytes": 570,
+      "sha256": "b1bc4c63d826d173c6f2e2e94e23abc62c2201809595949e178b61c7c43f3c89"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_reg_f.stderr.txt",
+      "bytes": 571,
+      "sha256": "6e05d46c9497044f7408c72e14c7695317fd3fb08cb16bee8f32bb510a20cbee"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_reg_f.stdout.txt",
+      "bytes": 137,
+      "sha256": "3a090ba1aed1a3a9931aecb7755e7c6b64d65ec056b17ba6d9ccd1d132d87032"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_unused_hwio-GS.json",
+      "bytes": 572,
+      "sha256": "321f30bd87a5efd1ce97697ee2dd7e5e820c65554965d17485fb8f3501458366"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_unused_hwio-GS.stderr.txt",
+      "bytes": 573,
+      "sha256": "ab51c1523dac2b136f671a796fc5362d5a85f707c9abe8a9ebba83d02d7f669f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_bits_unused_hwio-GS.stdout.txt",
+      "bytes": 137,
+      "sha256": "75521419e56c167569ed84c2251bdfd5390e6e63a617810e196bef35c7709a41"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_div-dmgABCmgb.json",
+      "bytes": 570,
+      "sha256": "aac12d5e9013b3e7d619a6cadc9d6a484664b881e9acb5a9eed6c673a26d28eb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_div-dmgABCmgb.stderr.txt",
+      "bytes": 571,
+      "sha256": "20d0ca9418bc647832105aba1d33b15701c33bbaea8386292944932a135f73b8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_div-dmgABCmgb.stdout.txt",
+      "bytes": 137,
+      "sha256": "a8cb44cd62d6efec9fbd932033155fa57d7de2218da41f577536467cde69885d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_hwio-dmgABCmgb.json",
+      "bytes": 570,
+      "sha256": "04d7998f7a285eb96596468f4d1ee32a2b0e6706f8e163882d796166c9da031b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_hwio-dmgABCmgb.stderr.txt",
+      "bytes": 571,
+      "sha256": "0ec9007ba82c34e1e17c5f410a7b05506f4305e66e3e075e4e87160c8055a3a1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_hwio-dmgABCmgb.stdout.txt",
+      "bytes": 137,
+      "sha256": "936ee8117f3f2985a1c35f01c4fc53afc0830df2408f8fe2a65032242906fcc1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_regs-dmgABC.json",
+      "bytes": 570,
+      "sha256": "27d114b570da4645049251fb4595983e0b6c49d2b7f0da42e60ceeed10162ad3"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_regs-dmgABC.stderr.txt",
+      "bytes": 571,
+      "sha256": "614d3469f4ac0b0ba13d6c94a955afd853f4f4fc0fb47b4eb8ad8ee559d0df38"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_boot_regs-dmgABC.stdout.txt",
+      "bytes": 137,
+      "sha256": "898fb8c0de9244ac626164539bf9b80c4efd86c715b88a65ead045574bf91f39"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_cc_timing.json",
+      "bytes": 569,
+      "sha256": "14613fc7ff826a42ba0e0eadd31c44bd788ed8f7ea4f025364d9e1c4d61508df"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_cc_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "16ca282a0c7b934d31540e8ed2daf9c2d6d0f837f7d81e0f8fa3595f997db1d8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_cc_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "8d4d6f696ef1df63e2c0ebb19913268e2ae1b0dc21d6a1b389a95531453472fa"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_cc_timing2.json",
+      "bytes": 570,
+      "sha256": "0f1fb00756ce43647c6012596885da9e87ff6d1aaa85ecbbea146770c33a7285"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_cc_timing2.stderr.txt",
+      "bytes": 571,
+      "sha256": "cd3fc2f04ada4e070e54fd2b5b655dea20c3852b58e80566f79f508a9e242e6f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_cc_timing2.stdout.txt",
+      "bytes": 138,
+      "sha256": "938839a384a4394ab40d19e6b061b05b85d8c3dac3ad478d673d2439ccb25649"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_timing.json",
+      "bytes": 569,
+      "sha256": "acb561a1de274303bd35e776cfdd3fdf5d31f9c2f8eed05ca4c94a505d1c4f28"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "b6cc61e0205cd47ec5fe4920038e49edbafb17cd3d32ca21bb99ce51a7fe6d18"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "8d4d6f696ef1df63e2c0ebb19913268e2ae1b0dc21d6a1b389a95531453472fa"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_timing2.json",
+      "bytes": 570,
+      "sha256": "6f447700bee47fb05655d5869fa498eb4e53d73abd68bde116bf01cc1efa12ef"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_timing2.stderr.txt",
+      "bytes": 571,
+      "sha256": "c623952fc85fe95aa43966e6622159131a3eb100e4d94b9624d9a1f9192437d1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_call_timing2.stdout.txt",
+      "bytes": 138,
+      "sha256": "17bb79a77656695447e95dcdd472acd59f19c9fac5a5f6658ca64eaae79c30fb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_di_timing-GS.json",
+      "bytes": 570,
+      "sha256": "620b37793366f25000bd0a74141b0f8d71215ff342e24144505a65a5b7bbbf08"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_di_timing-GS.stderr.txt",
+      "bytes": 571,
+      "sha256": "bbc55ca00324bd84e8f0cbfc246cf87308d9308368ff62c3d711f23b328cd09d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_di_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "cb1235cdc709756ce9575a6259de0f634a68ca721ee2532d8648b102b7fdf98e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_div_timing.json",
+      "bytes": 570,
+      "sha256": "0ccec219b92a04ff2ec0c10ff28d6564daa66905a83a6a25631d1e36d3fcafe8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_div_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "06cfff22420b6881746144c93d792b71282be836e5eb9afa9b61d11c1c55ca11"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_div_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "c8179cf9e49898a9db1e9125daa2ef80aa06ec9937555f85346d6148318f13ff"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ei_sequence.json",
+      "bytes": 570,
+      "sha256": "e7668fe4c4e76b2603641abe467defdaf8b9e89e373bca15695f565fdee6ec9d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ei_sequence.stderr.txt",
+      "bytes": 571,
+      "sha256": "9c682348d851eb359733af8f95e5bb459c8c5f3553099e0b2a67c5cb4cab7d69"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ei_sequence.stdout.txt",
+      "bytes": 137,
+      "sha256": "daf1188ec75add14319c9942b1d921f0c610fbd21eccf1158faefdd101c79474"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ei_timing.json",
+      "bytes": 570,
+      "sha256": "490b020cb5de844bdc892adeeb4a0e8145fd1dc8e72d8ce7893e3665416462d7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ei_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "ed565df958d1875d3a27fccdd8572ba7c376b5b01ba8559c4760678777802de9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ei_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "5ca6446e2212aba40d75e1452f1f71742be7d6d44a594a43d0ee05c9bb602dcb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime0_ei.json",
+      "bytes": 569,
+      "sha256": "7636dba2aebe5e891eeda058da90396cb9c378418bd3cf7fcd4decaba687cce7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime0_ei.stderr.txt",
+      "bytes": 570,
+      "sha256": "dfd5a15b05e067092cf42a0244ac101ba8ebc97edbde8197d741b932e3e1e559"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime0_ei.stdout.txt",
+      "bytes": 137,
+      "sha256": "b07f388a734920cc40ebd2f282ebb13394cd45f3c74776f10a17dfd4afcd7377"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime0_nointr_timing.json",
+      "bytes": 569,
+      "sha256": "e72569204b3ef7f5f95aeaa095000a56829a66ac0bb7d5fe69991b4b77f584da"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime0_nointr_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "bbb3fc79066991403afd06e3742fbbeb39873d176c7c2a352b4faaf8978eb71f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime0_nointr_timing.stdout.txt",
+      "bytes": 138,
+      "sha256": "62a17968e7d44422541be44d192d12c74bfd38450323fba45bd74c925078a763"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime1_timing.json",
+      "bytes": 570,
+      "sha256": "38554c4f8b52308e838349ffe277d4239c6c0883e36d423559b353154e2478c5"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime1_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "2704bcc144604c46482a3a10ffff1f2fb5098476b35335e84a6613d29de982d8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime1_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "ea795fcde6890db6b67628a2ba24447fb34671ffe54692a3c1b639d34d6ed3de"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime1_timing2-GS.json",
+      "bytes": 571,
+      "sha256": "8f664d957e18e6afe2d61d05627ec59c1bc4d23b757bff98fa7396107b52465b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime1_timing2-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "e1f0f22235467bb58dcab95a4b7d9d4be9c663c5cd72747b14e8e2ae917a89d9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_halt_ime1_timing2-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "ec5e2e0f7bc57557a89f9e3915bc25b51f00c3203df04f2b7d31120b52cf691a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_if_ie_registers.json",
+      "bytes": 570,
+      "sha256": "1c2751bbd4d08b93a0898106763461fab168a471b918543c7f5068902f8a6478"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_if_ie_registers.stderr.txt",
+      "bytes": 571,
+      "sha256": "7bce0caa8a7788142ea423a6411c80b730ba35057dffe793e79e1f72648e2f46"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_if_ie_registers.stdout.txt",
+      "bytes": 137,
+      "sha256": "97f3578995bf3278a756ade40f25a902c03581c82a4e88ae187a33b5e3ba71ce"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_instr_daa.json",
+      "bytes": 571,
+      "sha256": "747eb7ff909d5e5f995aa4d21827b8872b77e40da79e2d8ec8a903f01b16f5b2"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_instr_daa.stderr.txt",
+      "bytes": 572,
+      "sha256": "436fb8e5a405a5c2ae5cfdabad6e1b4dabfa2b4acce31212c8b190946de4d996"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_instr_daa.stdout.txt",
+      "bytes": 138,
+      "sha256": "1e68bdc9ee9d9244e03753a52dad597468a5fbb3e4dd724f34582f53928cd5ff"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_interrupts_ie_push.json",
+      "bytes": 570,
+      "sha256": "757c2b10c8945791062c0bf9180cc40b2d73ca3fcf352b6b1c4f07874f014647"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_interrupts_ie_push.stderr.txt",
+      "bytes": 571,
+      "sha256": "ae89cd8765d620c7ebf7e06da05cd5eabdae506e598ee712aacac01c26ef1ee8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_interrupts_ie_push.stdout.txt",
+      "bytes": 137,
+      "sha256": "308f7bfc09e76a925573bea0ebd1d461bfb0048a5cf4f357b359102f3132f3ac"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_intr_timing.json",
+      "bytes": 570,
+      "sha256": "d339a2df9ffdc8e1f1100fbfcc35fe53057e96a36eddc33f45e9cce84dfd1f69"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_intr_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "6add7136f04b7b9021605e2ee06a97c21229d7a03d38e1874f63ee9b70fc93e0"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_intr_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "bdf57d37a141f647693a56558c4bb140061f6375e7f6073497de93d0d383f376"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_jp_cc_timing.json",
+      "bytes": 568,
+      "sha256": "4187fe777b57870cb73e56a9c1c4962372243e1dbfd87886afbced38e77fa7bc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_jp_cc_timing.stderr.txt",
+      "bytes": 569,
+      "sha256": "80f431b8dc0347152497b94dd4595a8e7cd1c3f47188119df0518856fdfa50cf"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_jp_cc_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "f6f22e11f1b40f12bd4df675acecacf6d93610f821f45b895ec596f96f162e63"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_jp_timing.json",
+      "bytes": 569,
+      "sha256": "ece9beb0097f1bcaf96684eee8801050c871457a85be95e13933a94d75a63707"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_jp_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "f7a816342c87013c360015b6e530c98ffa3f1e242c2b211b45992873ec62d0f6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_jp_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "f6f22e11f1b40f12bd4df675acecacf6d93610f821f45b895ec596f96f162e63"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ld_hl_sp_e_timing.json",
+      "bytes": 569,
+      "sha256": "d83899c29807d6de5ad8947c859990e2f3647eb02f682a9def7792fbac95dc2c"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ld_hl_sp_e_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "f920412b17c8d54127655a67b92830b721e2e911311b3de1483c263d717a8d68"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ld_hl_sp_e_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "46b99beda481887f34d0f30fb9ca79b8081dd5ff956a27cb495db15d40df963e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_basic.json",
+      "bytes": 570,
+      "sha256": "4651a8a0e88f4210dc9995fe3045b2c752c397ab85834051f90412adcbbaf710"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_basic.stderr.txt",
+      "bytes": 571,
+      "sha256": "55ad905c5fb4ba2902f258ee549ef02d595ca569d2c420ba64730a5c9b5fbbe3"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_basic.stdout.txt",
+      "bytes": 137,
+      "sha256": "fa9319aa2d2233d57cb8b56262385d7f2fc90deafdbdc27f85121d92264b64c1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_reg_read.json",
+      "bytes": 570,
+      "sha256": "04eb161bc43476ce1aaff95df008a0cae17cc4ac3fc591811828515e95b0aa09"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_reg_read.stderr.txt",
+      "bytes": 571,
+      "sha256": "95304dc58162118a867de447d3800fb06785e3e2184c4fa321fe29b62cf7d5df"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_reg_read.stdout.txt",
+      "bytes": 137,
+      "sha256": "558c366dda291b676ab6549613ce5bac54e0f0ae71b6e03abaf53d07b659c03e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_restart.json",
+      "bytes": 569,
+      "sha256": "1caa8399049b6a315f69588e02989a0dc8b41fe81a333517fab6ff65d08d6039"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_restart.stderr.txt",
+      "bytes": 570,
+      "sha256": "bc22d27bdea2ef965633a4b9807e2e9029713bfdc7b142d743177839bb657e37"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_restart.stdout.txt",
+      "bytes": 137,
+      "sha256": "7a438e235df8e9ba0a87d4b979c1471d1d356cd023240597a21a259fca28ac01"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_sources-GS.json",
+      "bytes": 573,
+      "sha256": "5ecd4406eb9d56cbf1d306f8215128e82913170d19d3b96da9d47ac8a62a2e01"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_sources-GS.stderr.txt",
+      "bytes": 574,
+      "sha256": "e75270bd451d7e4d47cff034063ec44ec9e42d5604b2369b9a9c2af72d820f02"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_sources-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "d6fd9862fd8f330fafca23b2742c0e440597e3f9782eb7f5f400471ebac32ca7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_start.json",
+      "bytes": 570,
+      "sha256": "9618dd592edb2fc7ca4dd149fc9389c8df182539f9f9c989a81564f6128c946f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_start.stderr.txt",
+      "bytes": 571,
+      "sha256": "8c4b14d6bf851985a30eac6b861ca1f573a69a61d22eb74add4f69b9b39ce7fc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_start.stdout.txt",
+      "bytes": 138,
+      "sha256": "1656998cefc2274a47ae08ef7b249df99635472594383ec296dcce93254259c6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_timing.json",
+      "bytes": 568,
+      "sha256": "4068a02473362dec1b9f98c04bd98f8e3beb01725950301a99d047beef8d2516"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_timing.stderr.txt",
+      "bytes": 569,
+      "sha256": "e344065abe00e2cd5a3c495f89c6ecefe95ea9ab0e9eeefc9931949659b0bf65"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_oam_dma_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "1269fa7c9ae3d091768da38176840b39b80b2a625a6b59c96e0d7a2c7a332ae4"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_pop_timing.json",
+      "bytes": 568,
+      "sha256": "de8e7ccff77a04fe8f445932012322ff90bbcb8ac64b5f397ebe5ec87f7ab47b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_pop_timing.stderr.txt",
+      "bytes": 569,
+      "sha256": "9c21677446c32ff9af3c8d1db7a4ed23aac2ef8e31ea5b9931d2cfe438606376"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_pop_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "84f5d798b673d4505a96b982446f5fa8b75ce9889ed3aebbd6f18485a1c7303d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_hblank_ly_scx_timing-GS.json",
+      "bytes": 571,
+      "sha256": "0811b422ed1ecc398e4f81e27f276a30443772e9540730072b84b3092abb6585"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_hblank_ly_scx_timing-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "80728db4a31a79ab9356e9e2d407df3c421dba621009d3c1979698984f64366c"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_hblank_ly_scx_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "fa7ef6e048ac2d1557042242dbe86da027fdabc99bbdeaaa245e32b5cb209ce8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_1_2_timing-GS.json",
+      "bytes": 569,
+      "sha256": "e5c2e66ba5b761ef66e8dd76cf3f5bfb94d38a8a7ed691b95791c3df309f6d0b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_1_2_timing-GS.stderr.txt",
+      "bytes": 570,
+      "sha256": "bd7330ac73e65d0a695b68d13bad0e6824d0dbe62df9e79784250cbd543ba01b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_1_2_timing-GS.stdout.txt",
+      "bytes": 137,
+      "sha256": "b83bc346026bfac2cb68a0df6e28de6dba103d90550f5bdaba627f61d7cf887b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_0_timing.json",
+      "bytes": 569,
+      "sha256": "c88edf53c44ce209782b848db318d1784795cca0dfd94a3b0f13e6458c70cea1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_0_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "6ed2269275d2ec23feb700abeb32d8578cd281e151a84152ec4ac9cc6573abc4"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_0_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "41ceadb8befe367359651a48211b0a8859fde6684b024398058d63b2219c29b6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode0_timing.json",
+      "bytes": 569,
+      "sha256": "3bd7c7ccacce4dd806c96891a793cf7baa6b4b839ada2182a32ad508a629c0cc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode0_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "d653490710680443dce8168f1ad591ba9ef5e6b387e5934a4e63542948a4725a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode0_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "41ceadb8befe367359651a48211b0a8859fde6684b024398058d63b2219c29b6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode0_timing_sprites.json",
+      "bytes": 574,
+      "sha256": "ffc966581a4081963ec26c211945d26b7f6804b7933b0a2b6c57838eda33b552"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode0_timing_sprites.stderr.txt",
+      "bytes": 575,
+      "sha256": "cf83f9f9fda6f95199ae259ad1369647879dfbb345718d524fd0ed3fb81aa4cb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode0_timing_sprites.stdout.txt",
+      "bytes": 139,
+      "sha256": "6a82e880d0c18ad85a160bf14aca7742c4c9a5cd3badcd4921e2483231bf3f8d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode3_timing.json",
+      "bytes": 569,
+      "sha256": "023004abc348d3b260699b1ae0a85273032450230d1cf25aece1156fca25ebb9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode3_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "150c9046755de1ab73a60bc21d493243801406f65b98267de0bfd94a02c2c638"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_mode3_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "41ceadb8befe367359651a48211b0a8859fde6684b024398058d63b2219c29b6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_oam_ok_timing.json",
+      "bytes": 569,
+      "sha256": "4fda0fc27de0eaa5ccc7aa29249b9ea694c47601e078244725c72833d7c564de"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_oam_ok_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "3d9ec812419cbe3138ca4039d493f5ecef4d8766fbe0e0c7d837dbe94b02870e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_intr_2_oam_ok_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "91573b8561a0b7e5bd9b4c0fd7ab03f416240b62d94d034c07fa74a404cd2d3d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_lcdon_timing-GS.json",
+      "bytes": 571,
+      "sha256": "92cf7b846e83f0c53052e7f87b5ed3591c704cd704f132f03781e100fa7e1102"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_lcdon_timing-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "85d64967b7a37466aa777fc44549a40253ac70ca16b487469cc84afbd1885fe3"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_lcdon_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "529442af6fe4c3e1bdde63f11412561da0a78ababf1f91cf4a622e43e8c4f362"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_lcdon_write_timing-GS.json",
+      "bytes": 570,
+      "sha256": "31ea94e79126b8a052f28a73aecb1cae22cf0d037a54ba21bca49ed816c4af25"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_lcdon_write_timing-GS.stderr.txt",
+      "bytes": 571,
+      "sha256": "467cc4b138eba9c6d584e4aa80964a8545757c993a513d4a289c8c8d31157847"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_lcdon_write_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "44639d3b1f2aa2f426fe04084c101c263432c4d469e977d1a62f1a3cb8d88c5f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_stat_irq_blocking.json",
+      "bytes": 569,
+      "sha256": "7138b5b468286a37a1613baa5b5308c2011f1a71e894ef1971d0b32ca70026fc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_stat_irq_blocking.stderr.txt",
+      "bytes": 570,
+      "sha256": "f7cf1cd7cc223ce1a9aa78b3613055145389be32d7e2f2a97c3e397eaefa012d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_stat_irq_blocking.stdout.txt",
+      "bytes": 137,
+      "sha256": "0238211ca3696df323157b3e9696c3323cf4bd5f5e9583633efbec4e199d1a76"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_stat_lyc_onoff.json",
+      "bytes": 568,
+      "sha256": "332752632c3e3671d8ab89a57196db509b1b1987af2fc054e55d48dabf006959"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_stat_lyc_onoff.stderr.txt",
+      "bytes": 569,
+      "sha256": "a70517ca9e16f1b7c85386913ddd4aac81f456b9f157967e80e4987e0565b39f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_stat_lyc_onoff.stdout.txt",
+      "bytes": 137,
+      "sha256": "9f73d6f91b5afc4868812bf05d1f95f2f83186196065b1c7ea06a45c65c6f5d2"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_vblank_stat_intr-GS.json",
+      "bytes": 571,
+      "sha256": "25357b1b63424dcd15e858ed7e58cac58e5624bd03a14e9b6299660141fefeda"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_vblank_stat_intr-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "0632da21c4b4e1dacd6c731a38cdfeb34c3139e3528534f4131ded30c4e3434e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ppu_vblank_stat_intr-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "a7d806da95766abc9e6a657bb312327bc50f2f2859a9bee24b3e14ff1d4927eb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_push_timing.json",
+      "bytes": 569,
+      "sha256": "b601c94bd16f39d2b2154e2c07028d711caf751b67aa1f8b8588dc29e598f4cb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_push_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "ed379122424fa481683b41582723fe131e6128c93c3ccb1911555bc4d328f997"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_push_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "55356baabc769c73e59002bef0eda9508289b8a77c084f274f574e14ad487a21"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_rapid_di_ei.json",
+      "bytes": 570,
+      "sha256": "37909412d38224764e04f0a15387aade77e9ec6d4c6a44844ae4544c4857bcf6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_rapid_di_ei.stderr.txt",
+      "bytes": 571,
+      "sha256": "44135125217765c647769f892333330e39af75464d3add5601ae6f38703be0ec"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_rapid_di_ei.stdout.txt",
+      "bytes": 137,
+      "sha256": "8ee4b69b61bf81521a5908b5c8ca8a7dab7594f3950fa3fbd90353a50c24bf84"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ret_cc_timing.json",
+      "bytes": 569,
+      "sha256": "a3a4d0505f4640d529d6d8c725ec2f5d539aae64feebf6d78d323d2f9a248a97"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ret_cc_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "0faac41aa7592a543c98840bd8b9382eb3a92af124d7ad70326e38b25acadf8b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ret_cc_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "50674208bcbfd88292570f13896a5fb432a68ea4028568198d02a8a9e2236094"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ret_timing.json",
+      "bytes": 568,
+      "sha256": "043c12e5cc7c41f39a4665a13efb177cf99842d86f51740aa3d0b6ba2d1ab960"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ret_timing.stderr.txt",
+      "bytes": 569,
+      "sha256": "4affd757675abfa0444706b6a63250bdabf686671c7ccbe693587bafb9ca7095"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_ret_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "50674208bcbfd88292570f13896a5fb432a68ea4028568198d02a8a9e2236094"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_reti_intr_timing.json",
+      "bytes": 570,
+      "sha256": "d24b0858ed42a460d9d72dfcc21588e35bc29c2df8616293ed2b49561ee92e2b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_reti_intr_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "2d029706fc1d20b2875c41ee353575d8f113f420db0f99de49844aae7b057e28"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_reti_intr_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "14609abcec077072cc0f0642598cfc60d1fd44fd17f8f1da09d4e581dba98be8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_reti_timing.json",
+      "bytes": 569,
+      "sha256": "f552fa06309c6c3fc955bca7dc60a96c595a331ec264f33b4b3a614663b61656"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_reti_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "9c3a8ba6811717d142762521ba309ebb0540fb7ce2de176ad9c2d974bec3e80f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_reti_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "50674208bcbfd88292570f13896a5fb432a68ea4028568198d02a8a9e2236094"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_rst_timing.json",
+      "bytes": 569,
+      "sha256": "2234cef3fb504a11d551b6aba15d22fbdbfb44db0485edaf1396f5a0c3cf2adc"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_rst_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "69235d07b79c969e0256436320a9fc4beb8beae499cb9f6e2730ce7485a9c020"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_rst_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "ff3a0f6f83b0176c6606ee19774ef8805b5d55e5d320639460327307460e80dd"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_div_write.json",
+      "bytes": 571,
+      "sha256": "0ec9737411f40f70e50f638e1c5d4f7f0a13101a0cccd37703ce25ab34d36fc5"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_div_write.stderr.txt",
+      "bytes": 572,
+      "sha256": "04e55711f1f73c9552721c6156cfe98d14d9f2f8b2f0ffa9492f215ad63f3774"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_div_write.stdout.txt",
+      "bytes": 138,
+      "sha256": "36c6bb13948a8034d52cfc01f39405dfbe2ae9649721388fdf0f870db1e80caa"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_rapid_toggle.json",
+      "bytes": 570,
+      "sha256": "2e3437fe1a88400e39dafaef075f1dd7fc4ce85ef2d7e51f5a2e04f123fbd296"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_rapid_toggle.stderr.txt",
+      "bytes": 571,
+      "sha256": "2a6d7fe3dc9973fb3061f2bf139bdb58863c681671028a10a137d17287c9f58a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_rapid_toggle.stdout.txt",
+      "bytes": 137,
+      "sha256": "ef4ae31e78a25b5e5b1f8049774910f5ed324b6180e4211a3ff7fafc6c85338b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim00.json",
+      "bytes": 568,
+      "sha256": "1f5d57500209ce32dec53d88544e173704596100c519f7358a8c18469b577a6e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim00.stderr.txt",
+      "bytes": 569,
+      "sha256": "7a62f4af9ee905879345c747b38a9dcf8e0dccc745bd9aa126bfbe40bacd3ef6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim00.stdout.txt",
+      "bytes": 137,
+      "sha256": "daf1188ec75add14319c9942b1d921f0c610fbd21eccf1158faefdd101c79474"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim00_div_trigger.json",
+      "bytes": 570,
+      "sha256": "b0569765a1da20bb3cf5dd36e445a2a5a76a961a09d5082dc9924cd532d6693e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim00_div_trigger.stderr.txt",
+      "bytes": 571,
+      "sha256": "2cfe734a2957ac4a6266d80729e3b3ff94669dda13261c1c4b6f191011ef369e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim00_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "bdf57d37a141f647693a56558c4bb140061f6375e7f6073497de93d0d383f376"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim01.json",
+      "bytes": 570,
+      "sha256": "da638d5f485056ab54688fc9aea99c26828680ccac7fea2773b71ffa4988b39b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim01.stderr.txt",
+      "bytes": 571,
+      "sha256": "9fc20ecac96902287d195fbee99b161b316c481be10b5578ac2b1acc0b809bb1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim01.stdout.txt",
+      "bytes": 137,
+      "sha256": "c6cdbe71d7ea776e6af3984e39c4ff6cee6f6ba55542e71d4b32ad41f0783da6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim01_div_trigger.json",
+      "bytes": 569,
+      "sha256": "b6b96b10e9856ddfe70c48ce18212cffe04f2ba445a7e64f0fa3d3180d3a814e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim01_div_trigger.stderr.txt",
+      "bytes": 570,
+      "sha256": "07f66893210ba445b9099eec5fe83baa384a2194a5019a05697bc26ed5655496"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim01_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "ef4ae31e78a25b5e5b1f8049774910f5ed324b6180e4211a3ff7fafc6c85338b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim10.json",
+      "bytes": 570,
+      "sha256": "bf822147c4e1f15f01652a84fc566f1d2a2419293fe551a8115bf7ba74357f4d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim10.stderr.txt",
+      "bytes": 571,
+      "sha256": "c3072f8b9a4f03a82207e8386774e8c6c5fba163d166b6fee12bb0bc0c41ea89"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim10.stdout.txt",
+      "bytes": 137,
+      "sha256": "a202777c0fcd861f12ff0908be74e698eff8c56b7a737d88c0c101ccd5763f50"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim10_div_trigger.json",
+      "bytes": 570,
+      "sha256": "475423818178bf5c006e29e1d7834cb88f9a95a88ad0f17591ebc6e69e686825"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim10_div_trigger.stderr.txt",
+      "bytes": 571,
+      "sha256": "8eab789c454f9eb4d7fabc6bb9602b5289bb9b5ed9809a911e924f7f5b9c4b55"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim10_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "daf1188ec75add14319c9942b1d921f0c610fbd21eccf1158faefdd101c79474"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim11.json",
+      "bytes": 570,
+      "sha256": "5e6a10f1ad719e1bdbc5a748f7f84a13d45d76a5b667b57f27ff6d00f6468ded"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim11.stderr.txt",
+      "bytes": 571,
+      "sha256": "c6adeb4ba1d7f4bebabba9a4bdfc5500643ac6a42c0c49cf98716335cbc36cfb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim11.stdout.txt",
+      "bytes": 137,
+      "sha256": "5ca6446e2212aba40d75e1452f1f71742be7d6d44a594a43d0ee05c9bb602dcb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim11_div_trigger.json",
+      "bytes": 570,
+      "sha256": "700a4d455754301fe7fb7f0c495d4bf92f2f76e0f8882f90cb15efeadfa17ec7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim11_div_trigger.stderr.txt",
+      "bytes": 571,
+      "sha256": "4b22d0526ba662c41325ff3b97359aa2e22553feb48d593734c70e0e7afcd72d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tim11_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "a202777c0fcd861f12ff0908be74e698eff8c56b7a737d88c0c101ccd5763f50"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tima_reload.json",
+      "bytes": 570,
+      "sha256": "b1fcb94c2504bde59cf98537fb5b32a742b960fa61a0621eb28e69fe1f2466d6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tima_reload.stderr.txt",
+      "bytes": 571,
+      "sha256": "490a627c167489aaaa646692ed7fd05e964c0b1e06bcf6eb97092b94562b7701"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tima_reload.stdout.txt",
+      "bytes": 137,
+      "sha256": "df6f296b28e194ccd177002ee066f3ec12d6bf4a7c6742db8c7878334376a0f0"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tima_write_reloading.json",
+      "bytes": 570,
+      "sha256": "543d333ce4258aefb0ec22d73b74d5d6c3a6dc9af3f765db9eb9bf8d69c5a4b6"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tima_write_reloading.stderr.txt",
+      "bytes": 571,
+      "sha256": "515a2fdd3d2a1b9e2b5e3310b0f85807ebc59c8d838fe13ddc59b9f42c34c6a7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tima_write_reloading.stdout.txt",
+      "bytes": 137,
+      "sha256": "7fa0391bcd32ecba4feced29da88f5556eb88af349aae4e26b03dd6bc3e39cae"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tma_write_reloading.json",
+      "bytes": 570,
+      "sha256": "f2c388358b293f6b9abcdd8b7799a323f194963fd2ebdb8790246224e7decd6e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tma_write_reloading.stderr.txt",
+      "bytes": 571,
+      "sha256": "1732a40432cdb0961ebd304ad1ea20afa610ee636f31ca4ad98ca50e1660e1e8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/acceptance_timer_tma_write_reloading.stdout.txt",
+      "bytes": 137,
+      "sha256": "5ff8eb8d56d1c18aafdaa3a54f8514a37301283ba31adba0b29a64285c5329f7"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye/summary.json",
+      "bytes": 200038,
+      "sha256": "3d2e5195616d7ba354c984b6baadd681bd9073d872dd0d7305ecc3362c94db19"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/mooneye.log",
+      "bytes": 6493,
+      "sha256": "0224709280e6ffbf9154aa273aa586b56250691007da63ba40247f4b1509e578"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_oam_bug.json",
+      "bytes": 568,
+      "sha256": "b8e79d4583b8690fe59bc66e146fff316a9c89bc8bd926d172cdf09a25e67b2b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_oam_bug.stderr.txt",
+      "bytes": 569,
+      "sha256": "1f57669405bef79be035e41102db0078fcc9d528b7b11d0a69cc364ee25502b1"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_oam_bug.stdout.txt",
+      "bytes": 100,
+      "sha256": "da11975dd4f5fa41df2ec31f2df1dd198403f87a36ba61d8753e80d43fe6c4df"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_1-lcd_sync.json",
+      "bytes": 569,
+      "sha256": "785b7b14a752af39b1da81ec37024258f9195f2a2652fee06e5c8a0cb4f12dfa"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_1-lcd_sync.stderr.txt",
+      "bytes": 570,
+      "sha256": "e33ad9b774eb0cd8118e80d5780ef4d256b910cb519d1b6c4b3f8e1fe3568f86"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_1-lcd_sync.stdout.txt",
+      "bytes": 46,
+      "sha256": "c1e5e2fd05fb192d6fdb04e7f8ec58d9f0877801dac0f3530cf873f3dd9e85f3"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_2-causes.json",
+      "bytes": 566,
+      "sha256": "f49b73f38e63cb4796d08d44fe8e953fad0432cd709eab4eaaf88c9a8176fa07"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_2-causes.stderr.txt",
+      "bytes": 567,
+      "sha256": "dd4c1bf6020ed204b140d6eeb1c49a449d8533d46080c69e9423dfaab2d4f2e2"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_2-causes.stdout.txt",
+      "bytes": 44,
+      "sha256": "bec36a0fb469858cb44369749c2fea4ad3797315bdb1481d0d6b273ad119d901"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_3-non_causes.json",
+      "bytes": 565,
+      "sha256": "e2aedda08baa315f6a6127366a5f9e01acf71e89ca579d9d70a9c6efbdc25db9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_3-non_causes.stderr.txt",
+      "bytes": 566,
+      "sha256": "8a5e441846e469faf6d6894479dfa284c0b9d1b2a0eccccd942d061cd6cd3e61"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_3-non_causes.stdout.txt",
+      "bytes": 48,
+      "sha256": "7ed3cc1ead2101b62d89de04b852ac1596da7829f905eb89f807705b2f8f3e2a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_4-scanline_timing.json",
+      "bytes": 569,
+      "sha256": "1819690a91fddcb44f0a30244269a0d1779dab224ba92cb6d03059bf60bc1db8"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_4-scanline_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "d25ef0878bdc54f9b7c724ad9aa2a57adce31a1d8e1da29db82ad742aab97ceb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_4-scanline_timing.stdout.txt",
+      "bytes": 53,
+      "sha256": "c1fafdf396a1a52901adda51d10341f985dd25805accd3ce524f7220abfd7f6b"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_5-timing_bug.json",
+      "bytes": 567,
+      "sha256": "47812654fb746fcd8fc318d335ba9ad779488dedce98ab5cfd51417899c4224a"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_5-timing_bug.stderr.txt",
+      "bytes": 568,
+      "sha256": "9ca929f202a2eff82f3405e612cec3e07f1e7592d90e98925c2d4eac47b47c55"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_5-timing_bug.stdout.txt",
+      "bytes": 48,
+      "sha256": "d5dca9cab22bd03ddd6c6d8968fdd00889d85869f1b5a33766bfb90284edad46"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_6-timing_no_bug.json",
+      "bytes": 566,
+      "sha256": "483dd082ad47567f63e1f19d13a0e32098987b4238fad3ee5bc328240f4b672d"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_6-timing_no_bug.stderr.txt",
+      "bytes": 567,
+      "sha256": "f13e4eb29a95363ff7df17d13f5810eaa06b2c9461240a2407f5daa1b0241550"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_6-timing_no_bug.stdout.txt",
+      "bytes": 571,
+      "sha256": "f074ae7988b4cfae4ba871bbb5776de6f2fba286f728add4a0cb92e2dfdf9186"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_8-instr_effect.json",
+      "bytes": 569,
+      "sha256": "3dbc231f62e2bb2d68a2c226dbd8b49b0b4cbc42d2217b82b141172f7bd3b97f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_8-instr_effect.stderr.txt",
+      "bytes": 570,
+      "sha256": "8dab9d5832c74649f1058a2d3035fbc2752ba4f477023d94078dc9605326625f"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/oam_bug_rom_singles_8-instr_effect.stdout.txt",
+      "bytes": 3176,
+      "sha256": "4c2d4b1caea1a7dc57708f06a4fff26bb2356994b30cc4738668bb6345738782"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam/summary.json",
+      "bytes": 25350,
+      "sha256": "84671abb603632b87f1ee82d0c7a0d014ff6daa6dbc2e203f6aba95491b216cb"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/oam.log",
+      "bytes": 5062,
+      "sha256": "e235fde8451abf97431cf24409e4f106473c6296854ff2deca5ff5795964b814"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/sanitizer.log",
+      "bytes": 1535,
+      "sha256": "75123aa1a3289c39fdf978dade700e33217e9fc7be0f976c4c32dc8591deb67e"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/summary.json",
+      "bytes": 430933,
+      "sha256": "f1814a1e1add102556a68d0e4818ce7ccad1622be323d72b7db86ddf2b2e9de9"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/tested-source.tar.gz",
+      "bytes": 51210,
+      "sha256": "2c20a9756e5a6e5d3be63622c1846d7c0dcb6830e2c7dd5f8407603233f040dd"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/toolchain.log",
+      "bytes": 159,
+      "sha256": "76a924f59997fb65051981eb13105e0a8c151f16cd9c3e45e0f7c27ecefdb839"
+    },
+    {
+      "path": "artifacts/fifo-verification-6/unit.log",
+      "bytes": 764,
+      "sha256": "235cbe975354f57e26b4262a25fd4b5479e81fb767b8eeee70363ea7be1dfcc1"
+    },
+    {
+      "path": "artifacts/final-ppu/actual.png",
+      "bytes": 721,
+      "sha256": "3dd5c1cfdec08da8e34fa1f4e9af920c222b650667a6293f22d5f5667aaae85a"
+    },
+    {
+      "path": "artifacts/final-ppu/expected.png",
+      "bytes": 721,
+      "sha256": "3dd5c1cfdec08da8e34fa1f4e9af920c222b650667a6293f22d5f5667aaae85a"
+    },
+    {
+      "path": "artifacts/final-ppu/summary.json",
+      "bytes": 1497,
+      "sha256": "7cab8efdde37d4931f970405ef355d067413f679c1c421bfa5146963dbceed5d"
+    },
+    {
+      "path": "artifacts/final-verification/build.txt",
+      "bytes": 326,
+      "sha256": "59f41ec39704bbc36deea1cf23514d47d7717cf6ca922209b6425257a4f28446"
+    },
+    {
+      "path": "artifacts/final-verification/cpu_instrs_cpu_instrs.stdout.txt",
+      "bytes": 108,
+      "sha256": "09e59dc28d15cff7df333208325c298979231313c6c90f3b961176f5cb019b5a"
+    },
+    {
+      "path": "artifacts/final-verification/sanitizer.txt",
+      "bytes": 738,
+      "sha256": "77514828deae1831285be1c070344150eefe7485a564feb2d22df1a47779016a"
+    },
+    {
+      "path": "artifacts/final-verification/summary.json",
+      "bytes": 11382,
+      "sha256": "041dfb09d720139aab1e56304d5ba19f633bcdb2b50c8e974b65e8fc11b15f1d"
+    },
+    {
+      "path": "artifacts/final-verification/unit.txt",
+      "bytes": 495,
+      "sha256": "8871e2ddad3b2d49e3b6bb06ebd5a16385bf1a425dd486fec957fa4081b2c7df"
+    },
+    {
+      "path": "artifacts/forensics/oam-standalone-overflow.json",
+      "bytes": 3257,
+      "sha256": "0dcc44e9c2fa211df51165c4f2d4b17bf6624b48f264ffeaa78b0c90fddb8126"
+    },
+    {
+      "path": "artifacts/gym-leaks-stress-1/benchmark.json",
+      "bytes": 1073,
+      "sha256": "f3631a4e4b7a8b698051c91c1f638b20af5f28cab82dfd1f5111e3bbd74a6957"
+    },
+    {
+      "path": "artifacts/gym-leaks-stress-1/leaks.log",
+      "bytes": 2012,
+      "sha256": "e3ef8a20a6781406e141514d9972d296124da77657187fbbb78f22472be52468"
+    },
+    {
+      "path": "artifacts/halt-attempt-2/summary.json",
+      "bytes": 2321,
+      "sha256": "a809d6e7f2ee1d4c9a9e2cf3c3d4e7f2095304e557c22482259b88cf6633a05c"
+    },
+    {
+      "path": "artifacts/host-comparison-1/benchmark.json",
+      "bytes": 1073,
+      "sha256": "9f1b3e4e32fd50b8688879bc5cb22595789c5345385006e6bc342920951b57fd"
+    },
+    {
+      "path": "artifacts/host-comparison-1/benchmark.log",
+      "bytes": 1142,
+      "sha256": "15f5dcb7ac5cc885d14b2f0563637da4056d46c13bc404d6b5933f41d4f2c4bf"
+    },
+    {
+      "path": "artifacts/host-comparison-1/build.log",
+      "bytes": 478,
+      "sha256": "bbb9011001633daa7dc8c5a5be6ef14dc459ed0a18676d1212c9ad9f33cb1530"
+    },
+    {
+      "path": "artifacts/host-comparison-1/host.json",
+      "bytes": 9822,
+      "sha256": "81cc0a85707c5834b7d06586534ce017a6e1e4d5aea96cdfaf52ea8e823a54a3"
+    },
+    {
+      "path": "artifacts/host-comparison-1/snapshot.log",
+      "bytes": 408,
+      "sha256": "14d96f235fbdd45b8cf6a2060bc236fe83328756dac916c3bacf5d31d796a3d5"
+    },
+    {
+      "path": "artifacts/host-comparison-1/tested-source.tar.gz",
+      "bytes": 121990,
+      "sha256": "9a25d8dc0c8b6b76684c49b69878ddf55fc52c8bd2012c8fe3f859350f2c20db"
+    },
+    {
+      "path": "artifacts/host-comparison-rejection-1/benchmark.json",
+      "bytes": 1068,
+      "sha256": "26ebd0f680f7547cdac5b309c0374132d6e84ea6c6b9b8cfee8afb7f939b14d7"
+    },
+    {
+      "path": "artifacts/host-comparison-rejection-1/benchmark.log",
+      "bytes": 1137,
+      "sha256": "de438c53bcab9118b45208a3d64e05badfee5fb948f9141e804a9bc7795cd719"
+    },
+    {
+      "path": "artifacts/host-comparison-rejection-1/build.log",
+      "bytes": 478,
+      "sha256": "bbb9011001633daa7dc8c5a5be6ef14dc459ed0a18676d1212c9ad9f33cb1530"
+    },
+    {
+      "path": "artifacts/host-comparison-rejection-1/host.json",
+      "bytes": 9630,
+      "sha256": "5b9d3c14fa7ae7f4da963cad74e285fb1520d11a417679ae0cf4423c0f88a61a"
+    },
+    {
+      "path": "artifacts/host-comparison-rejection-1/snapshot.log",
+      "bytes": 408,
+      "sha256": "551e0d915805a604afaa3d2707d34734ceee4daa451a5a6b4450462316988825"
+    },
+    {
+      "path": "artifacts/host-comparison-rejection-1/tested-source.tar.gz",
+      "bytes": 121990,
+      "sha256": "d9fce2051754e45fa060146d38c9cf1d3fe4d70d5f97f612cede00d1719beae6"
+    },
+    {
+      "path": "artifacts/mealybug-baseline/summary.json",
+      "bytes": 330705,
+      "sha256": "2f12db25b76a2c72774e88858d857e04ebea4bc58552dfe476c22509d6ad3092"
+    },
+    {
+      "path": "artifacts/mooneye-baseline/summary.json",
+      "bytes": 177553,
+      "sha256": "5cb3231772c049f497c2f8b71f98612a42d9c8a6eaa668c065bae99cf3015fc7"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer0/command.json",
+      "bytes": 714,
+      "sha256": "48ba8f5ca6072d864c4f145448d78bcc02a41ad0cdbcba32c65bbb74f3d04d6c"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer0/frames.txt",
+      "bytes": 1289,
+      "sha256": "d8ce2353fcf0d8101d3f5b5d90b00bb59b372c512cd5daa45f5d8dd5a2a9d687"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer0/report.json",
+      "bytes": 499,
+      "sha256": "86ff515c70ebbddacd1ef6a83dbbf8999701284dea11d9e5026bd8d0bcb63ebc"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer0/stderr.txt",
+      "bytes": 156,
+      "sha256": "3a6aeebc957cffc7503e449affdc1ff821ca26a42ad63665b789e46c4ab66278"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer0/stdout.txt",
+      "bytes": 33,
+      "sha256": "45cfb039b88dc4df19b8fd2dadbcf6d23d2824d28533d411285ebf0b7bc2002f"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer1/command.json",
+      "bytes": 715,
+      "sha256": "83505bc7d5701e17dc6d390eb74e7df620a263ebcc8a6b501cd89cb6a8bd9efb"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer1/frames.txt",
+      "bytes": 1286,
+      "sha256": "d96fcfcf609b07b60b4417690f2225281f8c04431486166983ea4d3458302d5f"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer1/report.json",
+      "bytes": 497,
+      "sha256": "b5730c5f516e3b7b8237de362dc3f0d8a1d0462e521d194dcfe511b97b5c5a69"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer1/stderr.txt",
+      "bytes": 157,
+      "sha256": "dc5b0fbe6c697af956179c9f8e09c557ecae6f061905453c3dd0acce8daf9320"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/peer1/stdout.txt",
+      "bytes": 34,
+      "sha256": "57d5d22ce57d101dcff29077652e52a7e41717fffd0e6ecbe4eaffc3e865a10e"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/chaos/relay.json",
+      "bytes": 364,
+      "sha256": "3be451bbceed9bd430a52f8b287f2c422ceb8542b29747fa42eda224739e4091"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer0/command.json",
+      "bytes": 714,
+      "sha256": "6dca1cf3c3f3acdd77acf7f41d91ad1344c547f6ac5e2c352de3fc543623c0a4"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer0/frames.txt",
+      "bytes": 1289,
+      "sha256": "d8ce2353fcf0d8101d3f5b5d90b00bb59b372c512cd5daa45f5d8dd5a2a9d687"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer0/report.json",
+      "bytes": 489,
+      "sha256": "bb84fd9fa14a860ea3f9d880db7355cb7d80fdf3fc0e8534cb4dff1e20d72732"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer0/stderr.txt",
+      "bytes": 77,
+      "sha256": "aa2035c7d502a67ec621db89b3acbb05836f2c7913b08d97ff397476d202293a"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer0/stdout.txt",
+      "bytes": 33,
+      "sha256": "45cfb039b88dc4df19b8fd2dadbcf6d23d2824d28533d411285ebf0b7bc2002f"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer1/command.json",
+      "bytes": 715,
+      "sha256": "5cacfe6103a03636c6b2be3f865d30098ea990cbb5385e3a31e2521c690439c0"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer1/frames.txt",
+      "bytes": 1286,
+      "sha256": "d96fcfcf609b07b60b4417690f2225281f8c04431486166983ea4d3458302d5f"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer1/report.json",
+      "bytes": 489,
+      "sha256": "0d3c844dfbdd2d4f7759e9eebd7ad64bc95fa197c6b25cddd6d8ae89c43eeb14"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer1/stderr.txt",
+      "bytes": 77,
+      "sha256": "aa2035c7d502a67ec621db89b3acbb05836f2c7913b08d97ff397476d202293a"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/peer1/stdout.txt",
+      "bytes": 34,
+      "sha256": "d642bb1af436a832f866f0e2fd5fbd64b8b8bdc9b16f8fceec9d70dc8f8ce94a"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/clean/relay.json",
+      "bytes": 346,
+      "sha256": "257fd086ff46e55725130d273a2524a2677ff71dbaa17be3ad7fd1edfc90d9a7"
+    },
+    {
+      "path": "artifacts/netplay-hotpath-idle/summary.json",
+      "bytes": 1423,
+      "sha256": "a59d1266b9e87068e2ba8a6fc0647e678e8b4bd54660de5669fb3e3ae97289f5"
+    },
+    {
+      "path": "artifacts/oam-aggregate-diagnostic/summary.json",
+      "bytes": 9700,
+      "sha256": "dd40357baed0cf6a8e96c18d2698920cf9ca112b5d8f440898290fbb5943ab98"
+    },
+    {
+      "path": "artifacts/paru-irq-audit/boot-oracle-audit/serial_boot_sclk_align-dmgABCmgb/run.json",
+      "bytes": 572,
+      "sha256": "180d1f2922e2cbf95b3de4815eec160b0993b383c63e26484f7daef75debe9ea"
+    },
+    {
+      "path": "artifacts/platform-verification-1/INDEPENDENT_AUDIT.md",
+      "bytes": 5766,
+      "sha256": "233a2f28d9049bb70e22acd574c1720bf8e66c8ba9d7eb80949da8446f9eaabe"
+    },
+    {
+      "path": "artifacts/platform-verification-1/SUPERSEDED.md",
+      "bytes": 383,
+      "sha256": "f0fab7f74e7b1ebfcb19604036f1f845c5d523ae1eaec1954e48dbe75f877194"
+    },
+    {
+      "path": "artifacts/platform-verification-2/INDEPENDENT_AUDIT.md",
+      "bytes": 3555,
+      "sha256": "9bced125e62ed1b8a90f72f109c5283a73a1ecd63c9701d8a1b496ea7c4ea759"
+    },
+    {
+      "path": "artifacts/platform-verification-2/after-comparison-integrity.json",
+      "bytes": 131,
+      "sha256": "30d93dbc7db48235278108bb63ee9d170c5540ed8b638b99a7c76481bbc0a3fc"
+    },
+    {
+      "path": "artifacts/platform-verification-2/autopsy/gpu.log",
+      "bytes": 195,
+      "sha256": "45746d8df9f14236d538f538a1a4e318d92967456e3097a0803fe1ceb18b4ef3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/autopsy/gpu.png",
+      "bytes": 535271,
+      "sha256": "9b00c5f824ea3a5126c654d2e4b3a32745034a3758e77e95e83d88e43cc956cc"
+    },
+    {
+      "path": "artifacts/platform-verification-2/autopsy/gpu.png.json",
+      "bytes": 121,
+      "sha256": "d69ab0b21954f72793e4b908c643d8354606dd1d3067ce310e7b646f2c0ae62c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/autopsy/headless.log",
+      "bytes": 200,
+      "sha256": "be950e01d116c537085aeefa12405bb9ed8518351776acfa701814c9918d374a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/autopsy/headless.png",
+      "bytes": 144254,
+      "sha256": "d1ddd594f6637c29c32a84c0b358af3e302d9cac38a9af0f7288dc0a831af359"
+    },
+    {
+      "path": "artifacts/platform-verification-2/autopsy/headless.png.json",
+      "bytes": 121,
+      "sha256": "a8990b6388d28ee95b9a525172c3c1a2179f7503954f6c76865f62aa3f2cd2c9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/autopsy/summary.json",
+      "bytes": 1868,
+      "sha256": "163848ed6c3c91746328b9c3982d2f1eaf7e2a513f40f0b9433154c39bab08b9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/build.log",
+      "bytes": 3284,
+      "sha256": "8916d49d2456722693ae6b7eaef5217f168a324bab9d40bcc6cf3486c78f35fb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/host-baseline/benchmark.json",
+      "bytes": 1073,
+      "sha256": "25abb67bbdcb8065f2073c4ad768d8320157720345b3e812ff3153faadb97c79"
+    },
+    {
+      "path": "artifacts/platform-verification-2/host-baseline/benchmark.log",
+      "bytes": 1142,
+      "sha256": "42743bfc9b1d08abf1fe743570d1465a9624a4e1e2c80c0ea857987548d05e0b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/host-baseline/build.log",
+      "bytes": 478,
+      "sha256": "bbb9011001633daa7dc8c5a5be6ef14dc459ed0a18676d1212c9ad9f33cb1530"
+    },
+    {
+      "path": "artifacts/platform-verification-2/host-baseline/host.json",
+      "bytes": 9257,
+      "sha256": "a327c8c0defa6b8e1e1ff463614480acc11429fd7743f9ac506adbc6ff9293c0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/host-baseline/snapshot.log",
+      "bytes": 408,
+      "sha256": "c54e7e582d8807cb2f4d12ef6abe5fec06be71c0b9037f3e438b52da8d7fc865"
+    },
+    {
+      "path": "artifacts/platform-verification-2/host-baseline/tested-source.tar.gz",
+      "bytes": 121990,
+      "sha256": "fe4b30888c7f8db37f63db15abfcddee392bb6f19089e8b9be1328e2ec0c31a1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/host-baseline.log",
+      "bytes": 297,
+      "sha256": "956c56d9312c176e3b13835ad641dd7144515799a556373925a7e17cf64f27f5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/leaks.log",
+      "bytes": 1020,
+      "sha256": "c4d15a8edeb45197b4675d26b83bfd7fd4182605a02b12365613604f02cc11fa"
+    },
+    {
+      "path": "artifacts/platform-verification-2/native-gpu.log",
+      "bytes": 1868,
+      "sha256": "163848ed6c3c91746328b9c3982d2f1eaf7e2a513f40f0b9433154c39bab08b9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/native-tests.log",
+      "bytes": 1681,
+      "sha256": "faed5ce29a3d07f8fc59232505c87a774a600ea1ce7446fbe67b6cd3055d6d72"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer0/command.json",
+      "bytes": 750,
+      "sha256": "aa9d280e3de4cd0c441441d98d5737665250d7156966d545591149391c330c85"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer0/frames.txt",
+      "bytes": 66268,
+      "sha256": "376e06c79bc628038289c4553636c46e7c11f6a562bbb34e22b60d105b30465a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer0/report.json",
+      "bytes": 528,
+      "sha256": "c397074681fe98f2998e6936aad7505b0cd9eb269d842abaec614c84d391800c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer0/stderr.txt",
+      "bytes": 10977,
+      "sha256": "3e5eb7e9fc9e220c098b26781d9b7fadf783516ab435f404c584e3c3cdb55e0b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer0/stdout.txt",
+      "bytes": 38,
+      "sha256": "fa060d4e6b5ce3d8f58990351d1aaa2bad35f1d8e25c2ac1d45fa727f72f5fcf"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer1/command.json",
+      "bytes": 751,
+      "sha256": "fe09b7c8e595bb8593ffce2f5a6af65ad2fde52635c1eb8e2f8c79ac0d1cf789"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer1/frames.txt",
+      "bytes": 66266,
+      "sha256": "bff484a37e247e5bfa609e666c632aba1f88d24b1b67f6e2b9a60cf1f2d477bd"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer1/report.json",
+      "bytes": 523,
+      "sha256": "696994f082da6a2f222573cdb790ed74edde6abdad85155e9fc888050f6b6efb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer1/stderr.txt",
+      "bytes": 10977,
+      "sha256": "4b1443c2599dcbe7fabdcdab53d13e2a0dc6dcd2bbf5cc666e460d393a962845"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/peer1/stdout.txt",
+      "bytes": 38,
+      "sha256": "63d3eb551acaaf6041f92982773bbda0308e76ff71e53f61b5058bbdb36ed762"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/chaos/relay.json",
+      "bytes": 374,
+      "sha256": "ea97a92d3fa7f885dd026d9cb170fb89d3e0396df39528e2359dc4734b113edd"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer0/command.json",
+      "bytes": 750,
+      "sha256": "9d906930ff63b741e0fea88cb2f79867ccc93d24d0b3942beea68d5caa75eee9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer0/frames.txt",
+      "bytes": 66268,
+      "sha256": "376e06c79bc628038289c4553636c46e7c11f6a562bbb34e22b60d105b30465a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer0/report.json",
+      "bytes": 508,
+      "sha256": "0f5d736a60aa9c98d557db32424d9221edd5dc84151c605ee21f3dd29de1cf7d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer0/stderr.txt",
+      "bytes": 1497,
+      "sha256": "ba3976f0e27f406382bb0c185a438b81318c18dd4d96eb9d22328fe30ce8c763"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer0/stdout.txt",
+      "bytes": 38,
+      "sha256": "ab0b841d527e629dabb6830b98c29389800e27f40dc2bd05edc8e3deca523e25"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer1/command.json",
+      "bytes": 751,
+      "sha256": "276c8d7203ea39aa8335b8bd5a82468373105f69cbd1161a328732a434a336fd"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer1/frames.txt",
+      "bytes": 66266,
+      "sha256": "bff484a37e247e5bfa609e666c632aba1f88d24b1b67f6e2b9a60cf1f2d477bd"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer1/report.json",
+      "bytes": 503,
+      "sha256": "61324838d5209f4a82b22adf634020c527b583a7928a1412c6a6d8a07dc4824a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer1/stderr.txt",
+      "bytes": 1487,
+      "sha256": "1929f8f99125b1fcb07e6f17ff8653b6b254991be64e13b44af72ea9adcf5c91"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/peer1/stdout.txt",
+      "bytes": 37,
+      "sha256": "0fc58f70aa1b5c2178271e03a91bc50a6d48d5714e1b0ef0e56b086c52111f21"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/clean/relay.json",
+      "bytes": 351,
+      "sha256": "475ffbb8e5ec3c016bbe972b93755113719244c887fc21336178746f05dfa9b9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/pre-optimization-equivalence.json",
+      "bytes": 367,
+      "sha256": "35263f1730e2fc31eac21dfb1f55eb9ecadfe815794ce7a8424c379cb1bb635e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay/summary.json",
+      "bytes": 1439,
+      "sha256": "f8a2dfb469021a70235d1c785380379124093ad19f4b2ed9de0ae8797a6948cf"
+    },
+    {
+      "path": "artifacts/platform-verification-2/netplay.log",
+      "bytes": 1439,
+      "sha256": "f8a2dfb469021a70235d1c785380379124093ad19f4b2ed9de0ae8797a6948cf"
+    },
+    {
+      "path": "artifacts/platform-verification-2/platform-sanitizers.log",
+      "bytes": 2195,
+      "sha256": "52153e35cc7a04bf183f70da0eae65a869d5167922ef22c9de3a0cd6fe517bab"
+    },
+    {
+      "path": "artifacts/platform-verification-2/protocol-rejection.log",
+      "bytes": 105,
+      "sha256": "025affdf4f4c4141bfcf33b8b96557b6e097ed7f802275e0191a4bf77dac4f4a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/python-gymnasium.log",
+      "bytes": 102,
+      "sha256": "05858ec8cdc7f0fc3b43a5669866ddad60a3273a2d8d8d85d319ed23af0f10b4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/acid2/run.json",
+      "bytes": 581,
+      "sha256": "157fd264fbf303c3988081648d7cf0204cea9f40820b8c1fa5437b00cde28340"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/acid2/stderr.txt",
+      "bytes": 582,
+      "sha256": "9c86aeb2b575192b12518abcdb2a956d4acb89e9897cc794c2dea877af413855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/acid2/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/acid2/summary.json",
+      "bytes": 4946,
+      "sha256": "a9a7deb4fd62ae97f7073954a4a61e31756d77272ce1c914f7ca75820317ff54"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/acid2.log",
+      "bytes": 178,
+      "sha256": "ec37e342cd9ba432c7e3f5abc26f9cadc24126589c906eaf7833edf11e49ec21"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_cpu_instrs.json",
+      "bytes": 550,
+      "sha256": "f161f57e2b78b7988c52d5fed8fc8520a3d327929886898ba3d7938955eb8f38"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_cpu_instrs.stderr.txt",
+      "bytes": 551,
+      "sha256": "23670d7da8dde47cb05dd81000563ac42b70e3a71ca3e97d60af3c02ee922f13"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_cpu_instrs.stdout.txt",
+      "bytes": 108,
+      "sha256": "09e59dc28d15cff7df333208325c298979231313c6c90f3b961176f5cb019b5a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_01-special.json",
+      "bytes": 554,
+      "sha256": "0bdede731245657548788ccd903d6965def9da20a07bf357e2bf6ab31fca35b4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_01-special.stderr.txt",
+      "bytes": 555,
+      "sha256": "b9193e29e685b6efd9fdee5d20a78e8fe9231679cb2d55f8a231d0fa2b146c02"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_01-special.stdout.txt",
+      "bytes": 20,
+      "sha256": "ad073126857e4231fc8b7c162a9eae0d33833c41b073f1f7f84bfc889b9e41fd"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_02-interrupts.json",
+      "bytes": 550,
+      "sha256": "0bfd8d2863c857c3c95bb56c95cb70fb8d46dc737edc23ce0e837368efb6e62d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_02-interrupts.stderr.txt",
+      "bytes": 551,
+      "sha256": "02c038efec367d567693581fb1fe26f5be2179ca5dd160fa8224fdb389ed960a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_02-interrupts.stdout.txt",
+      "bytes": 23,
+      "sha256": "6191c73012e4eec2cae7ae8c3b1b8a9f42048e3a3dbb77611a659548613afbe5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_03-op_sp_hl.json",
+      "bytes": 556,
+      "sha256": "6886962a83c37d9f10a968027f3d79e6d93a7174b9be8402a2ef25ad1e213ca1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_03-op_sp_hl.stderr.txt",
+      "bytes": 557,
+      "sha256": "b70364259fadc6f8c23e1dc6b2322f82295d958ab6e6a43297667ebd10fc5773"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_03-op_sp_hl.stdout.txt",
+      "bytes": 21,
+      "sha256": "0faae6397a99a6c34dcc274a9e8547ec6a630f9e680e9151535de01b03bef6f4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_04-op_r_imm.json",
+      "bytes": 557,
+      "sha256": "acbf1732ad01a5fbb201213e6da434b55a9fed3e1e1ef14f82793147cacd1c8f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_04-op_r_imm.stderr.txt",
+      "bytes": 558,
+      "sha256": "83d4857033914dfe0d988d462d4714642e785c26028c598afe61271e90655912"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_04-op_r_imm.stdout.txt",
+      "bytes": 21,
+      "sha256": "485640eeb632afc9ae901b3137c3e5b35846e8c81e5442381c85fdacaade53ac"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_05-op_rp.json",
+      "bytes": 556,
+      "sha256": "ef1a6584646c93284c543b5d9442cec2f6a1084c09e8a7a5a7f66e305ed98098"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_05-op_rp.stderr.txt",
+      "bytes": 557,
+      "sha256": "e831e8610371004fed014a7305279bb5c17429c70cfed9b51f915b02255b0eef"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_05-op_rp.stdout.txt",
+      "bytes": 18,
+      "sha256": "4e9a83d5399c2ca7f2b255e72247fa7bab216a535f9de3ced9f78ff6a4cad6f0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_06-ld_r_r.json",
+      "bytes": 553,
+      "sha256": "e01ef0539e19484e7daaceff5ae1893faafb81a1e216ddf4f9cd0e9f5571b8d7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_06-ld_r_r.stderr.txt",
+      "bytes": 554,
+      "sha256": "fb31b2ca7207d89124c3724bea3467bf6c2fe2d629d2a2d11670e50016a9a4a7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_06-ld_r_r.stdout.txt",
+      "bytes": 19,
+      "sha256": "3b310345b357ceef32c502b36d23ee73e077443202d3ad561dfe4e2db00eb9e0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_07-jr_jp_call_ret_rst.json",
+      "bytes": 551,
+      "sha256": "7061c5cb312dffb1e4025368ff7078034c60c70823848ee52d4e1a7f5e3e924e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_07-jr_jp_call_ret_rst.stderr.txt",
+      "bytes": 552,
+      "sha256": "23f2f7581fba1343ef15093909c2b5b30314af0a680638f76a4c93a00ab1537b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_07-jr_jp_call_ret_rst.stdout.txt",
+      "bytes": 31,
+      "sha256": "cb05c2966dbeb25d6d29b64482acdeb239efaff1c664062ff01bab172dab10de"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_08-misc_instrs.json",
+      "bytes": 552,
+      "sha256": "6c71fea0eb09d81a2ab752d4403e7c77c7912c1ada55c9963b0a16cb1ad4a009"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_08-misc_instrs.stderr.txt",
+      "bytes": 553,
+      "sha256": "6fce26eca3a58879dfb208b520f8045002fdc257c8cbfdbf803d7d37299c808c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_08-misc_instrs.stdout.txt",
+      "bytes": 24,
+      "sha256": "5f3bf2a3351a3603671aa44eaccceb068c52011782be13e104eef4f7817e2eae"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_09-op_r_r.json",
+      "bytes": 555,
+      "sha256": "ed692e6fc401fc300cb68fa9da417edce47553914bb44e1d9819dce241f79c11"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_09-op_r_r.stderr.txt",
+      "bytes": 556,
+      "sha256": "48831d18dfcf0ec4142d858d1be6fe13d196c200f91cf1607bc7b8a35a700990"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_09-op_r_r.stdout.txt",
+      "bytes": 19,
+      "sha256": "772927f29a92b20d187244046fd31c51f6da8cdefb768793347eec102d801c9b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_10-bit_ops.json",
+      "bytes": 553,
+      "sha256": "150ef4bf2b253c55a90f4a256d3ecc5880a6345d5649d2e3c1bc403032c7847c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_10-bit_ops.stderr.txt",
+      "bytes": 554,
+      "sha256": "bad2520f18ed38e71f140531eca6cc7e3d34cf298b5976c74631d04a49fc3f4e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_10-bit_ops.stdout.txt",
+      "bytes": 20,
+      "sha256": "03d4f9ec4672f584192ce2277815f0e0326a00c93bdba7bca4fd29fb6cc5c832"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_11-op_a__hl_.json",
+      "bytes": 557,
+      "sha256": "03b03f5e5e7c9b07e74a391b4825d2c856b170cc6916a9df12a1336732f20a8c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_11-op_a__hl_.stderr.txt",
+      "bytes": 558,
+      "sha256": "47527d13c32234dd5f8cc0db0c9ef2e87955facba1c907a6488df0545587ec39"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/cpu_instrs_individual_11-op_a__hl_.stdout.txt",
+      "bytes": 22,
+      "sha256": "f78a5b5da93b5f3f97b6684254733bf2fa9e5e5d42460c06e2c40eaab41a4ba6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/halt_bug.json",
+      "bytes": 569,
+      "sha256": "53fe5e8dde2251c2c00f58348af4902a8301472f745f609880134da6b1939b24"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/halt_bug.stderr.txt",
+      "bytes": 570,
+      "sha256": "27b2e30f1657acb092bef0814a2d8275e2f0644650fc5cd0871197d3c9a39a9b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/halt_bug.stdout.txt",
+      "bytes": 191,
+      "sha256": "0243d4448c601b29d0a3ba5f6242b96caa87e7f82626e2d164f9d7551c472dd5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/instr_timing_instr_timing.json",
+      "bytes": 550,
+      "sha256": "c518ebcc4e99e0f85f886cf84df569f18d74f9409d73c132c9a97c8d6abc892a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/instr_timing_instr_timing.stderr.txt",
+      "bytes": 551,
+      "sha256": "5c503888a5ba6a66d7a7be2a19390101de15c0a78b9c1facd08f6d508a7e1dd9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/instr_timing_instr_timing.stdout.txt",
+      "bytes": 22,
+      "sha256": "89ff5d52c0d9c79ca76edc6c5e1383238d3d695d5688c9aaa7bb25d4fbb9450a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_01-read_timing.json",
+      "bytes": 570,
+      "sha256": "7553b8b030c472883b32d994a26e491f0910fb6b74c2ecba99c20ab11eafb4c9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_01-read_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "1ef442142361342caa49a209d97e1cd5b8fc6d819785e19207b26b5d6060d51e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_01-read_timing.stdout.txt",
+      "bytes": 50,
+      "sha256": "8cfe40fe1dfb2f2c8852b5e08906ca817a4e5362165a2e563e18e8921c24a116"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_02-write_timing.json",
+      "bytes": 570,
+      "sha256": "1e0a9d131343cf6338bcdb0e1034c2e3a4ff3f7692964edea8c037c6b745f9cb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_02-write_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "d496efae33446c302c87651c83acb829c48c77168e431627fb0cf3859156e8f9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_02-write_timing.stdout.txt",
+      "bytes": 51,
+      "sha256": "54090429958e496970b2242d10adf15e1bba79d388f6f167d43373403435e1f6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_03-modify_timing.json",
+      "bytes": 566,
+      "sha256": "7eda4deed27e26757d4de4bafa37a3e6c025bd646642eb2bb1b3d24bdbd144d1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_03-modify_timing.stderr.txt",
+      "bytes": 567,
+      "sha256": "d0e997f0ab90fb82ecfdcd2ccd084ca710ee6c60956f13a24a7f86f13d2cb0c5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing-2_rom_singles_03-modify_timing.stdout.txt",
+      "bytes": 52,
+      "sha256": "e5982e5a4076fc330fd4521fa42486f2761a8da4dc7fd1adc1f401a09b728bc7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_01-read_timing.json",
+      "bytes": 551,
+      "sha256": "8ba8c8b9440c32d7e9a736f2f1eb85f1708321d961cc2146b4e666a0de518227"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_01-read_timing.stderr.txt",
+      "bytes": 552,
+      "sha256": "6399ee7df9c1ad5317e179f93b42c77dba53c81b69ff220ebebc3324ed4e10a3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_01-read_timing.stdout.txt",
+      "bytes": 24,
+      "sha256": "2c876eac776548566022a4900d245cc6addad610ae972678783ae0d9cd2d2e6d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_02-write_timing.json",
+      "bytes": 548,
+      "sha256": "f89921eb5b5834c64cffe53e2763f0b85df713244e2702b92ec401b0b51f98df"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_02-write_timing.stderr.txt",
+      "bytes": 549,
+      "sha256": "82f725242b2703bd83b6c099b6fd8550a912290c3433303fc201395c0980aba2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_02-write_timing.stdout.txt",
+      "bytes": 25,
+      "sha256": "a19d5e3cee667085706cdecd0fe7c409e66e31d4306197f46a4642717333df9e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_03-modify_timing.json",
+      "bytes": 547,
+      "sha256": "a84d2ef60588569bc3d2a1fbd7b96bfc79f399e179dc9a54d3f4fb4593ea6c4b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_03-modify_timing.stderr.txt",
+      "bytes": 548,
+      "sha256": "4a4401ed368042619af8f26195e6b554efac7f05297ef18a19f3852d12ea8677"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/mem_timing_individual_03-modify_timing.stdout.txt",
+      "bytes": 26,
+      "sha256": "fd8c3b0a0f0998d6503b509e6fef8894b086fd3d5d42ff6400400a17907b58dc"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg/summary.json",
+      "bytes": 59720,
+      "sha256": "912e1d191dd2f7572bc841f5069e4099fd2d9778a2975843fad6284f11e49d03"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/blargg.log",
+      "bytes": 2427,
+      "sha256": "08a14ba2b2446c66f8350a0437c74a818df9737fc81ef0b14be2e40e9a599391"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/build.log",
+      "bytes": 1881,
+      "sha256": "258a1f2387b69ebf03489ba7d01e6448eef53b74bb59349ea3dafffc965b372b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io/control.stderr.txt",
+      "bytes": 570,
+      "sha256": "9d609755d01f6511edd323da1556239f77baca5fac6175ea599fd255d725ca41"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io/control.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io/frame.stderr.txt",
+      "bytes": 33,
+      "sha256": "6f2ab5b2314ff9e189ada1b4254f86e3b977b996b464b229d85617ff010951e1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io/frame.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io/report.stderr.txt",
+      "bytes": 604,
+      "sha256": "ecdaaed5a62a7549e4abb6bd3dea4e0cd3ff3767d4e41ab1377559515b2e3e66"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io/report.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io/summary.json",
+      "bytes": 675,
+      "sha256": "3c7ba78befac2035aca55cc741629695855d287454fa66b19da5befcdb5a1ea2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/harness-io.log",
+      "bytes": 178,
+      "sha256": "5a59cd591565c9b6b39a62f62a5156528d9927be80c54bd248f954858c1565fb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m2_win_en_toggle/run.json",
+      "bytes": 595,
+      "sha256": "aa6b94e9b9edfcbbbf7328faeec10d285d0c747c0be2e44ed5781f8ed8384bfc"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m2_win_en_toggle/stderr.txt",
+      "bytes": 596,
+      "sha256": "7ebc773a59535644e7533fcc30db6d825dcadbd6bc3586b20f120d5f4f5fc515"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m2_win_en_toggle/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_bgp_change/run.json",
+      "bytes": 598,
+      "sha256": "06e786d39300493fb1e73d45705d3f5c4d70e7023a97ac8daa6fbe6996f83f83"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_bgp_change/stderr.txt",
+      "bytes": 599,
+      "sha256": "c58bb21cae7c78b0448c04f454e773edec6558e7074051cc4a8276727636b6fa"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_bgp_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_bgp_change_sprites/run.json",
+      "bytes": 597,
+      "sha256": "0d83388ae74ac95a35be4c5974b65fc31beafcbbe93bd02edfa2c52e1f643810"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_bgp_change_sprites/stderr.txt",
+      "bytes": 598,
+      "sha256": "4ca94f103de9a8e2e2281a3109074a01cec277d75d441f850aada14ddd5647a6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_bgp_change_sprites/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_bg_en_change/run.json",
+      "bytes": 599,
+      "sha256": "c8b177c407038568b9082c1c71965af1bb231a7f9e7af4e3796e0a8d12a0b9a5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_bg_en_change/stderr.txt",
+      "bytes": 600,
+      "sha256": "a1eae6ebefffd607c2640dedbf190ca51ca62bb1af2cf526f95fd6a59027cf17"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_bg_en_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_bg_map_change/run.json",
+      "bytes": 599,
+      "sha256": "db6f882aa5047d45c9b4eee4d6fdecf6a4624818ebda13c9f0bf451333ec66fe"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_bg_map_change/stderr.txt",
+      "bytes": 600,
+      "sha256": "1fe1c0fa48afa279c8b55648fd311cdda36597408634a06c7c3dbe1e41f4115a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_bg_map_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_en_change/run.json",
+      "bytes": 597,
+      "sha256": "e96696692e7b72e99baaadcf4f00339e525a4a6f17b829eef8d4c86f6f9afa87"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_en_change/stderr.txt",
+      "bytes": 598,
+      "sha256": "38ef14db2e4c84c9b05adf711b58f05b2273e17b860d392282370aa7d02be7af"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_en_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_en_change_variant/run.json",
+      "bytes": 597,
+      "sha256": "ba1dc0ffddd8a23193edf057925db7010d7cd3ba57b91267275f81b84836000c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_en_change_variant/stderr.txt",
+      "bytes": 598,
+      "sha256": "869b2e192ce975ad39cec91884ddbb06a82785421c2d7949f98e77f044017e1f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_en_change_variant/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_size_change/run.json",
+      "bytes": 599,
+      "sha256": "1c62ec59b7af033108e83447867936aec642fa8f98648673a5dc66c561c1c894"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_size_change/stderr.txt",
+      "bytes": 600,
+      "sha256": "bfdaf43d8453889983ec4644214970384934d186ba7e93dd5e381259c96b0bf4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_size_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_size_change_scx/run.json",
+      "bytes": 599,
+      "sha256": "66a7aaa7305ef4d11f23afd9002ae1cfbae1b78d363d722aeb6ab9ee03393613"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_size_change_scx/stderr.txt",
+      "bytes": 600,
+      "sha256": "bace0bf1840a1163b60e590ce523a089880cf3465f3efc1cb86eeda602af3638"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_obj_size_change_scx/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_tile_sel_change/run.json",
+      "bytes": 600,
+      "sha256": "241e747c7bf08cd7e676a720c85909879eb989cc87ae251ad5bb7c7009336e63"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_tile_sel_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "83fbbe78699fc7b2dfc5507355db36f377e3c3fd0c384623d850c4533a72e26a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_tile_sel_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_tile_sel_win_change/run.json",
+      "bytes": 600,
+      "sha256": "89cc40827c38b1125489909ccba2d93087f6b8a0eeb525a05bae9599568e1028"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_tile_sel_win_change/stderr.txt",
+      "bytes": 601,
+      "sha256": "ecdb6e30512a304742b35e38ac16b0716b06fd012af4a5abccc8d83344dfc17e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_tile_sel_win_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_en_change_multiple/run.json",
+      "bytes": 600,
+      "sha256": "76307cf2a1a50d70ff0ea40b85e3232b23683a2b8ed7e537e0d10e73a8c74b87"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_en_change_multiple/stderr.txt",
+      "bytes": 601,
+      "sha256": "186efb7735cd30813e94c2d38e4cf6fb7855f39e4ea1305a704f17718ce6d8be"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_en_change_multiple/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_en_change_multiple_wx/run.json",
+      "bytes": 600,
+      "sha256": "a53e981bff654b3c1f8793816185fb8ee02dfc549dd8bd666a9e3113d6d64cf1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_en_change_multiple_wx/stderr.txt",
+      "bytes": 601,
+      "sha256": "b12f4395ff388312037cee7c5da29d3e13c526e6b60e2163f9f8d97822b51d74"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_en_change_multiple_wx/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_map_change/run.json",
+      "bytes": 599,
+      "sha256": "251bbc7c141fe8c3e29083a7732126a7e46170ab9f68c45617e442c59feb7490"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_map_change/stderr.txt",
+      "bytes": 600,
+      "sha256": "5abd8f9a9b87b0681a54f2a12c84310218e73a8361d169a15d22ee4fe5557ad2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_lcdc_win_map_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_obp0_change/run.json",
+      "bytes": 597,
+      "sha256": "fce2a0d9dff857ffb0a3313396cccb56f18ad23543ed424be4c21ec67258d93a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_obp0_change/stderr.txt",
+      "bytes": 598,
+      "sha256": "c219ff7b358af89b9224f6eef66abe89e9329ec102c66d84b4670b142a48b10e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_obp0_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scx_high_5_bits/run.json",
+      "bytes": 594,
+      "sha256": "1010f413320225451834c6dae79406921d3a1fe55bcf9af22cca42c0fd7fc4d0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scx_high_5_bits/stderr.txt",
+      "bytes": 595,
+      "sha256": "3d75c0fafcd4e9e00f491008ce25b8a8f9ddbaaa98c67a19fb89367b29af8c1c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scx_high_5_bits/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scx_low_3_bits/run.json",
+      "bytes": 595,
+      "sha256": "82e15c33c2099c605538e5ed124ce5caaff12fccb3c2fc74c08d97846a1235a1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scx_low_3_bits/stderr.txt",
+      "bytes": 596,
+      "sha256": "33608abb9fe0e99d3c51ad490f8505be9cd9644074ecc86b4b43dd82692037f4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scx_low_3_bits/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scy_change/run.json",
+      "bytes": 594,
+      "sha256": "60ba1efba399001b345d062357b9d33003952d5e3bfd4f6d1b617d04808eefb7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scy_change/stderr.txt",
+      "bytes": 595,
+      "sha256": "fd5dc461767e9913bf5cd45eb0228a6d9490a90231f04369e1c5984e6d69d69c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_scy_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_window_timing/run.json",
+      "bytes": 598,
+      "sha256": "dffe319aefb0a62ed58c53c24845a2c645c78d0f4595b24c6cd72390c49fd397"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_window_timing/stderr.txt",
+      "bytes": 599,
+      "sha256": "6e19c729b2c1e7af73ec8b7c49fdfbf2fdac4e8b11b471c35e39e028a14d35a2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_window_timing/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_window_timing_wx_0/run.json",
+      "bytes": 598,
+      "sha256": "e6093cc1bc4733bc2bf225bb6061df8957c6947ba86c742b84670c744fb716da"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_window_timing_wx_0/stderr.txt",
+      "bytes": 599,
+      "sha256": "5b99aae5e16c8906a3aa1e5e5dbaea9ff5ed9d1c9220a438b3c88bad2a63a508"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_window_timing_wx_0/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_4_change/run.json",
+      "bytes": 595,
+      "sha256": "a1a84d1065f68f7cee882b70d3878c085ce77a40dd63922fa97f1f0d09e84257"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_4_change/stderr.txt",
+      "bytes": 596,
+      "sha256": "8fa6c2b8758a9d51171f94e6569e3b3abd3ee743ac6d78024ef0511074715d0f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_4_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_4_change_sprites/run.json",
+      "bytes": 598,
+      "sha256": "4f00a214f5e4b0aeb8ad6a5ab1b7ea538313079656c6427c7b9a0af27e0d5090"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_4_change_sprites/stderr.txt",
+      "bytes": 599,
+      "sha256": "20e5c9e62c953a3e65bb542a6f5d413bd0138c3a15dbc070940080de6c6f8673"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_4_change_sprites/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_5_change/run.json",
+      "bytes": 594,
+      "sha256": "300d7d6a0b085ae13dfa9292531ae9f47d36d56935fdf2522a2df82c9d2a3425"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_5_change/stderr.txt",
+      "bytes": 595,
+      "sha256": "45368560f5063475a91e2215aff54a10eb11693ba7f00e4c1eca6b8665501e1a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_5_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_6_change/run.json",
+      "bytes": 594,
+      "sha256": "f7853d12f7aaaaddbe5b226630cb09e0c066ea9bdf7e7d85986fd323e0488b14"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_6_change/stderr.txt",
+      "bytes": 595,
+      "sha256": "70e17fa3c9904365cbc798145a4a7eb3796047010a5f6e76ccfbe71727bcf203"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/m3_wx_6_change/stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug/summary.json",
+      "bytes": 98696,
+      "sha256": "088c7955e6e36e0ea42ed535c17207c46cb88bf38ef8219b2d95c4f249bd16dc"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mealybug.log",
+      "bytes": 1294,
+      "sha256": "f39d25592faa98af0140e8c6acb9646b34b316ab448e2bb5bfb461999c995a5a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_add_sp_e_timing.json",
+      "bytes": 569,
+      "sha256": "e41f0200b7e82f7c3cc064716a1b69ad5358dbfa95e0b1f074fe21515a897aae"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_add_sp_e_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "14612fb9bf41788860e015b8b2ff93b578b7b651513f943a65313eb011bca5b4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_add_sp_e_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "baaf19a9beaaa003634017e7d75e5a5cf436fc7312001ca5d6364a15ade4b52f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_mem_oam.json",
+      "bytes": 569,
+      "sha256": "e7e725030b063fc4e43daabea1e811e8be9811db6b2857ca5cb984c1c1fb4fe3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_mem_oam.stderr.txt",
+      "bytes": 570,
+      "sha256": "bf1b4c2a1d726e84d1d2558fdcdc76a955d76c5607e892b9675f95356b12f527"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_mem_oam.stdout.txt",
+      "bytes": 137,
+      "sha256": "cc7922772609e25e16f0de1b56cfb0d95d02a0137fc4ccc17c0eeca6bc78d816"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_reg_f.json",
+      "bytes": 569,
+      "sha256": "158403ff170f9aae92eb5e258707ed1a71567ecba917132caa711033b96a99c0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_reg_f.stderr.txt",
+      "bytes": 570,
+      "sha256": "b8a8a03949c35a4e45682575c94385b9715c035801d953d54d2f14238a3b98e3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_reg_f.stdout.txt",
+      "bytes": 137,
+      "sha256": "3a090ba1aed1a3a9931aecb7755e7c6b64d65ec056b17ba6d9ccd1d132d87032"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_unused_hwio-GS.json",
+      "bytes": 570,
+      "sha256": "b941dde573cec4517f35bc562aa3f56a6a1ea4b126943780da618378dcf3d703"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_unused_hwio-GS.stderr.txt",
+      "bytes": 571,
+      "sha256": "17a3a7ea0ff35b369aba1e42e5805176e80cf2cdbe3817acfbdc666cff4ef7c2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_bits_unused_hwio-GS.stdout.txt",
+      "bytes": 137,
+      "sha256": "75521419e56c167569ed84c2251bdfd5390e6e63a617810e196bef35c7709a41"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_div-dmgABCmgb.json",
+      "bytes": 569,
+      "sha256": "dc7a003bcf87ea52049b3def1f45c13587d7ce51dfb09ed1078daeb4461d9173"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_div-dmgABCmgb.stderr.txt",
+      "bytes": 570,
+      "sha256": "b888b94d08ff4d5189435d0c21fb4dd33a5c9e5dc8081e7806b095e50d25273d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_div-dmgABCmgb.stdout.txt",
+      "bytes": 137,
+      "sha256": "a8cb44cd62d6efec9fbd932033155fa57d7de2218da41f577536467cde69885d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_hwio-dmgABCmgb.json",
+      "bytes": 569,
+      "sha256": "2c9a515e65c0cd4d9607e937cefc3c572025304454dc87c3031266e31b8e3c08"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_hwio-dmgABCmgb.stderr.txt",
+      "bytes": 570,
+      "sha256": "ea5dd2737dcd71d43f5f12f4f90bc1128a950b37018147a342dcd6f842391d6f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_hwio-dmgABCmgb.stdout.txt",
+      "bytes": 137,
+      "sha256": "936ee8117f3f2985a1c35f01c4fc53afc0830df2408f8fe2a65032242906fcc1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_regs-dmgABC.json",
+      "bytes": 569,
+      "sha256": "5c283bb9883710e1e926f97cbec0614ee7f36fba5c832bdf5d75fd7e6b932653"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_regs-dmgABC.stderr.txt",
+      "bytes": 570,
+      "sha256": "b3c52f7335da6f8a8f4a7f332f74afec7f87c053b177822eeca7329a3d1a5e23"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_boot_regs-dmgABC.stdout.txt",
+      "bytes": 137,
+      "sha256": "898fb8c0de9244ac626164539bf9b80c4efd86c715b88a65ead045574bf91f39"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_cc_timing.json",
+      "bytes": 569,
+      "sha256": "476678b9db6d54808901d4174d75ec7115cb0c5dec141a2805536eaa122cfff4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_cc_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "a885d6f4c2df5acc6f0feedc5b9b94b7a8d3f3f1d9394139322bb9a2e76221a7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_cc_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "8d4d6f696ef1df63e2c0ebb19913268e2ae1b0dc21d6a1b389a95531453472fa"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_cc_timing2.json",
+      "bytes": 570,
+      "sha256": "5b47cdd9af46f271242590f69c862628ce784ff1e717c74e85ac35da58ea28c8"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_cc_timing2.stderr.txt",
+      "bytes": 571,
+      "sha256": "0244992cb5e459888f41123ea1eaa1c60c14f29b215c3323a779ac49e1fe8ab3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_cc_timing2.stdout.txt",
+      "bytes": 138,
+      "sha256": "938839a384a4394ab40d19e6b061b05b85d8c3dac3ad478d673d2439ccb25649"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_timing.json",
+      "bytes": 569,
+      "sha256": "7009fdd1b832a738d3037ef210b2812cf28d99f5cc7a97fd1c0ff0cbebcdf0ca"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "48708cacc640afaea438c3d2228d55ef19a327c1f301c17f6c0db875dfe22462"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "8d4d6f696ef1df63e2c0ebb19913268e2ae1b0dc21d6a1b389a95531453472fa"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_timing2.json",
+      "bytes": 570,
+      "sha256": "7d3957b8712c1cf180e91ebd094f9e90a21a97eaa2aff3541e829f8e419950cb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_timing2.stderr.txt",
+      "bytes": 571,
+      "sha256": "377c78b2a59be2319a6e8f67faaed49f9b94e602db2cf3aa45d3797fd9139f5b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_call_timing2.stdout.txt",
+      "bytes": 138,
+      "sha256": "17bb79a77656695447e95dcdd472acd59f19c9fac5a5f6658ca64eaae79c30fb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_di_timing-GS.json",
+      "bytes": 570,
+      "sha256": "b0fe044f461c64e4f8019e6d28032038967e05f0a32f0b0eab4dbc80b20b7971"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_di_timing-GS.stderr.txt",
+      "bytes": 571,
+      "sha256": "62692c68c678277ead50780982a26cc7bffd485ae23fb2ee35bb37b9b4980f3f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_di_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "cb1235cdc709756ce9575a6259de0f634a68ca721ee2532d8648b102b7fdf98e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_div_timing.json",
+      "bytes": 569,
+      "sha256": "3f2e900d494d9ef6b84026af66ea832030e42a27aec2e8fd84e3796a15861f72"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_div_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "a3c077796f5ac80ae6ff39222e5b4f6278e8dfe30430f74e4223ded0d96657ce"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_div_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "c8179cf9e49898a9db1e9125daa2ef80aa06ec9937555f85346d6148318f13ff"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ei_sequence.json",
+      "bytes": 569,
+      "sha256": "c951051aab216c111bf8b5c8e7787b95e7ff202d497b563302ba1b1c9f1bafc6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ei_sequence.stderr.txt",
+      "bytes": 570,
+      "sha256": "6f5369fffbc981b88c35a2a47b1853d4d649d4b06c7fc8378fb5d45a6e3aa874"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ei_sequence.stdout.txt",
+      "bytes": 137,
+      "sha256": "daf1188ec75add14319c9942b1d921f0c610fbd21eccf1158faefdd101c79474"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ei_timing.json",
+      "bytes": 569,
+      "sha256": "9371be27627c6af0e174a0e0b7f3d3c03ccfc86d0b9569ae78c085de8ef92ee5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ei_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "86afcf81466c33cb421e851639081d53da41cb445b849f520359c66b45935392"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ei_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "5ca6446e2212aba40d75e1452f1f71742be7d6d44a594a43d0ee05c9bb602dcb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime0_ei.json",
+      "bytes": 568,
+      "sha256": "2f017e0633af7e4d70dafaf209f22ee07241c1499307dcb0a16108fb5fe4a680"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime0_ei.stderr.txt",
+      "bytes": 569,
+      "sha256": "4da4b77d1461f5781013010a1fd75de90f8b3e420f8c6e53f8ca05890213965f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime0_ei.stdout.txt",
+      "bytes": 137,
+      "sha256": "b07f388a734920cc40ebd2f282ebb13394cd45f3c74776f10a17dfd4afcd7377"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime0_nointr_timing.json",
+      "bytes": 570,
+      "sha256": "1de5b1550fab4307e485df051e4dde552b6ac4165257f7e0e150b6e918589ff1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime0_nointr_timing.stderr.txt",
+      "bytes": 571,
+      "sha256": "019ba813412086e07ee73e341432091b101cf4d246c267db738356f8629f8e90"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime0_nointr_timing.stdout.txt",
+      "bytes": 138,
+      "sha256": "62a17968e7d44422541be44d192d12c74bfd38450323fba45bd74c925078a763"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime1_timing.json",
+      "bytes": 569,
+      "sha256": "c8ba9391a79e3ad0fde42ef7d279671423adb612af12dec9740b5c853ebd7bfc"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime1_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "2b178c053a65a0a40854b64a5449e05ca5d84497a0eca11d103fdc8da6ebaac2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime1_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "ea795fcde6890db6b67628a2ba24447fb34671ffe54692a3c1b639d34d6ed3de"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime1_timing2-GS.json",
+      "bytes": 571,
+      "sha256": "926ec863059af81f5dff8b74d54b5e00f9a0e77b9b16abb3995e0e01fec905c0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime1_timing2-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "5004b5700fe7c80b019e889c4d3a9762440b984e0c8d696d81f1ebd7cd2f7c8a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_halt_ime1_timing2-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "ec5e2e0f7bc57557a89f9e3915bc25b51f00c3203df04f2b7d31120b52cf691a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_if_ie_registers.json",
+      "bytes": 569,
+      "sha256": "8d1ed5409a6b7656f929ee3c9087679e14bfde9257ef33b22ba8489206af2241"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_if_ie_registers.stderr.txt",
+      "bytes": 570,
+      "sha256": "37290229793522d2b9a564b0fe81da8d41e7099b82e8d460298f0d05f500b500"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_if_ie_registers.stdout.txt",
+      "bytes": 137,
+      "sha256": "97f3578995bf3278a756ade40f25a902c03581c82a4e88ae187a33b5e3ba71ce"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_instr_daa.json",
+      "bytes": 571,
+      "sha256": "c920b1aa42cb5fd383e8b822180699da37e31c0a59388a18919797ccd418dcf0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_instr_daa.stderr.txt",
+      "bytes": 572,
+      "sha256": "047b9f4a059ed3c528d47f91c0454bad25549d982154627c933f2d59557d2e69"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_instr_daa.stdout.txt",
+      "bytes": 138,
+      "sha256": "1e68bdc9ee9d9244e03753a52dad597468a5fbb3e4dd724f34582f53928cd5ff"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_interrupts_ie_push.json",
+      "bytes": 569,
+      "sha256": "5a4daaeb4f96f597e13cfffa92fd42b9190602c3a0c8889b6ffab7a31ca58898"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_interrupts_ie_push.stderr.txt",
+      "bytes": 570,
+      "sha256": "7e3f1fdb8a8fb6ab4ac6abc72e3e188921b8a54a92379d279a5d2bf3d02b9f85"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_interrupts_ie_push.stdout.txt",
+      "bytes": 137,
+      "sha256": "308f7bfc09e76a925573bea0ebd1d461bfb0048a5cf4f357b359102f3132f3ac"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_intr_timing.json",
+      "bytes": 569,
+      "sha256": "929f6cafac1fcb925bacf90eaa86c73383e3fec3bc5d596823197419f13e4f6e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_intr_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "65cec46e0e3ea5f43b0944ea3ed7cb5de851111572876ed361ef85879d75bc21"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_intr_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "bdf57d37a141f647693a56558c4bb140061f6375e7f6073497de93d0d383f376"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_jp_cc_timing.json",
+      "bytes": 569,
+      "sha256": "06b3e5a93b0c063c21b2ed9dac86472a86110eaffe99da8297c5bfa90295c613"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_jp_cc_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "bd49a5f58f848654c5120ca537c78f010e4498bb8d3966a256679c5aa6256d66"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_jp_cc_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "f6f22e11f1b40f12bd4df675acecacf6d93610f821f45b895ec596f96f162e63"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_jp_timing.json",
+      "bytes": 569,
+      "sha256": "c6ad4f41704ee46a7b1522dd6f62f7d88b5848de53ef1729194e9e402a4951eb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_jp_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "c49a0406d4c5c477cb1a726a4445af2cf90430884fba2b2edbaaf038d852aad0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_jp_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "f6f22e11f1b40f12bd4df675acecacf6d93610f821f45b895ec596f96f162e63"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ld_hl_sp_e_timing.json",
+      "bytes": 569,
+      "sha256": "9dd2d8307d227856ac2a04fe7477a19839392bbb5beb6356b3c8c60f9b19420d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ld_hl_sp_e_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "69079fb461276affb997f3f63af62e64d97c57b0484f176d9ee99d49c7c787d5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ld_hl_sp_e_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "46b99beda481887f34d0f30fb9ca79b8081dd5ff956a27cb495db15d40df963e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_basic.json",
+      "bytes": 569,
+      "sha256": "c9a3cb4ff262140aa9bd95ecc1db013e35ef94d4f8050606e0881829d919e9af"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_basic.stderr.txt",
+      "bytes": 570,
+      "sha256": "0e433f6d3eed5395fb574129d602fa088b6ccf915d94bc8db0026a8c7d9234ce"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_basic.stdout.txt",
+      "bytes": 137,
+      "sha256": "fa9319aa2d2233d57cb8b56262385d7f2fc90deafdbdc27f85121d92264b64c1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_reg_read.json",
+      "bytes": 569,
+      "sha256": "4dd63fd80ce78be997c0b1c4bc932347bf38b9d3457581c81247e16f90386ab2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_reg_read.stderr.txt",
+      "bytes": 570,
+      "sha256": "4a9d7efae663db181c1378de89809fff4fe70c57c960c244059a802b4db14849"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_reg_read.stdout.txt",
+      "bytes": 137,
+      "sha256": "558c366dda291b676ab6549613ce5bac54e0f0ae71b6e03abaf53d07b659c03e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_restart.json",
+      "bytes": 569,
+      "sha256": "425c25aadb67d8e248943c553669876b9680a677c77818c773489c246c672580"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_restart.stderr.txt",
+      "bytes": 570,
+      "sha256": "b74cd0a48a6b353b92d6a93731a60b507ac59cdb60494ed80ca4124da43d47b6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_restart.stdout.txt",
+      "bytes": 137,
+      "sha256": "7a438e235df8e9ba0a87d4b979c1471d1d356cd023240597a21a259fca28ac01"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_sources-GS.json",
+      "bytes": 573,
+      "sha256": "8eb4ca71d43d8697b9b24e4736676b6447cd77c8ae95c4d0814883dea111563d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_sources-GS.stderr.txt",
+      "bytes": 574,
+      "sha256": "b50a45f8d7d234928ce4f1730044d61564105270ef07fbfcd3519dabfc1c1ef0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_sources-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "d6fd9862fd8f330fafca23b2742c0e440597e3f9782eb7f5f400471ebac32ca7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_start.json",
+      "bytes": 570,
+      "sha256": "7cf57f30b45ffcc28b60e7689397015bcb70ea086204c061e4c8d4a3aaed07d0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_start.stderr.txt",
+      "bytes": 571,
+      "sha256": "3900ccccb9a861a95f84f890dd60f23e46685f3e4c66782ed88f7b055c5866e9"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_start.stdout.txt",
+      "bytes": 138,
+      "sha256": "1656998cefc2274a47ae08ef7b249df99635472594383ec296dcce93254259c6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_timing.json",
+      "bytes": 569,
+      "sha256": "9d1d96256c7c5ea8eee27c7ee456cefc5e30c54fa0566402f05827f58914bfe5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "4dea11e193063defee6ab8622886712de719ed911ca9cce29ccf6aad0ee61bac"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_oam_dma_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "1269fa7c9ae3d091768da38176840b39b80b2a625a6b59c96e0d7a2c7a332ae4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_pop_timing.json",
+      "bytes": 569,
+      "sha256": "5445a1ec78502fdeafbb352b195b8d3fbddb882d51d4c6408c1867271b76704a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_pop_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "7fee81c4bff491404f5d69fa6ddedda2152c2a9c5f7b193bd8e09636f857ebca"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_pop_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "84f5d798b673d4505a96b982446f5fa8b75ce9889ed3aebbd6f18485a1c7303d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_hblank_ly_scx_timing-GS.json",
+      "bytes": 571,
+      "sha256": "e7639765a4f561a423571e7d11f4d5328281fcbecb9c28b1cc2ae8c4bf443c1d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_hblank_ly_scx_timing-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "0f4317ba2c6c6cb64ff7cdcaf092275d297be5d4832dbe9868d424690051565e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_hblank_ly_scx_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "fa7ef6e048ac2d1557042242dbe86da027fdabc99bbdeaaa245e32b5cb209ce8"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_1_2_timing-GS.json",
+      "bytes": 569,
+      "sha256": "618998c4533c2b68360a67814641d0fd1794711ccf46534b5338f6ed01c3cbca"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_1_2_timing-GS.stderr.txt",
+      "bytes": 570,
+      "sha256": "90fbbf884db7c8603e80ed9c2208d5d17f5187cddee9eae4fb2a1aff08293d58"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_1_2_timing-GS.stdout.txt",
+      "bytes": 137,
+      "sha256": "b83bc346026bfac2cb68a0df6e28de6dba103d90550f5bdaba627f61d7cf887b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_0_timing.json",
+      "bytes": 569,
+      "sha256": "d6916653b75f9ea1ad9226985701eb8854b6b759b8f324d36cec8c3b2c0d28a5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_0_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "4dc6f30f6224ca4ca08330c5e0eafdf3aea7cb20e2e6a2c40df74f77a533c770"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_0_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "41ceadb8befe367359651a48211b0a8859fde6684b024398058d63b2219c29b6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode0_timing.json",
+      "bytes": 569,
+      "sha256": "2deaffdc675b6b2ad94fd6dedc5b5749fcd92e5ebf9247a6dd90886404cb80e1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode0_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "e1dea41dcdf03e02548d59a552e96ed5172c86e84b1eb855b331426c328aa3c1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode0_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "41ceadb8befe367359651a48211b0a8859fde6684b024398058d63b2219c29b6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode0_timing_sprites.json",
+      "bytes": 574,
+      "sha256": "6ace05e9978be0054173934b7720b59f1e466e269b3b3fcb432047e3ae11bba5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode0_timing_sprites.stderr.txt",
+      "bytes": 575,
+      "sha256": "2e1e5b618dd048025f4e67b7e29b5bb7f422ac07b4a66fae94d53623559664ba"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode0_timing_sprites.stdout.txt",
+      "bytes": 139,
+      "sha256": "6a82e880d0c18ad85a160bf14aca7742c4c9a5cd3badcd4921e2483231bf3f8d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode3_timing.json",
+      "bytes": 569,
+      "sha256": "052551f82bf4ab8f0b8fdcc8a4f27388cf0e7433c1ffe191f3082a42875ea7bc"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode3_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "055481dcd37d8605ec0b8514425c76d57579c67f2de88750bfb360f8ccc67b54"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_mode3_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "41ceadb8befe367359651a48211b0a8859fde6684b024398058d63b2219c29b6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_oam_ok_timing.json",
+      "bytes": 568,
+      "sha256": "4f855fac87ccfec8fc05a5234f2ba351ce9ec126ebc23635e16cf8f36efc08e0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_oam_ok_timing.stderr.txt",
+      "bytes": 569,
+      "sha256": "5accf6e22af73c9694af1e4a1d02188e46fe3aeeb1fd2d04b33951a45d809128"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_intr_2_oam_ok_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "91573b8561a0b7e5bd9b4c0fd7ab03f416240b62d94d034c07fa74a404cd2d3d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_lcdon_timing-GS.json",
+      "bytes": 571,
+      "sha256": "61993e9fc3d267c2b1ac554037fde478d856cd7a8deb2e0ea9c33f337ddc223e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_lcdon_timing-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "f0b534729fc0e44fdf158896bb29f0ed07e945557777b8dd12d72af23b751504"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_lcdon_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "529442af6fe4c3e1bdde63f11412561da0a78ababf1f91cf4a622e43e8c4f362"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_lcdon_write_timing-GS.json",
+      "bytes": 571,
+      "sha256": "3d79b3fe8830da768e8748ab7ec1c59a337dba9aefb92f17c3ce9be86789343b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_lcdon_write_timing-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "ec74e2167d2613ec103d4c24f3b842621081c24f8e5e673673a2d211ae3fe81f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_lcdon_write_timing-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "44639d3b1f2aa2f426fe04084c101c263432c4d469e977d1a62f1a3cb8d88c5f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_stat_irq_blocking.json",
+      "bytes": 569,
+      "sha256": "3d5a07a1c6df5931dbaa0e28610750a46d301504c22585acccdbc27cb51538ac"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_stat_irq_blocking.stderr.txt",
+      "bytes": 570,
+      "sha256": "57b226eff95ada2587e8fc88276860c537bb301e4ae45a4925a3399d0b1e9de5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_stat_irq_blocking.stdout.txt",
+      "bytes": 137,
+      "sha256": "0238211ca3696df323157b3e9696c3323cf4bd5f5e9583633efbec4e199d1a76"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_stat_lyc_onoff.json",
+      "bytes": 569,
+      "sha256": "d555a77c37a07024ffbea76fe85414dccc9a92af784845b74a4799dedb06397b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_stat_lyc_onoff.stderr.txt",
+      "bytes": 570,
+      "sha256": "cee76a70a2d8deac9de720584b8eee448b6466338ab709f21d8a8b3afc013dc4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_stat_lyc_onoff.stdout.txt",
+      "bytes": 137,
+      "sha256": "9f73d6f91b5afc4868812bf05d1f95f2f83186196065b1c7ea06a45c65c6f5d2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_vblank_stat_intr-GS.json",
+      "bytes": 571,
+      "sha256": "aa202996ecf84f30093f50f664dc951ee655d3770c572b750d0ad53ed57909df"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_vblank_stat_intr-GS.stderr.txt",
+      "bytes": 572,
+      "sha256": "5342e44fd125a0e31dfd8973177c2f044c6c7cf8a2bb7ab4d984c6b61d6b3f42"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ppu_vblank_stat_intr-GS.stdout.txt",
+      "bytes": 138,
+      "sha256": "a7d806da95766abc9e6a657bb312327bc50f2f2859a9bee24b3e14ff1d4927eb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_push_timing.json",
+      "bytes": 568,
+      "sha256": "711c3d13e369ab70798663614839ed6876452a559e15617b6690d91c29e05e22"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_push_timing.stderr.txt",
+      "bytes": 569,
+      "sha256": "c7517760a90fe055ded12ac59b41e93518ec5557c026698f049becd9755a9ac8"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_push_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "55356baabc769c73e59002bef0eda9508289b8a77c084f274f574e14ad487a21"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_rapid_di_ei.json",
+      "bytes": 568,
+      "sha256": "c979c4e16ec49e452e59419642a24c374b3db8b5e9c66dfe5a42630ca5c98ed1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_rapid_di_ei.stderr.txt",
+      "bytes": 569,
+      "sha256": "a5ee99f08c5091552c7c20c44d318f19f74f36fe88876e386108a8d1b3a80126"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_rapid_di_ei.stdout.txt",
+      "bytes": 137,
+      "sha256": "8ee4b69b61bf81521a5908b5c8ca8a7dab7594f3950fa3fbd90353a50c24bf84"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ret_cc_timing.json",
+      "bytes": 569,
+      "sha256": "2e847a1dc1fda2946ff519b3054ebd04e7176592ae57b38b66bd4f0c82fccae7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ret_cc_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "f7d4c85e4583ff276b92bd8f22778b15ae27596bca5dc8996633c0a2117a76d1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ret_cc_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "50674208bcbfd88292570f13896a5fb432a68ea4028568198d02a8a9e2236094"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ret_timing.json",
+      "bytes": 569,
+      "sha256": "b08bafc20aff3791263dc0145232e8d09ab94fd81cbf1443ceec68c992c38385"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ret_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "161107d2fee10e2be6b22a801d5a654800b0d50d6657c1df2cfe558259eab02f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_ret_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "50674208bcbfd88292570f13896a5fb432a68ea4028568198d02a8a9e2236094"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_reti_intr_timing.json",
+      "bytes": 567,
+      "sha256": "56528ae8eea8048f39e8ed5fb6758cf5396b3af28aa07ea0f0b318b76339016a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_reti_intr_timing.stderr.txt",
+      "bytes": 568,
+      "sha256": "7343b05c4d14be8150f9c81172d16a719ad32a55a2555e84efa84542dbb52f54"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_reti_intr_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "14609abcec077072cc0f0642598cfc60d1fd44fd17f8f1da09d4e581dba98be8"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_reti_timing.json",
+      "bytes": 569,
+      "sha256": "9dca0cca37b8c677371450023ee329b03b414ed4e8b8f757ac6eb79b393ed13f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_reti_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "6401f787cd0384a606c7b949b8943c8c244d9c430b851b841a41d78b1aaaabb3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_reti_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "50674208bcbfd88292570f13896a5fb432a68ea4028568198d02a8a9e2236094"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_rst_timing.json",
+      "bytes": 569,
+      "sha256": "157d35203e55d00e6348342482986041ff7cd14db9d25f6602c5eda5125be21d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_rst_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "11072faedda12ac066bca1022921162951257d1c907e0ae6f600bf34b10faaab"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_rst_timing.stdout.txt",
+      "bytes": 137,
+      "sha256": "ff3a0f6f83b0176c6606ee19774ef8805b5d55e5d320639460327307460e80dd"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_div_write.json",
+      "bytes": 571,
+      "sha256": "a5f93b0e18cf4712c87d6d4c1214759ee40b54fddfb6219e3d1a82c058945e80"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_div_write.stderr.txt",
+      "bytes": 572,
+      "sha256": "819f92e6ffcf9356c108cc900ecf68cf1ab68e929e58ba41438fd74967d11ba6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_div_write.stdout.txt",
+      "bytes": 138,
+      "sha256": "36c6bb13948a8034d52cfc01f39405dfbe2ae9649721388fdf0f870db1e80caa"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_rapid_toggle.json",
+      "bytes": 569,
+      "sha256": "f57c137ff8a1ce98886b08c4a26cc863219662ce50c9656827e62efccb063bec"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_rapid_toggle.stderr.txt",
+      "bytes": 570,
+      "sha256": "c9cae54b930de86ec4e298b9b15a72343513cafc818d360604a691f80fa9d999"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_rapid_toggle.stdout.txt",
+      "bytes": 137,
+      "sha256": "ef4ae31e78a25b5e5b1f8049774910f5ed324b6180e4211a3ff7fafc6c85338b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim00.json",
+      "bytes": 569,
+      "sha256": "5b9e635794c64b8fe39398141f0b30a18899a6546935a0289e1b5ae877f3e8b4"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim00.stderr.txt",
+      "bytes": 570,
+      "sha256": "7149b87ad06921eb7afeef6cbf6d24146c77217a29f31cb960693591d96a6af7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim00.stdout.txt",
+      "bytes": 137,
+      "sha256": "daf1188ec75add14319c9942b1d921f0c610fbd21eccf1158faefdd101c79474"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim00_div_trigger.json",
+      "bytes": 569,
+      "sha256": "795ec84dec11bbf0c21ae8e5f0232cf4dee3a3a96252d793694f58d9fe3ca8e3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim00_div_trigger.stderr.txt",
+      "bytes": 570,
+      "sha256": "eff50d0b5516a0b7b411d1f63b706dd60d7ad1e5bbc4d60f469fa163f982b12d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim00_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "bdf57d37a141f647693a56558c4bb140061f6375e7f6073497de93d0d383f376"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim01.json",
+      "bytes": 568,
+      "sha256": "ebd1b52c4ca637131049c8e4ce71229f2ee8436c7c01da9cafb59efe3f326b2a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim01.stderr.txt",
+      "bytes": 569,
+      "sha256": "0c3654bbf4267d073225ebefee0b73359f63487d3aafbcd56cf71add4fcb96ef"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim01.stdout.txt",
+      "bytes": 137,
+      "sha256": "c6cdbe71d7ea776e6af3984e39c4ff6cee6f6ba55542e71d4b32ad41f0783da6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim01_div_trigger.json",
+      "bytes": 569,
+      "sha256": "a557fda99d3219db21d3dececcf53b957a5737a31ce189255afc83f0824e3e9d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim01_div_trigger.stderr.txt",
+      "bytes": 570,
+      "sha256": "7d290baa8f7be6971fdebf2f3621fc8110c2a0e4de90b8e14cad088d1817c257"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim01_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "ef4ae31e78a25b5e5b1f8049774910f5ed324b6180e4211a3ff7fafc6c85338b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim10.json",
+      "bytes": 569,
+      "sha256": "3a60818205739ed13e7a6b5e1b7b518e1f606e8b5af7c8dd6b42b3bbf06223bb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim10.stderr.txt",
+      "bytes": 570,
+      "sha256": "41b94bd9c79fa7e3181b56a46393bd9269492b1394398bda353a89e26ab2aa01"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim10.stdout.txt",
+      "bytes": 137,
+      "sha256": "a202777c0fcd861f12ff0908be74e698eff8c56b7a737d88c0c101ccd5763f50"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim10_div_trigger.json",
+      "bytes": 569,
+      "sha256": "1bb710c5c08d0bfeb3e0c712c8f025540ffead4dd96f09f3debdbb5a2314f61b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim10_div_trigger.stderr.txt",
+      "bytes": 570,
+      "sha256": "54426d2c3241991dab2de0f1b558d16ad620daa1fabcfdbee6932c328870ec03"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim10_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "daf1188ec75add14319c9942b1d921f0c610fbd21eccf1158faefdd101c79474"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim11.json",
+      "bytes": 569,
+      "sha256": "06e98906f2952c2eab081930abd43e9bf9c9925f5350028a1ef2dbc7a0f4751c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim11.stderr.txt",
+      "bytes": 570,
+      "sha256": "6f199ddc864cff120e814cfd8ea04b807c175b9ff644e6fab27aa684926a335a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim11.stdout.txt",
+      "bytes": 137,
+      "sha256": "5ca6446e2212aba40d75e1452f1f71742be7d6d44a594a43d0ee05c9bb602dcb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim11_div_trigger.json",
+      "bytes": 569,
+      "sha256": "5cee94af896a35411279ee2a82315483b64c00abeef97061a5984e763f5346dd"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim11_div_trigger.stderr.txt",
+      "bytes": 570,
+      "sha256": "54814189167e93cbe0ea849d02fe6f341c18e213ad8987beb7b72ac5268266af"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tim11_div_trigger.stdout.txt",
+      "bytes": 137,
+      "sha256": "a202777c0fcd861f12ff0908be74e698eff8c56b7a737d88c0c101ccd5763f50"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tima_reload.json",
+      "bytes": 569,
+      "sha256": "bf33bb45d8fbae7e3b97275009da03ff39660000d2eaa581aca192af820a0698"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tima_reload.stderr.txt",
+      "bytes": 570,
+      "sha256": "a0de157b03ab2ac8f5bd14307a5a278096cfcbbf43af11aedc3fd63f9e864391"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tima_reload.stdout.txt",
+      "bytes": 137,
+      "sha256": "df6f296b28e194ccd177002ee066f3ec12d6bf4a7c6742db8c7878334376a0f0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tima_write_reloading.json",
+      "bytes": 569,
+      "sha256": "c8711b7f810d3ef7ac28e88561e5066b6256a2bd2fea2cfe57def917b8a4d4a7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tima_write_reloading.stderr.txt",
+      "bytes": 570,
+      "sha256": "8e57c16a690f5ddefe2df47962f74cd57ace2f99f323bf66398e38ac9d2372ea"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tima_write_reloading.stdout.txt",
+      "bytes": 137,
+      "sha256": "7fa0391bcd32ecba4feced29da88f5556eb88af349aae4e26b03dd6bc3e39cae"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tma_write_reloading.json",
+      "bytes": 569,
+      "sha256": "d1bc4fd51400182167dabda64da8e3525f95349297d3355275f35deaf44246b2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tma_write_reloading.stderr.txt",
+      "bytes": 570,
+      "sha256": "2d8307285d3c79a3e30e8314c7d6df53315cd9301502fe1c5c3c413e9677211a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/acceptance_timer_tma_write_reloading.stdout.txt",
+      "bytes": 137,
+      "sha256": "5ff8eb8d56d1c18aafdaa3a54f8514a37301283ba31adba0b29a64285c5329f7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye/summary.json",
+      "bytes": 206436,
+      "sha256": "47d1cbaddc41b9b37abd168ce624c518630777fac3c7e3de14c2aed71beff879"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/mooneye.log",
+      "bytes": 6512,
+      "sha256": "9cb61b4b6eda4cd601da7c328ec587e0538aec4ce834cbc665eeafaf2b01b264"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_oam_bug.json",
+      "bytes": 567,
+      "sha256": "d7124a522942b7d50dcdc05d7800be9198240974cf3a8ba590cf56d539d15266"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_oam_bug.stderr.txt",
+      "bytes": 568,
+      "sha256": "eebd4e745afa75a5438624c6c213786312b34f1f8fb92ddabdc1c59c50a52601"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_oam_bug.stdout.txt",
+      "bytes": 100,
+      "sha256": "da11975dd4f5fa41df2ec31f2df1dd198403f87a36ba61d8753e80d43fe6c4df"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_1-lcd_sync.json",
+      "bytes": 570,
+      "sha256": "06522847c9f5e4a605ffe35c0912c05f3c853b5d121769b94a6b7d16b942db64"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_1-lcd_sync.stderr.txt",
+      "bytes": 571,
+      "sha256": "74bde0931f3575ec31a3ec0e841541016a9f96197c630342fff8370293c7d782"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_1-lcd_sync.stdout.txt",
+      "bytes": 46,
+      "sha256": "c1e5e2fd05fb192d6fdb04e7f8ec58d9f0877801dac0f3530cf873f3dd9e85f3"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_2-causes.json",
+      "bytes": 564,
+      "sha256": "f4c3e997b841a3a1667bb605a237f4e9d3b86edb3a5d47c692fa5d34e50324cb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_2-causes.stderr.txt",
+      "bytes": 565,
+      "sha256": "3c0edea46da5b1361bd218ea3f2ff3b07bad5753f73df44f768fc7e82ba1d949"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_2-causes.stdout.txt",
+      "bytes": 44,
+      "sha256": "bec36a0fb469858cb44369749c2fea4ad3797315bdb1481d0d6b273ad119d901"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_3-non_causes.json",
+      "bytes": 562,
+      "sha256": "e64fd3788cd85ceb20532a5d577da4f4a183767461ab48a8ebcfe68043a3823b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_3-non_causes.stderr.txt",
+      "bytes": 563,
+      "sha256": "47292588992b5429c6f1ab53900a103e318eff25b67f5484babe9985e1b4d72b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_3-non_causes.stdout.txt",
+      "bytes": 48,
+      "sha256": "7ed3cc1ead2101b62d89de04b852ac1596da7829f905eb89f807705b2f8f3e2a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_4-scanline_timing.json",
+      "bytes": 569,
+      "sha256": "49c77e210015e7d3f59d6cb738f0abf30bca0fd240867e0775c83630225e7629"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_4-scanline_timing.stderr.txt",
+      "bytes": 570,
+      "sha256": "b8d6801e3b89fe89824dc4161ade3004a2af128f86dc56c52f956a4073a85e54"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_4-scanline_timing.stdout.txt",
+      "bytes": 53,
+      "sha256": "c1fafdf396a1a52901adda51d10341f985dd25805accd3ce524f7220abfd7f6b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_5-timing_bug.json",
+      "bytes": 567,
+      "sha256": "2a69d0f764751cc08a9006985c538002c3ddf99e523ed53cf9be63590ada2ebf"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_5-timing_bug.stderr.txt",
+      "bytes": 568,
+      "sha256": "8d78a115e7612fd0131802b31d01ab1447a8219144a542391d5aeb11c5d632f5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_5-timing_bug.stdout.txt",
+      "bytes": 48,
+      "sha256": "d5dca9cab22bd03ddd6c6d8968fdd00889d85869f1b5a33766bfb90284edad46"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_6-timing_no_bug.json",
+      "bytes": 565,
+      "sha256": "88db47b2a30a10fb771c0e0592e2301c67e4d54e0ad66569205b9ddc5df8f19b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_6-timing_no_bug.stderr.txt",
+      "bytes": 566,
+      "sha256": "b92a07a4a400876c7022f926e73bdfc44e5273b4617b5fc096137d137a89725b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_6-timing_no_bug.stdout.txt",
+      "bytes": 571,
+      "sha256": "f074ae7988b4cfae4ba871bbb5776de6f2fba286f728add4a0cb92e2dfdf9186"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_8-instr_effect.json",
+      "bytes": 569,
+      "sha256": "7061a578ad0b4347006e8e23a5a605d5fd42c44cbdf39b2e8df57aa0c1d1b607"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_8-instr_effect.stderr.txt",
+      "bytes": 570,
+      "sha256": "645012890738a1dd67f70b82be1261ff21aecec3b0e0482959c7655f7bcf682c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/oam_bug_rom_singles_8-instr_effect.stdout.txt",
+      "bytes": 3176,
+      "sha256": "4c2d4b1caea1a7dc57708f06a4fff26bb2356994b30cc4738668bb6345738782"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam/summary.json",
+      "bytes": 28514,
+      "sha256": "b9399f0a40308d9bc47fd9abfc3513d30d3a459bf6affdc76582841514906522"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/oam.log",
+      "bytes": 5081,
+      "sha256": "a8f39175a0620ceead57cd1f9de9cd5a7c564a9897468896d8755a17cfe59ec2"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sanitizer.log",
+      "bytes": 1622,
+      "sha256": "db3e0bd69a118bad02113f9a2d209c42e6db447c1feeccc564fb38694dd1a2b6"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_dmg_sound.json",
+      "bytes": 573,
+      "sha256": "9aa4cc505c0a08fe6fdddaa83e9e22224c1a6bd24952ca50e69b1b2355df6096"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_dmg_sound.stderr.txt",
+      "bytes": 574,
+      "sha256": "0d475523b1a1e01b43e4633f69c13d9ed6d5f8a8fcda3f4019f1919e9a114a6a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_dmg_sound.stdout.txt",
+      "bytes": 130,
+      "sha256": "c53158a8cfc9d9650c0ab702f19297da33aa8089c43b027a1b41ab74d73790e1"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_01-registers.json",
+      "bytes": 569,
+      "sha256": "2fa8435ceefef837511025418d9286a06943f8b9d2c4b0bef4ed78c0985aa8df"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_01-registers.stderr.txt",
+      "bytes": 570,
+      "sha256": "52e5c02a62e74fb382607030842db2ba1c3f68fd9669be0b9aabe61ddc2f769c"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_01-registers.stdout.txt",
+      "bytes": 48,
+      "sha256": "6c34ff25f4dd2bb5ee4a11a4025b4298add81a6f0177d38a3eac7bf808463894"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_02-len_ctr.json",
+      "bytes": 570,
+      "sha256": "a7fe1511d3ea002bc301016474bc370a6e8025a4e382cf0dea5f35119966c02b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_02-len_ctr.stderr.txt",
+      "bytes": 571,
+      "sha256": "9772f04317eb209e0616996a6cab318da2d62ab3171b3e559e3438c5d89d0541"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_02-len_ctr.stdout.txt",
+      "bytes": 54,
+      "sha256": "a0c00bbe90669c9cbada42cb62e3b2d12afd8e58b1c872d01c3cd4b4d731d74d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_03-trigger.json",
+      "bytes": 571,
+      "sha256": "7a475a3c38e3a7d9a0827b2ecd7ed5b5438e75e49f31447648497af5ac47f437"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_03-trigger.stderr.txt",
+      "bytes": 572,
+      "sha256": "c2dedb708aa02247c2a0eccc5a10181013fb83ddab835018bc505201f775925b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_03-trigger.stdout.txt",
+      "bytes": 54,
+      "sha256": "24bf093aff3c455f15c43edf7cd5cfe1704f943606288e93c50df325bec3be0d"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_04-sweep.json",
+      "bytes": 565,
+      "sha256": "4a69dc03c0ad09f4a2fe8ebb220a8455491d83c73461e23b35fc106076459278"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_04-sweep.stderr.txt",
+      "bytes": 566,
+      "sha256": "ceabd4e9591ec6a42fe21e137f5eb670c63f8462935a596394d52a3f772e9e8e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_04-sweep.stdout.txt",
+      "bytes": 44,
+      "sha256": "cf1a14fda3ed33be60c1dbae764bf330418a9fa38964d35bcf45206cb9b972ca"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_05-sweep_details.json",
+      "bytes": 566,
+      "sha256": "e949e342e005021ee48ca5b6087a9189425c0bfd8f6ffce196dd6dfe4f863490"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_05-sweep_details.stderr.txt",
+      "bytes": 567,
+      "sha256": "d997c72d58a6ed12a398178502b60cf66f72518dce63ebcce59561d677cae2e7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_05-sweep_details.stdout.txt",
+      "bytes": 52,
+      "sha256": "6c7ac3fb71eb4f8f789e7855516d4dda5617f882eb8007517a32229f44bb1f72"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_06-overflow_on_trigger.json",
+      "bytes": 569,
+      "sha256": "ae9e77799806c7116a56db765472ee681c9408bf88d29165f0ca98384a9b7753"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_06-overflow_on_trigger.stderr.txt",
+      "bytes": 570,
+      "sha256": "b8341a198a77bbc616e1395b046eb0c37a87284342e58154d0b851b9ed83f3df"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_06-overflow_on_trigger.stdout.txt",
+      "bytes": 129,
+      "sha256": "fb433321a940b8a66bd2b6c3586da7664e9b4762185ada7521d0b476c1d84689"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_07-len_sweep_period_sync.json",
+      "bytes": 563,
+      "sha256": "158ee4bc8aaf82d6e5c41117119d4dbba2c9ad92064b30c8e793ff44e62e2108"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_07-len_sweep_period_sync.stderr.txt",
+      "bytes": 564,
+      "sha256": "0f78b32824b7de675631d3175f560ab1966318fee186f3df2654d77b46e2b467"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_07-len_sweep_period_sync.stdout.txt",
+      "bytes": 60,
+      "sha256": "5a8b6b1bd6f0e671b0f7e0a9338cab1d4a51ba5951725c4dcdd6c9b6fdeee276"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_08-len_ctr_during_power.json",
+      "bytes": 569,
+      "sha256": "7c24b9043cd353433cafcd464181850407ab0e80878d4b917feeeb3aba1a575e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_08-len_ctr_during_power.stderr.txt",
+      "bytes": 570,
+      "sha256": "b03e6300771c7b199e5684038e3127ee3c53e749062fc1b3f05efebd13162775"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_08-len_ctr_during_power.stdout.txt",
+      "bytes": 71,
+      "sha256": "02a15c21337788ee01d81486b170cf97167efd02e41996780f12f401fa9f1742"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_09-wave_read_while_on.json",
+      "bytes": 573,
+      "sha256": "1bacbb64682b58578909d1a741a8c21dab3a0391f87c5b7c1b3dcd7d5ba83e05"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_09-wave_read_while_on.stderr.txt",
+      "bytes": 574,
+      "sha256": "4f74e08bb2819b8b75c4f1903f0ae3ba596b848cd504c67c43da0b350aed1361"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_09-wave_read_while_on.stdout.txt",
+      "bytes": 264,
+      "sha256": "bff700de841ee6893c2844b9f3478738769c8bf90edfd8cd2f42eb5aca9e54eb"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_10-wave_trigger_while_on.json",
+      "bytes": 575,
+      "sha256": "405989af87ff7e7a1795c4645783a0cb6b7f2db9bc091ac235fbdee2d1f08285"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_10-wave_trigger_while_on.stderr.txt",
+      "bytes": 576,
+      "sha256": "e2b7ecfd1583000c26d90a1c6189a421cc37e4e13cd3816a1eb2162673ab9eb0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_10-wave_trigger_while_on.stdout.txt",
+      "bytes": 3441,
+      "sha256": "2ce74145fade2d9c39bc2ab6aaf219dff8442cff25c6b7dacbe5bd62ba87f2f0"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_11-regs_after_power.json",
+      "bytes": 565,
+      "sha256": "57d36833787a1472b4ac0d80fb0a8bbbc829e00211a1e44b99fde55c8714b05b"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_11-regs_after_power.stderr.txt",
+      "bytes": 566,
+      "sha256": "476480f9c182e985a75959150aade47c96d50ffb68d63b0371f274a1bf945d95"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_11-regs_after_power.stdout.txt",
+      "bytes": 55,
+      "sha256": "dc30e49c1fe621d322e4b7ee18fdf4b1143aa91d374e9f74770e20de67c87c5f"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_12-wave_write_while_on.json",
+      "bytes": 573,
+      "sha256": "a74ed4a781e647c73ea208e576c2e78838d516edbd0a01332ea3a937c6eb07fe"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_12-wave_write_while_on.stderr.txt",
+      "bytes": 574,
+      "sha256": "bfcc00996041a6513e6099c29e244e331a18d4f94073c9f74d822cb7bcbd8ff5"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/dmg_sound_rom_singles_12-wave_write_while_on.stdout.txt",
+      "bytes": 3439,
+      "sha256": "188ec2a85e0b76f84c4b3413c19bcf48f4276718b1062d8648ea790957839513"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound/summary.json",
+      "bytes": 52897,
+      "sha256": "d84edc4ecfb3cda82ca3d1d85f17d1c3cff36505514fb5f3ad552f596a9f1718"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/sound.log",
+      "bytes": 9022,
+      "sha256": "3e694e81882a00c4c59f5d0cd8dcfc93955debb942cd0025a03562d6387af153"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/summary.json",
+      "bytes": 511809,
+      "sha256": "1b5fe91edacec6d7e19962440d5a219727a6a0be6984b80cd6ee47fd02c2ef85"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/tested-source.tar.gz",
+      "bytes": 121990,
+      "sha256": "047f31b99668f0f459a29530bea822054775b3c1a27c63a9a8de42cb0618c927"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/toolchain.log",
+      "bytes": 159,
+      "sha256": "76a924f59997fb65051981eb13105e0a8c151f16cd9c3e45e0f7c27ecefdb839"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression/unit.log",
+      "bytes": 1443,
+      "sha256": "b6713c9aeb39a8ec0cea3d399b286fbcba886eb1d711cc1e7810c7dfd51e9c3e"
+    },
+    {
+      "path": "artifacts/platform-verification-2/rom-regression.log",
+      "bytes": 2064,
+      "sha256": "46c8b1daba442b4ae7a1a3cf091012bdf4dd5e904ce6cda8645e0a06cd0f7de7"
+    },
+    {
+      "path": "artifacts/platform-verification-2/summary.json",
+      "bytes": 20109,
+      "sha256": "649ee01710e9ed8538a3aa646416b9efd692382e3ec381a5ed8717ff7ae3d93a"
+    },
+    {
+      "path": "artifacts/platform-verification-2/tested-source.tar.gz",
+      "bytes": 121990,
+      "sha256": "047f31b99668f0f459a29530bea822054775b3c1a27c63a9a8de42cb0618c927"
+    },
+    {
+      "path": "artifacts/platform-verification-2/thread-sanitizer.log",
+      "bytes": 452,
+      "sha256": "df8f8e50811a182e1bbc5a483cde40378248160792078a4dfa19c7cedc2ef0cd"
+    },
+    {
+      "path": "artifacts/runner-nested-timeout-audit/nested.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/runner-nested-timeout-audit/summary.json",
+      "bytes": 124,
+      "sha256": "a9cb48f58c0cf006b616dc8be7fa7049457bc097f78496d413801ad4623776fe"
+    },
+    {
+      "path": "artifacts/runner-nested-timeout-audit/timeout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/runner-timeout-audit/summary.json",
+      "bytes": 137,
+      "sha256": "9f3f932c6822ce007cb3e8af3a9f483c3115016a705373c6564ccebb7e0dccbb"
+    },
+    {
+      "path": "artifacts/runner-timeout-audit/timeout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "roms/manifest.json",
+      "bytes": 33651,
+      "sha256": "3399576b593b5dea7d8532e8d0bf06196700789604d4eb4867b1fae568cd0224"
+    }
+  ],
+  "omitted_document_links": [
+    {
+      "document": "VERIFICATION_BLARGG_BASELINE.md",
+      "target": "artifacts/rom-attempt-1/halt_bug.trace.txt",
+      "reason": "raw trace or executable retained locally; not included in source repository"
+    },
+    {
+      "document": "VERIFICATION.md",
+      "target": "artifacts/fifo-verification-6/dmg",
+      "reason": "raw trace or executable retained locally; not included in source repository"
+    }
+  ]
+}

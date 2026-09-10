@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "mismatching_pixels": 0,
+  "total_pixels": 23040,
+  "rom": {
+    "repository": "https://github.com/mattcurrie/dmg-acid2",
+    "release": "v1.0",
+    "revision": "dc2295408f881637ff69f784d8d93f3d2db30181",
+    "files": {
+      "dmg-acid2.gb": {
+        "url": "https://github.com/mattcurrie/dmg-acid2/releases/download/v1.0/dmg-acid2.gb",
+        "sha256": "464e14b7d42e7feea0b7ede42be7071dc88913f75b9ffa444299424b63d1dff1",
+        "bytes": 32768
+      },
+      "reference-dmg.png": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/img/reference-dmg.png",
+        "sha256": "ca966d50895c7efef05838590d148c2cbfd7fba57dab986f25b35b4da71abb57",
+        "bytes": 787
+      },
+      "LICENSE": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/LICENSE",
+        "sha256": "2b5ed6f8abbded3913a08ebe8f4eedb340735efc3b024570244d6efa73418044",
+        "bytes": 1068
+      },
+      "README.md": {
+        "url": "https://raw.githubusercontent.com/mattcurrie/dmg-acid2/dc2295408f881637ff69f784d8d93f3d2db30181/README.md",
+        "sha256": "0837d50ac1c686b61d7b86bc7d9a0fb5a0539bf9f65805ee11f3eeea66ad377a",
+        "bytes": 7426
+      }
+    }
+  },
+  "first_mismatches": [],
+  "binary_sha256": "d357d984591a72b2e57493077099cc1b9082d756f8d20ed7c93b1c7d30afd0c4",
+  "scope": "PPU rendering/priority acceptance; acid2 does not certify precise mode-3 timing"
+}

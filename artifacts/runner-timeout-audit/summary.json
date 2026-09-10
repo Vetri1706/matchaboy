@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "exit_code": 124,
+  "child_pid": 64835,
+  "child_state_after_cleanup": "absent",
+  "seconds": 1.0283493340248242
+}

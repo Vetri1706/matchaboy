@@ -1,0 +1,6 @@
+
+[cartridge RAM test log]
+07-len sweep period sync
+
+
+Passed

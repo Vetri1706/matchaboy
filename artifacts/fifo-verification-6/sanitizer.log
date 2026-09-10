@@ -1,0 +1,31 @@
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -fsanitize=address,undefined -fno-omit-frame-pointer src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp tests/unit_tests.cpp -o build/unit_tests_sanitize
+./build/unit_tests_sanitize
+PASS exhaustive arithmetic
+PASS DAA and decimal BCD
+PASS signed SP
+PASS 256 CB opcodes
+PASS base and conditional timing
+PASS interrupt sequencing
+PASS instruction prefetch pipeline
+PASS HALT bug and STOP
+PASS timer edges and reload races
+PASS memory, serial, DMA
+PASS post-boot video memory
+PASS palette write bus
+PASS LCDC write bus
+PASS scroll write bus
+PASS initial LCD clock sampling
+PASS MBC1/MBC3/MBC5/RTC
+PASS PPU timing and LY153
+PASS PPU pixel layers
+PASS DMA startup and restart
+PASS RTC rollover and explicit RAM
+PASS PPU scroll/object/window timing sweeps
+PASS PPU 2-million-dot MMIO fuzz
+22/22 groups passed; 9407404 assertions
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -fsanitize=address,undefined -fno-omit-frame-pointer src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp tests/oam_tests.cpp -o build/oam_tests_sanitize
+./build/oam_tests_sanitize
+PASS 365 OAM assertions
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -fsanitize=address,undefined -fno-omit-frame-pointer src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp tests/ppu_edge_tests.cpp -o build/ppu_edge_tests_sanitize
+./build/ppu_edge_tests_sanitize
+PPU edge checks passed: 418 assertions

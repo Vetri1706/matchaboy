@@ -1,0 +1,6 @@
+
+[cartridge RAM test log]
+11-regs after power
+
+
+Passed

@@ -1,0 +1,25 @@
+PASS m2_win_en_toggle: 0 differing pixels
+PASS m3_bgp_change: 0 differing pixels
+PASS m3_bgp_change_sprites: 0 differing pixels
+PASS m3_lcdc_bg_en_change: 0 differing pixels
+PASS m3_lcdc_bg_map_change: 0 differing pixels
+PASS m3_lcdc_obj_en_change: 0 differing pixels
+PASS m3_lcdc_obj_en_change_variant: 0 differing pixels
+PASS m3_lcdc_obj_size_change: 0 differing pixels
+PASS m3_lcdc_obj_size_change_scx: 0 differing pixels
+PASS m3_lcdc_tile_sel_change: 0 differing pixels
+PASS m3_lcdc_tile_sel_win_change: 0 differing pixels
+PASS m3_lcdc_win_en_change_multiple: 0 differing pixels
+PASS m3_lcdc_win_en_change_multiple_wx: 0 differing pixels
+PASS m3_lcdc_win_map_change: 0 differing pixels
+PASS m3_obp0_change: 0 differing pixels
+PASS m3_scx_high_5_bits: 0 differing pixels
+PASS m3_scx_low_3_bits: 0 differing pixels
+PASS m3_scy_change: 0 differing pixels
+PASS m3_window_timing: 0 differing pixels
+PASS m3_window_timing_wx_0: 0 differing pixels
+PASS m3_wx_4_change: 0 differing pixels
+PASS m3_wx_4_change_sprites: 0 differing pixels
+PASS m3_wx_5_change: 0 differing pixels
+PASS m3_wx_6_change: 0 differing pixels
+PASS 24/24 original DMG Mealybug images; /Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/artifacts/fifo-verification-6/mealybug

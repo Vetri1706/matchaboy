@@ -1,0 +1,1818 @@
+{
+  "passed": true,
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "rom_revision": "c240dd7d700e5c0b00a7bbba52b53e4ee67b5f15",
+  "sources": {
+    "include/dmg/apu.hpp": "a34689a080ef2b4d0f6602da5dfa8a2ee2b3eb5f1d528b0420d615564ceb6eb7",
+    "include/dmg/cpu.hpp": "236924a767cc4a0537f9f45ec154b3550ba090d370a8c51f8a715c812ad06552",
+    "include/dmg/serial_link.hpp": "b1c98a7802aff5533f1798e8ccaf67de0dcd7733787be59248e84b08ff04ca82",
+    "include/dmg/gym.h": "10d4957e8239ab1946297425da3d8616bb81d3ba412a0ec6f66392c6392852b6",
+    "include/dmg/netplay.hpp": "651e035194c20abe75ab1ee907bf6d234cfda8bc2ef3e6ce0eb8b406f9e984c6",
+    "include/dmg/snapshot.hpp": "ba261b38671d9950c73e8ea2fc22ed4246a29d0aca118dc1882ef9896e22a87c",
+    "include/dmg/mmu.hpp": "5fbfe7119997a479b65764da1016ba9ab02cd0d3fccf995c503b89113aad874d",
+    "include/dmg/gym.hpp": "f14a163ef07cc58c621323c00804b15b12b3f1ce7004720656a2eb864b0a862f",
+    "include/dmg/autopsy.hpp": "8c4858e318863099d1067f22dba44178d1da0c699c3e01cc48a15eff2dab1698",
+    "include/dmg/timer.hpp": "1a4abef01f0defb997d92b9ff4ea2f8f5163e8298dbdfe14e9f0725eb873e74f",
+    "include/dmg/mbc.hpp": "7c31ce2f4f2c1f06c55f50bbcc44543708c9ee5d20ff8db44d0b1b9a9fb542d9",
+    "include/dmg/oam.hpp": "9d129958bebce13380a61e0e5211d5e932cf79b0b357fb9a95e8c6c42a14fd25",
+    "include/dmg/ppu.hpp": "a7ddcc0ad0110f6cc87148448a48c8061d89d01981f86840e9f354e36740e20a",
+    "src/ppu.cpp": "d6f36ede839ecb99b93234184d56b31db5fc603644bd2b2eba206cd6a0ce6ca4",
+    "src/gym_benchmark.cpp": "c962ef69835921d43ad536d46f74dde064672e3d6dc24524e7ac709b3451c0ca",
+    "src/timer.cpp": "1db31777f972f31c287318ddac709392da18fd69fa047c98ef9bd24eb2b961ac",
+    "src/autopsy.cpp": "fdbd4abf616d13c047f00bb4e298b2f6e7dbd5dda9a0ec02d1526e1ab07fb003",
+    "src/oam.cpp": "a0d6d217b0a32665a2ccf8de8d51ed587fcd17fce2a4b99b60cb8984d3de998d",
+    "src/mbc.cpp": "d05b584e350bc040e17553656b7a93337948fad404a4fa323bbda3a43785381d",
+    "src/autopsy_main.mm": "d7f93a6747a8d0e87b2d5ddd621349aae8dd84abb0e3c0531d73b6e09ad8d722",
+    "src/snapshot.cpp": "1e5f588c5b772efd80a6dece2249e1bd50cde463a8990b22de59caf52c41ee48",
+    "src/mmu.cpp": "c1c58e98dc8217c85f2abeec00a2989c1f394373e3659d3e813047a90e2aaea1",
+    "src/gym.cpp": "743266af4d19e8d1e60175b2cbe743008cc2f2aa3beef234f0cea41e7eb6cda8",
+    "src/harness.cpp": "ff766746827b528712b98c7798a28f8ce9b1c778111292b198e8011601134d51",
+    "src/apu.cpp": "90242ffc9bd36e3a8923c3f2facbc7d2e85c94f5c32674b50794432e323e8803",
+    "src/cpu.cpp": "7cba9e21bc3d625d6296a3377d8de76237944bdaaedc92cb871fee70161d8e49",
+    "src/netplay.cpp": "2ba000ffc0d010ac2f4217b7e861e1129d0422a553d3c9288e3e8a27a8d5c17b",
+    "src/netplay_main.cpp": "010c04e8480bb7e19169cf3b8e6ef9eed4db666671487579fe1e6971ce65cc9b",
+    "tests/netplay_tests.cpp": "2f006603bd7471bf224a971231747e90da129011d2ed2e3036babae74977c159",
+    "tests/oam_tests.cpp": "57677b0c6b3d7593f7a764dbb2eabf669a1d8e48d1198b5f7bc66f24e885da1f",
+    "tests/ppu_edge_tests.cpp": "3fb5e852369524e8b16839ae5b4af480980b38e44f828e193b5b1a6034afee49",
+    "tests/unit_tests.cpp": "c18d9a5cedca0321ed3bacd8d6562da9a8f4f93394f3ae1f69035518dc8ef115",
+    "tests/gym_tests.cpp": "5eb0648e541534c2e8c6dd7ecd16993b3519223905751ee5a7b28bb6c5a54f9b",
+    "tests/autopsy_tests.cpp": "078e4709c2deccc08f2b0b729c88ca0eda1256b428766b9f8eb95ee640b72768",
+    "tests/apu_tests.cpp": "9a4cf4404c6eccfddc810a2e90279de559f45833213d442bbc3323ec97e82921",
+    "tests/test_matcha_gym.py": "8726bdc4cb24235ee25d9e6ca656ae12be75bb3c6abf9455298b34be31194b31",
+    "tests/snapshot_tests.cpp": "b46786d856ee02bd21a2951ee200d0188dfbc400771279e786ab9e2295e05e35",
+    "tools/verify_mooneye.py": "c3dd094d47af75489a17f639a0b7c5cebe314b67a43acc8d27a702ef16a02691",
+    "tools/verify_platform.py": "63587239ebcd36e0583bd1b56b7b4c8f1f415715144ebbb4c82d2fea146f8022",
+    "tools/make_audio_demo.py": "072d72c86c881d6f623783de06ba206cbacdac7055a186813bb876842029c7b9",
+    "tools/verify_netplay.py": "b85348db8ad8e9871efef08a7536a416e4959176a44da74c791e2424f1c6730e",
+    "tools/verify_mealybug.py": "36c61aeddd46c854ca6f40c9124d2e2afab0141bf37a3b87dd9ccec2a07d4aa6",
+    "tools/verify_ppu.py": "8bcc5ab8f97ab12487756a8e8e8ee9e804ead7c9d448b85c0719cecea464c0b9",
+    "tools/fetch_mealybug.py": "b600490d83ec0298981696c01ade92a57734e0b7843baa70a26f40b9e9f1cf14",
+    "tools/fetch_ppu_tests.py": "72fcb7a481862414212b19ee1b1db00aff759211ae5bf6c3d88548130ff70d95",
+    "tools/fetch_roms.py": "2bddf3650f3abb4634ec65cf7d5c97145c307c5981528edc881c76a95e08aced",
+    "tools/benchmark_host.py": "90318975c19a20e4de61fa869245a712bf772b030c7d1b6dc7af6cab5f0e6f16",
+    "tools/fetch_mooneye.py": "93262bb4a233ff6784642f7b783146bbf332e5b090539b7afa8cad5b43623d96",
+    "tools/verify.py": "96b9fe0f01afb4d1230494439f8f45f559bbf3db6f4c038c20f1afa768f596d7",
+    "tools/test_netplay_protocol.py": "5c297615dc0bf3e200f1af6369cb19202fe9440b319f97147b3f96a212e22a7a",
+    "tools/AutopsyInfo.plist": "e120f59abb0da614571e2faa75e07576ae146916fc29cf0ef78541da62cd2a7e",
+    "tools/verify_autopsy.py": "5f9da003c17240f7f8c787bdc017de296a8f4a47e36d838112f89f22938952b6",
+    "tools/verify_all.py": "6a71366a97755b77fe1aad44c3b763c6e292f78319e35094ec73a4d7e170e597",
+    "tools/verify_oam.py": "8ab9b4c42019a69103d00c81dba779374c5ac145846aa8fc187eebe5d648fb44",
+    "tools/verify_harness_io.py": "48b522cba7693121e7b03e8a19081bb5c510d5dadbdc3a7a463bb79a013a653b",
+    "Makefile": "9e00724e7b953b84c0db35f41a4f3ad1540f135c3c56b6da3279e120a9c49387"
+  },
+  "binary": "/Users/home/Documents/Codex/2026-09-07-act-as-a-principal-distributed-systems/dmg/build/dmg",
+  "binary_sha256": "95e3b2480c541d2391be717238d27cf210d72d4170c36629e22fe790d50973ea",
+  "build_checks": [],
+  "selected": [
+    "cpu_instrs/individual/01-special.gb",
+    "cpu_instrs/individual/02-interrupts.gb",
+    "cpu_instrs/individual/03-op sp,hl.gb",
+    "cpu_instrs/individual/04-op r,imm.gb",
+    "cpu_instrs/individual/05-op rp.gb",
+    "cpu_instrs/individual/06-ld r,r.gb",
+    "cpu_instrs/individual/07-jr,jp,call,ret,rst.gb",
+    "cpu_instrs/individual/08-misc instrs.gb",
+    "cpu_instrs/individual/09-op r,r.gb",
+    "cpu_instrs/individual/10-bit ops.gb",
+    "cpu_instrs/individual/11-op a,(hl).gb",
+    "cpu_instrs/cpu_instrs.gb",
+    "instr_timing/instr_timing.gb",
+    "mem_timing/individual/01-read_timing.gb",
+    "mem_timing/individual/02-write_timing.gb",
+    "mem_timing/individual/03-modify_timing.gb",
+    "mem_timing-2/rom_singles/01-read_timing.gb",
+    "mem_timing-2/rom_singles/02-write_timing.gb",
+    "mem_timing-2/rom_singles/03-modify_timing.gb",
+    "halt_bug.gb"
+  ],
+  "oracle_files": {
+    "cgb_sound/cgb_sound.gb": {
+      "bytes": 65536,
+      "sha256": "de2101eb718a2bf5f778df76e73a63f4598d9b471559f9a85adc26efa692053b"
+    },
+    "cgb_sound/readme.txt": {
+      "bytes": 3581,
+      "sha256": "731ee0cf7dc72634630f4d14b3bed84223dee2eac6f019e511c631b3526dc7b6"
+    },
+    "cgb_sound/rom_singles/01-registers.gb": {
+      "bytes": 32768,
+      "sha256": "8415d6c69f7954e9365a586bac235f5ce39270ece32c09cb8ebbbff043b9852c"
+    },
+    "cgb_sound/rom_singles/02-len ctr.gb": {
+      "bytes": 32768,
+      "sha256": "a1ccf47375a2bede3077ac85a4903cb037dd8a4c7c85fc5d0c176af52915271f"
+    },
+    "cgb_sound/rom_singles/03-trigger.gb": {
+      "bytes": 32768,
+      "sha256": "70173be396d14ac955c47aededcee90ba994206cc403273d0bb49ba163ae23ef"
+    },
+    "cgb_sound/rom_singles/04-sweep.gb": {
+      "bytes": 32768,
+      "sha256": "abfd1f6fa9e6701e46135ac9f5bb5b10a46cde22d0fc34922636aa09a5647483"
+    },
+    "cgb_sound/rom_singles/05-sweep details.gb": {
+      "bytes": 32768,
+      "sha256": "f51a80c5538fe4b3afbc5c9af0e689a67869b1e2bbb73d4c60a8874826d056cb"
+    },
+    "cgb_sound/rom_singles/06-overflow on trigger.gb": {
+      "bytes": 32768,
+      "sha256": "5701414d13ba55d25b59d13076e2e9cb59a9da6890595b41464f957605e317c0"
+    },
+    "cgb_sound/rom_singles/07-len sweep period sync.gb": {
+      "bytes": 32768,
+      "sha256": "47d57ba87c3a93050ee340cf49b9d276e62e9573542b92b1de5fa2f17e3716c1"
+    },
+    "cgb_sound/rom_singles/08-len ctr during power.gb": {
+      "bytes": 32768,
+      "sha256": "be7948c70946e0b81c178b8778ef1907231e734650062f8fa8cdb1ceb5ac8c65"
+    },
+    "cgb_sound/rom_singles/09-wave read while on.gb": {
+      "bytes": 32768,
+      "sha256": "9b101c68b2de1930df74c19aaf22cce74d37dd5aade93855c805ecb2e1e83fd3"
+    },
+    "cgb_sound/rom_singles/10-wave trigger while on.gb": {
+      "bytes": 32768,
+      "sha256": "cbea1771a5384f4d8f8a249056224a750ad5ee4671297836e4ba87e689af2a23"
+    },
+    "cgb_sound/rom_singles/11-regs after power.gb": {
+      "bytes": 32768,
+      "sha256": "d347dd195a78c2d0f665b94da493a857218f032b014654b84ddb01f7b8e9befc"
+    },
+    "cgb_sound/rom_singles/12-wave.gb": {
+      "bytes": 32768,
+      "sha256": "7bbd2e78e159de4297f567fec7851f9b90c3076d18d1043af5f30e14bd66cd0a"
+    },
+    "cgb_sound/source/01-registers.s": {
+      "bytes": 2612,
+      "sha256": "de48c286625e93d34d13c1d283b75a175d6e60a7c7a50a145408c07cadb222a1"
+    },
+    "cgb_sound/source/02-len ctr.s": {
+      "bytes": 4814,
+      "sha256": "f8f6c7aa22d31e6ed19a9ce0666f0bcd2a2d349418225b43c68ee08cec6d98ca"
+    },
+    "cgb_sound/source/03-trigger.s": {
+      "bytes": 5578,
+      "sha256": "25bc480e51b0774125bc758543a7e3638873add78b3571aa5392741b60dd1ba7"
+    },
+    "cgb_sound/source/04-sweep.s": {
+      "bytes": 2614,
+      "sha256": "bfc2239e7fab40256545a9201cc949fd8217bf397513f27370bcd58d4d213d71"
+    },
+    "cgb_sound/source/05-sweep details.s": {
+      "bytes": 3323,
+      "sha256": "f2375098a74652fbc0f2698ae24b9175cc930ddce7564c5e06f91ef2aaceffdb"
+    },
+    "cgb_sound/source/06-overflow on trigger.s": {
+      "bytes": 1109,
+      "sha256": "426dc9bc51e5ce9564e35f671eddbb3cf8d10c36c8a74f62aa11f4f080681fe0"
+    },
+    "cgb_sound/source/07-len sweep period sync.s": {
+      "bytes": 2371,
+      "sha256": "359b9fc745c5c70acf2fa44dd207ac1332666395604868630839055fcdc1ec83"
+    },
+    "cgb_sound/source/08-len ctr during power.s": {
+      "bytes": 1595,
+      "sha256": "293dd1f94fda93ba49db9a8135c6de4dcca513ca496a6fe54a90c153d9d49164"
+    },
+    "cgb_sound/source/09-wave read while on.s": {
+      "bytes": 827,
+      "sha256": "6c3c6016627a575e4be33df31657d9a8ff0a5cdb9f5abf2890664e308afa6a91"
+    },
+    "cgb_sound/source/10-wave trigger while on.s": {
+      "bytes": 980,
+      "sha256": "4cefd3a1b40dcd6737517f31b68eaceddb9ac6f05b5608f1c3e7d80100ca3316"
+    },
+    "cgb_sound/source/11-regs after power.s": {
+      "bytes": 1027,
+      "sha256": "529ff1d42ea249d3b6bc34764bb2e4fc40c62e7b11c8e3a2d8406ac859d954c7"
+    },
+    "cgb_sound/source/12-wave.s": {
+      "bytes": 2286,
+      "sha256": "174e47b8e90ffcb3ad44a7ac776f62b35d3db765574a26f100fcb0c70a4bfbd2"
+    },
+    "cgb_sound/source/common/build_gbs.s": {
+      "bytes": 2514,
+      "sha256": "e1b9bf0f6240bf5c2737ef0b54ce5fe00bd0299115dc68197c2d0849e5d63f24"
+    },
+    "cgb_sound/source/common/build_rom.s": {
+      "bytes": 1346,
+      "sha256": "e2ab3eb9ccbb3df393e22141a4d620a6117265e28f5d82be804877cbcbdaf6be"
+    },
+    "cgb_sound/source/common/console.s": {
+      "bytes": 5281,
+      "sha256": "d2f5c3d09ab2266cff315bf71ca65cfce9017fdfd8733e4de1786dce4ff16bfe"
+    },
+    "cgb_sound/source/common/crc.s": {
+      "bytes": 1224,
+      "sha256": "b3c2141dadf536e67345db4912e2859540f96abaef905cdec7ce46f69db31111"
+    },
+    "cgb_sound/source/common/delay.s": {
+      "bytes": 5841,
+      "sha256": "36df84f15c9aee1da9e0d717cedf2dcb01483b5a47dfde7d7ad72be409300fc7"
+    },
+    "cgb_sound/source/common/gb.inc": {
+      "bytes": 1741,
+      "sha256": "12c4dfd275a9cce7d4e49e99f1c53390047d49c2fa6199e47684651cb51ffbc7"
+    },
+    "cgb_sound/source/common/macros.inc": {
+      "bytes": 1685,
+      "sha256": "e85f4a4805e2a996431bbf9566eb8785eaa7883adca9803860649e41edf266fa"
+    },
+    "cgb_sound/source/common/numbers.s": {
+      "bytes": 2575,
+      "sha256": "7e75323a7e3f33de1a1f3adec0f10747f0dbab73832243788e9b9f938f1f0c33"
+    },
+    "cgb_sound/source/common/printing.s": {
+      "bytes": 1380,
+      "sha256": "f137fb456ab29768ca99aa31931339b69fa817b1482c52ab0a5a1576a97454d4"
+    },
+    "cgb_sound/source/common/shell.s": {
+      "bytes": 5162,
+      "sha256": "acfb6c7f6433fbb023103f299d6d26badf450671254c4c7e2e1d9ad1d4e11137"
+    },
+    "cgb_sound/source/common/testing.s": {
+      "bytes": 3488,
+      "sha256": "ae3f594bafeceebf6c11722c3d5ed8f4eae408d790480a93b2b72c1532671dca"
+    },
+    "cgb_sound/source/readme.txt": {
+      "bytes": 2711,
+      "sha256": "538ce25d3bf4058a4fbb2e30f4a2b8966b10c69bb4c082e49f51a79bf63705c6"
+    },
+    "cgb_sound/source/shell.inc": {
+      "bytes": 454,
+      "sha256": "955da66c9cf04fc67074cf9dcf6afe1e5c9a7fc9e307e0041ffd04c026baf815"
+    },
+    "cpu_instrs/cpu_instrs.gb": {
+      "bytes": 65536,
+      "sha256": "8c5e12f41e0ba5bbca796944f92ffe6de28809198682c4332e38d1b3cf56fcf2"
+    },
+    "cpu_instrs/individual/01-special.gb": {
+      "bytes": 32768,
+      "sha256": "fe61349cbaee10cc384b50f356e541c90d1bc380185716706b5d8c465a03cf89"
+    },
+    "cpu_instrs/individual/02-interrupts.gb": {
+      "bytes": 32768,
+      "sha256": "fb90b0d2b9501910c49709abda1d8e70f757dc12020ebf8409a7779bbfd12229"
+    },
+    "cpu_instrs/individual/03-op sp,hl.gb": {
+      "bytes": 32768,
+      "sha256": "ca553e606d9b9c86fbd318f1b916c6f0b9df0cf1774825d4361a3fdff2e5a136"
+    },
+    "cpu_instrs/individual/04-op r,imm.gb": {
+      "bytes": 32768,
+      "sha256": "7686aa7a39ef3d2520ec1037371b5f94dc283fbbfd0f5051d1f64d987bdd6671"
+    },
+    "cpu_instrs/individual/05-op rp.gb": {
+      "bytes": 32768,
+      "sha256": "d504adfa0a4c4793436a154f14492f044d38b3c6db9efc44138f3c9ad138b775"
+    },
+    "cpu_instrs/individual/06-ld r,r.gb": {
+      "bytes": 32768,
+      "sha256": "17ada54b0b9c1a33cd5429fce5b765e42392189ca36da96312222ffe309e7ed1"
+    },
+    "cpu_instrs/individual/07-jr,jp,call,ret,rst.gb": {
+      "bytes": 32768,
+      "sha256": "ab31d3daaaa3a98bdbd9395b64f48c1bdaa889aba5b19dd5aaff4ec2a7d228a3"
+    },
+    "cpu_instrs/individual/08-misc instrs.gb": {
+      "bytes": 32768,
+      "sha256": "974a71fe4c67f70f5cc6e98d4dc8c096057ff8a028b7bfa9f7a4330038cf8b7e"
+    },
+    "cpu_instrs/individual/09-op r,r.gb": {
+      "bytes": 32768,
+      "sha256": "b28e1be5cd95f22bd1ecacdd33c6f03e607d68870e31a47b15a0229033d5ba2a"
+    },
+    "cpu_instrs/individual/10-bit ops.gb": {
+      "bytes": 32768,
+      "sha256": "7f5b8e488c6988b5aaba8c2a74529b7c180c55a58449d5ee89d606a07c53514a"
+    },
+    "cpu_instrs/individual/11-op a,(hl).gb": {
+      "bytes": 32768,
+      "sha256": "0ec0cf9fda3f00becaefa476df6fb526c434abd9d4a4beac237c2c2692dac5d3"
+    },
+    "cpu_instrs/readme.txt": {
+      "bytes": 5044,
+      "sha256": "51e7bc7505729bb8755adc5c483e0dbc9474188cd75abe2e0917ca2f1d296ea1"
+    },
+    "cpu_instrs/source/01-special.s": {
+      "bytes": 1128,
+      "sha256": "8d652540b746a08e982926da1d86b454a5667d0faf88411cf8aa822889b3176d"
+    },
+    "cpu_instrs/source/02-interrupts.s": {
+      "bytes": 1217,
+      "sha256": "9e72663c093d410fc99afa98ddbf5206403d5369b2d61f138b25f453662f309e"
+    },
+    "cpu_instrs/source/03-op sp,hl.s": {
+      "bytes": 1981,
+      "sha256": "3e1dbda08a416965f885d107fd70fdde01fe0ac55ad2cc97886562b8da9dbda6"
+    },
+    "cpu_instrs/source/04-op r,imm.s": {
+      "bytes": 1880,
+      "sha256": "815d5772eb199bb285cfcb1ffcedef8aecfbc91fc96e3920d6360964d30a2c60"
+    },
+    "cpu_instrs/source/05-op rp.s": {
+      "bytes": 1846,
+      "sha256": "288c2c7101402a47aadcdad9e7f717c26c8aa027182c29af22e30be9d55f8111"
+    },
+    "cpu_instrs/source/06-ld r,r.s": {
+      "bytes": 3712,
+      "sha256": "5f65561d3a90752e5bf26e293f29a8fa9cef744188568b38eb6144e099911d2e"
+    },
+    "cpu_instrs/source/07-jr,jp,call,ret,rst.s": {
+      "bytes": 3131,
+      "sha256": "67a82348e009df4c77c4c26cb7e50fbab7d598f8da624cbc3dd0239e61dfc760"
+    },
+    "cpu_instrs/source/08-misc instrs.s": {
+      "bytes": 2530,
+      "sha256": "066be3a7ed3b1cc8cef0a1396054f619c8272f309ba630f6a011fd45cecd5f4b"
+    },
+    "cpu_instrs/source/09-op r,r.s": {
+      "bytes": 7694,
+      "sha256": "b742277fcc4070e3ac9385831642e5930a678138c1923236cdb753adc1b70b88"
+    },
+    "cpu_instrs/source/10-bit ops.s": {
+      "bytes": 9892,
+      "sha256": "6618eaea78250be487087ed3c98448b087663cceb59acfa6c498b9153d657639"
+    },
+    "cpu_instrs/source/11-op a,(hl).s": {
+      "bytes": 4409,
+      "sha256": "c8688497804e9fbb019cc71ec0ecd211231dc180f7d5c5f38f993018b3efeb9f"
+    },
+    "cpu_instrs/source/common/apu.s": {
+      "bytes": 4343,
+      "sha256": "0bb6d22d2a418d913135cad0542f77907c57e0cbba3b73314736f72a6f936b1b"
+    },
+    "cpu_instrs/source/common/build_gbs.s": {
+      "bytes": 1941,
+      "sha256": "283ad07210d226c1e9ce0c6d10c157eb259e5009b67e58941cf893759acdc3a1"
+    },
+    "cpu_instrs/source/common/build_rom.s": {
+      "bytes": 1277,
+      "sha256": "e71863ed8c788970223bf4c70b92d7a32cb9f661f322d1a2705e0a8571b4c7a6"
+    },
+    "cpu_instrs/source/common/checksums.s": {
+      "bytes": 1751,
+      "sha256": "dfd33fdbf57a9e79c73413f68fdeb34da917eba24fc84468a0c26f3f8022e681"
+    },
+    "cpu_instrs/source/common/console.s": {
+      "bytes": 5377,
+      "sha256": "495c8705f83480a989b33d32128c0e4d6dd00d80427b4efe30568ad147a466d6"
+    },
+    "cpu_instrs/source/common/cpu_speed.s": {
+      "bytes": 1035,
+      "sha256": "78637bfcd9e6910bb7298b960685fab130e0cce974fe401d80e86e9ab3b002c8"
+    },
+    "cpu_instrs/source/common/crc.s": {
+      "bytes": 1224,
+      "sha256": "b3c2141dadf536e67345db4912e2859540f96abaef905cdec7ce46f69db31111"
+    },
+    "cpu_instrs/source/common/crc_fast.s": {
+      "bytes": 1579,
+      "sha256": "03fe7a3e66a2769e07b5bd4eba6cf1d7aafc40fc6ba1bc10b7c0f14977bf4f15"
+    },
+    "cpu_instrs/source/common/delay.s": {
+      "bytes": 5856,
+      "sha256": "74017361df9197c9dda157a28af40ca3890323ef313b2dad5936eee3218651ca"
+    },
+    "cpu_instrs/source/common/gb.inc": {
+      "bytes": 1303,
+      "sha256": "78812858fd240f4de3da817236016cdcd7497895ecadbedfd8a79942304b0748"
+    },
+    "cpu_instrs/source/common/instr_test.s": {
+      "bytes": 1783,
+      "sha256": "ff7813e939089227bb1b9ce4a36d58c2ab3e6604cebfc2432b2af863126e25c8"
+    },
+    "cpu_instrs/source/common/macros.inc": {
+      "bytes": 1398,
+      "sha256": "c0a337b0472bc6204b0502973d749397f24f65bb5ec4584df417ce840acc9845"
+    },
+    "cpu_instrs/source/common/multi_custom.s": {
+      "bytes": 432,
+      "sha256": "cbf7cd06585f3cce0f323f4c8091c19c7a72e8200da553daf956edf35af35c9f"
+    },
+    "cpu_instrs/source/common/numbers.s": {
+      "bytes": 2575,
+      "sha256": "7e75323a7e3f33de1a1f3adec0f10747f0dbab73832243788e9b9f938f1f0c33"
+    },
+    "cpu_instrs/source/common/printing.s": {
+      "bytes": 1777,
+      "sha256": "e2480ab4988ff5f1ad66cb1c1724efd9ae9c45b6cc7497e4e35c05839ef7d477"
+    },
+    "cpu_instrs/source/common/runtime.s": {
+      "bytes": 2793,
+      "sha256": "cc30dad4456598fb93c9c598a08835118cf57db3cff434d7ad39867b89a75138"
+    },
+    "cpu_instrs/source/common/testing.s": {
+      "bytes": 3011,
+      "sha256": "fcf01d0695697454543e470218012014bfdeef68b6adb757a8d87567d55532d3"
+    },
+    "cpu_instrs/source/shell.inc": {
+      "bytes": 326,
+      "sha256": "a8762942908099f8bf3f4e345f6df776755d3807739e61f8985fafb828ecdda0"
+    },
+    "dmg_sound/dmg_sound.gb": {
+      "bytes": 65536,
+      "sha256": "c34e740664eb14b42c39750434e3e105fc92d774a98fb671594a48e972401630"
+    },
+    "dmg_sound/readme.txt": {
+      "bytes": 3581,
+      "sha256": "731ee0cf7dc72634630f4d14b3bed84223dee2eac6f019e511c631b3526dc7b6"
+    },
+    "dmg_sound/rom_singles/01-registers.gb": {
+      "bytes": 32768,
+      "sha256": "c6b9fa4b9d9d26919b33ebe78a6ef19ad2df854186cf741ca2746179cc9fc3f1"
+    },
+    "dmg_sound/rom_singles/02-len ctr.gb": {
+      "bytes": 32768,
+      "sha256": "745544125a5065729cab22494a79f65c3836e4426f89e4cc43d330afe711b413"
+    },
+    "dmg_sound/rom_singles/03-trigger.gb": {
+      "bytes": 32768,
+      "sha256": "bb11e7266a7143bafb8aa2a73ca70957c6011f36cd4e0b6aaf0678378294e75c"
+    },
+    "dmg_sound/rom_singles/04-sweep.gb": {
+      "bytes": 32768,
+      "sha256": "58bc14541d91bb020c7761b423825b3432cfde7ee2fa4d1116126e4cb9573c7e"
+    },
+    "dmg_sound/rom_singles/05-sweep details.gb": {
+      "bytes": 32768,
+      "sha256": "f582ca3a0b2544b9510797d7d4dd56a17f53e000511b0ae88a6353200dcd9167"
+    },
+    "dmg_sound/rom_singles/06-overflow on trigger.gb": {
+      "bytes": 32768,
+      "sha256": "1a511e95e84ed6fe6077cabf451a98b4e01fdef59cadae3efbc178113eb064b1"
+    },
+    "dmg_sound/rom_singles/07-len sweep period sync.gb": {
+      "bytes": 32768,
+      "sha256": "56bf5b0c18b996929c9b052ba5a02b450cb619bb6c24cc1d34ea20951c977bf7"
+    },
+    "dmg_sound/rom_singles/08-len ctr during power.gb": {
+      "bytes": 32768,
+      "sha256": "31cb41f7be106a708ec0bc94f2a9d0b506d247cd591e9d0a2a6a960dc3bf6595"
+    },
+    "dmg_sound/rom_singles/09-wave read while on.gb": {
+      "bytes": 32768,
+      "sha256": "378b86f6a25daa16855260d7ef0c24e48146ba05df434a0b5413983a1447e875"
+    },
+    "dmg_sound/rom_singles/10-wave trigger while on.gb": {
+      "bytes": 32768,
+      "sha256": "fa63c8ed7473411e54285d318e33bf23ff6d637ed2caa7555ddeaf80578e3279"
+    },
+    "dmg_sound/rom_singles/11-regs after power.gb": {
+      "bytes": 32768,
+      "sha256": "d27dab46e8b881028723f1975328572d38e25d295289b974cd698916a0be5dab"
+    },
+    "dmg_sound/rom_singles/12-wave write while on.gb": {
+      "bytes": 32768,
+      "sha256": "2efbecd2c6d40928d44f45da4f634626bcd2790165b3949aedfe377c73913774"
+    },
+    "dmg_sound/source/01-registers.s": {
+      "bytes": 2612,
+      "sha256": "de48c286625e93d34d13c1d283b75a175d6e60a7c7a50a145408c07cadb222a1"
+    },
+    "dmg_sound/source/02-len ctr.s": {
+      "bytes": 4814,
+      "sha256": "f8f6c7aa22d31e6ed19a9ce0666f0bcd2a2d349418225b43c68ee08cec6d98ca"
+    },
+    "dmg_sound/source/03-trigger.s": {
+      "bytes": 5578,
+      "sha256": "25bc480e51b0774125bc758543a7e3638873add78b3571aa5392741b60dd1ba7"
+    },
+    "dmg_sound/source/04-sweep.s": {
+      "bytes": 2614,
+      "sha256": "bfc2239e7fab40256545a9201cc949fd8217bf397513f27370bcd58d4d213d71"
+    },
+    "dmg_sound/source/05-sweep details.s": {
+      "bytes": 3323,
+      "sha256": "f2375098a74652fbc0f2698ae24b9175cc930ddce7564c5e06f91ef2aaceffdb"
+    },
+    "dmg_sound/source/06-overflow on trigger.s": {
+      "bytes": 1109,
+      "sha256": "426dc9bc51e5ce9564e35f671eddbb3cf8d10c36c8a74f62aa11f4f080681fe0"
+    },
+    "dmg_sound/source/07-len sweep period sync.s": {
+      "bytes": 2371,
+      "sha256": "359b9fc745c5c70acf2fa44dd207ac1332666395604868630839055fcdc1ec83"
+    },
+    "dmg_sound/source/08-len ctr during power.s": {
+      "bytes": 1595,
+      "sha256": "293dd1f94fda93ba49db9a8135c6de4dcca513ca496a6fe54a90c153d9d49164"
+    },
+    "dmg_sound/source/09-wave read while on.s": {
+      "bytes": 827,
+      "sha256": "6c3c6016627a575e4be33df31657d9a8ff0a5cdb9f5abf2890664e308afa6a91"
+    },
+    "dmg_sound/source/10-wave trigger while on.s": {
+      "bytes": 980,
+      "sha256": "4cefd3a1b40dcd6737517f31b68eaceddb9ac6f05b5608f1c3e7d80100ca3316"
+    },
+    "dmg_sound/source/11-regs after power.s": {
+      "bytes": 1088,
+      "sha256": "d0e251288cb9bf2c6e0608bde211ed1bc06aa45df60bc914a245e14bffe3130f"
+    },
+    "dmg_sound/source/12-wave write while on.s": {
+      "bytes": 972,
+      "sha256": "941479b313e04496a29dce2eb4fe363473909f32993a60ecad11c7d1df1f7d13"
+    },
+    "dmg_sound/source/common/build_gbs.s": {
+      "bytes": 2514,
+      "sha256": "e1b9bf0f6240bf5c2737ef0b54ce5fe00bd0299115dc68197c2d0849e5d63f24"
+    },
+    "dmg_sound/source/common/build_rom.s": {
+      "bytes": 1354,
+      "sha256": "05071fd7274e21ab950e741e09035df9233c9b207e8d4c1cc7ff8e31c507530d"
+    },
+    "dmg_sound/source/common/console.s": {
+      "bytes": 5281,
+      "sha256": "d2f5c3d09ab2266cff315bf71ca65cfce9017fdfd8733e4de1786dce4ff16bfe"
+    },
+    "dmg_sound/source/common/crc.s": {
+      "bytes": 1224,
+      "sha256": "b3c2141dadf536e67345db4912e2859540f96abaef905cdec7ce46f69db31111"
+    },
+    "dmg_sound/source/common/delay.s": {
+      "bytes": 5841,
+      "sha256": "36df84f15c9aee1da9e0d717cedf2dcb01483b5a47dfde7d7ad72be409300fc7"
+    },
+    "dmg_sound/source/common/gb.inc": {
+      "bytes": 1741,
+      "sha256": "12c4dfd275a9cce7d4e49e99f1c53390047d49c2fa6199e47684651cb51ffbc7"
+    },
+    "dmg_sound/source/common/macros.inc": {
+      "bytes": 1685,
+      "sha256": "e85f4a4805e2a996431bbf9566eb8785eaa7883adca9803860649e41edf266fa"
+    },
+    "dmg_sound/source/common/numbers.s": {
+      "bytes": 2575,
+      "sha256": "7e75323a7e3f33de1a1f3adec0f10747f0dbab73832243788e9b9f938f1f0c33"
+    },
+    "dmg_sound/source/common/printing.s": {
+      "bytes": 1380,
+      "sha256": "f137fb456ab29768ca99aa31931339b69fa817b1482c52ab0a5a1576a97454d4"
+    },
+    "dmg_sound/source/common/shell.s": {
+      "bytes": 5162,
+      "sha256": "acfb6c7f6433fbb023103f299d6d26badf450671254c4c7e2e1d9ad1d4e11137"
+    },
+    "dmg_sound/source/common/testing.s": {
+      "bytes": 3488,
+      "sha256": "ae3f594bafeceebf6c11722c3d5ed8f4eae408d790480a93b2b72c1532671dca"
+    },
+    "dmg_sound/source/readme.txt": {
+      "bytes": 2711,
+      "sha256": "538ce25d3bf4058a4fbb2e30f4a2b8966b10c69bb4c082e49f51a79bf63705c6"
+    },
+    "dmg_sound/source/shell.inc": {
+      "bytes": 454,
+      "sha256": "955da66c9cf04fc67074cf9dcf6afe1e5c9a7fc9e307e0041ffd04c026baf815"
+    },
+    "halt_bug.gb": {
+      "bytes": 32768,
+      "sha256": "ddebfb81f992132954a5580e16cfb97346a4e061c762634d7701328e23fea7c6"
+    },
+    "instr_timing/instr_timing.gb": {
+      "bytes": 32768,
+      "sha256": "646067b3d6c79fda810e9c3f1cb7c0efd5abb0a7ac06437c54e65720c15d9925"
+    },
+    "instr_timing/readme.txt": {
+      "bytes": 5156,
+      "sha256": "1b57d7f2983b9d5a21d5060441f5229f730fd2a779651ed6e520aa31d0370013"
+    },
+    "instr_timing/source/common/build_gbs.s": {
+      "bytes": 1941,
+      "sha256": "283ad07210d226c1e9ce0c6d10c157eb259e5009b67e58941cf893759acdc3a1"
+    },
+    "instr_timing/source/common/build_rom.s": {
+      "bytes": 1277,
+      "sha256": "e71863ed8c788970223bf4c70b92d7a32cb9f661f322d1a2705e0a8571b4c7a6"
+    },
+    "instr_timing/source/common/console.s": {
+      "bytes": 5377,
+      "sha256": "495c8705f83480a989b33d32128c0e4d6dd00d80427b4efe30568ad147a466d6"
+    },
+    "instr_timing/source/common/crc.s": {
+      "bytes": 1224,
+      "sha256": "b3c2141dadf536e67345db4912e2859540f96abaef905cdec7ce46f69db31111"
+    },
+    "instr_timing/source/common/delay.s": {
+      "bytes": 5856,
+      "sha256": "74017361df9197c9dda157a28af40ca3890323ef313b2dad5936eee3218651ca"
+    },
+    "instr_timing/source/common/gb.inc": {
+      "bytes": 1303,
+      "sha256": "78812858fd240f4de3da817236016cdcd7497895ecadbedfd8a79942304b0748"
+    },
+    "instr_timing/source/common/macros.inc": {
+      "bytes": 1398,
+      "sha256": "c0a337b0472bc6204b0502973d749397f24f65bb5ec4584df417ce840acc9845"
+    },
+    "instr_timing/source/common/numbers.s": {
+      "bytes": 2575,
+      "sha256": "7e75323a7e3f33de1a1f3adec0f10747f0dbab73832243788e9b9f938f1f0c33"
+    },
+    "instr_timing/source/common/printing.s": {
+      "bytes": 1777,
+      "sha256": "e2480ab4988ff5f1ad66cb1c1724efd9ae9c45b6cc7497e4e35c05839ef7d477"
+    },
+    "instr_timing/source/common/runtime.s": {
+      "bytes": 2793,
+      "sha256": "cc30dad4456598fb93c9c598a08835118cf57db3cff434d7ad39867b89a75138"
+    },
+    "instr_timing/source/common/testing.s": {
+      "bytes": 3011,
+      "sha256": "fcf01d0695697454543e470218012014bfdeef68b6adb757a8d87567d55532d3"
+    },
+    "instr_timing/source/common/timer.s": {
+      "bytes": 1649,
+      "sha256": "833bb94ede6b4ea8b09cef99595a7c6815980f0ae9bc3818f84aa1a4e8f67fbc"
+    },
+    "instr_timing/source/instr_timing.s": {
+      "bytes": 7656,
+      "sha256": "6d28c5898c083c3a48b20831508a57da553bfbf5490eb132ec4bdd9c4e892ff2"
+    },
+    "instr_timing/source/shell.inc": {
+      "bytes": 326,
+      "sha256": "a8762942908099f8bf3f4e345f6df776755d3807739e61f8985fafb828ecdda0"
+    },
+    "interrupt_time/interrupt_time.gb": {
+      "bytes": 32768,
+      "sha256": "1a8f8f3bc609a92a5838214c00906c81e7cc77b3b9a63be5a1ec6d513f234929"
+    },
+    "interrupt_time/interrupt_time.s": {
+      "bytes": 1095,
+      "sha256": "943747a7a5d8a488aaefe5c74fb048c7dff3246f8a3840bb14f7ec44530e55a5"
+    },
+    "mem_timing-2/mem_timing.gb": {
+      "bytes": 65536,
+      "sha256": "ab9daf4c51f417c468ad0a61dab66872cf8b5a50e6eb08d989b581d15f3cf461"
+    },
+    "mem_timing-2/readme.txt": {
+      "bytes": 4728,
+      "sha256": "2c5ea06c924be8ef1ab32f1afea36868aeed143b20aeec52c70abb875c9aafcb"
+    },
+    "mem_timing-2/rom_singles/01-read_timing.gb": {
+      "bytes": 32768,
+      "sha256": "d9c6e86b7008fdaec2d4345c59192af4cea98b812e9b7b07239d16ad6770b576"
+    },
+    "mem_timing-2/rom_singles/02-write_timing.gb": {
+      "bytes": 32768,
+      "sha256": "9188e5d9cf9dfc9e25f7b7c5d67e5c8e36e1b25e5ef4be0089dad1ddb526706a"
+    },
+    "mem_timing-2/rom_singles/03-modify_timing.gb": {
+      "bytes": 32768,
+      "sha256": "818256ab477bb8fbb0709d28e3ec932a55c0ecd044292e760838efbb2b7fc09b"
+    },
+    "mem_timing-2/source/01-read_timing.s": {
+      "bytes": 3183,
+      "sha256": "8734f2d9fbfc06221694d19ffb6c9e91e8c611551b88159506b84c218e11b3ff"
+    },
+    "mem_timing-2/source/02-write_timing.s": {
+      "bytes": 2227,
+      "sha256": "483b22c85aac5d0f7153eff6266f04224427edb5db697ba5f07fffa2400bd26c"
+    },
+    "mem_timing-2/source/03-modify_timing.s": {
+      "bytes": 3248,
+      "sha256": "da12b437d28c24a83af36f393678a89f673fa313a5739c20c184d2a1b9b829b6"
+    },
+    "mem_timing-2/source/common/build_gbs.s": {
+      "bytes": 2514,
+      "sha256": "e1b9bf0f6240bf5c2737ef0b54ce5fe00bd0299115dc68197c2d0849e5d63f24"
+    },
+    "mem_timing-2/source/common/build_rom.s": {
+      "bytes": 1595,
+      "sha256": "553f10ad3e565859c647cd95f75f5fd73403573ef533de7b9cfc21885e17e4b2"
+    },
+    "mem_timing-2/source/common/console.s": {
+      "bytes": 5281,
+      "sha256": "d2f5c3d09ab2266cff315bf71ca65cfce9017fdfd8733e4de1786dce4ff16bfe"
+    },
+    "mem_timing-2/source/common/crc.s": {
+      "bytes": 1224,
+      "sha256": "b3c2141dadf536e67345db4912e2859540f96abaef905cdec7ce46f69db31111"
+    },
+    "mem_timing-2/source/common/delay.s": {
+      "bytes": 5841,
+      "sha256": "36df84f15c9aee1da9e0d717cedf2dcb01483b5a47dfde7d7ad72be409300fc7"
+    },
+    "mem_timing-2/source/common/gb.inc": {
+      "bytes": 1741,
+      "sha256": "12c4dfd275a9cce7d4e49e99f1c53390047d49c2fa6199e47684651cb51ffbc7"
+    },
+    "mem_timing-2/source/common/macros.inc": {
+      "bytes": 1685,
+      "sha256": "e85f4a4805e2a996431bbf9566eb8785eaa7883adca9803860649e41edf266fa"
+    },
+    "mem_timing-2/source/common/numbers.s": {
+      "bytes": 2575,
+      "sha256": "7e75323a7e3f33de1a1f3adec0f10747f0dbab73832243788e9b9f938f1f0c33"
+    },
+    "mem_timing-2/source/common/printing.s": {
+      "bytes": 1380,
+      "sha256": "f137fb456ab29768ca99aa31931339b69fa817b1482c52ab0a5a1576a97454d4"
+    },
+    "mem_timing-2/source/common/shell.s": {
+      "bytes": 5232,
+      "sha256": "9c642def0d48bdaad9fa9cca6ee53bd1c888a477822b12bc81643e26f9262d1e"
+    },
+    "mem_timing-2/source/common/testing.s": {
+      "bytes": 3488,
+      "sha256": "ae3f594bafeceebf6c11722c3d5ed8f4eae408d790480a93b2b72c1532671dca"
+    },
+    "mem_timing-2/source/common/tima_64.s": {
+      "bytes": 573,
+      "sha256": "2b0f0742dafff8bc363ec83d3b6436f4adab083fe0fa186becde2461da6c0785"
+    },
+    "mem_timing-2/source/readme.txt": {
+      "bytes": 2711,
+      "sha256": "538ce25d3bf4058a4fbb2e30f4a2b8966b10c69bb4c082e49f51a79bf63705c6"
+    },
+    "mem_timing-2/source/shell.inc": {
+      "bytes": 454,
+      "sha256": "955da66c9cf04fc67074cf9dcf6afe1e5c9a7fc9e307e0041ffd04c026baf815"
+    },
+    "mem_timing/individual/01-read_timing.gb": {
+      "bytes": 32768,
+      "sha256": "52724532c5709e38e947eb429337c124c38bc68f373874435a7460548098b617"
+    },
+    "mem_timing/individual/02-write_timing.gb": {
+      "bytes": 32768,
+      "sha256": "eea92d3f4e95aab5910e0f7080916a3c42a2b8deae1ee5d45d1e3751d648f3f6"
+    },
+    "mem_timing/individual/03-modify_timing.gb": {
+      "bytes": 32768,
+      "sha256": "2e9067c670ff8b45916bf321677ad04a6896d06a057dbcb82ae9f208a1ae9c34"
+    },
+    "mem_timing/mem_timing.gb": {
+      "bytes": 65536,
+      "sha256": "791cb418fd054b482a6ada5017e2405b96c2373a0f3914c6b23afeee76fa98ce"
+    },
+    "mem_timing/readme.txt": {
+      "bytes": 4966,
+      "sha256": "92d647cd3fdaee02095cfd6d91a80b7cb3322230bcbfbf9b2cd2e31f57ebe610"
+    },
+    "mem_timing/source/01-read_timing.s": {
+      "bytes": 3159,
+      "sha256": "9c7cfd8d44fa3913ac1b58169714ac13220cf9cd15b835884928540ef1e57a0a"
+    },
+    "mem_timing/source/02-write_timing.s": {
+      "bytes": 2227,
+      "sha256": "483b22c85aac5d0f7153eff6266f04224427edb5db697ba5f07fffa2400bd26c"
+    },
+    "mem_timing/source/03-modify_timing.s": {
+      "bytes": 3248,
+      "sha256": "da12b437d28c24a83af36f393678a89f673fa313a5739c20c184d2a1b9b829b6"
+    },
+    "mem_timing/source/common/build_gbs.s": {
+      "bytes": 1941,
+      "sha256": "283ad07210d226c1e9ce0c6d10c157eb259e5009b67e58941cf893759acdc3a1"
+    },
+    "mem_timing/source/common/build_rom.s": {
+      "bytes": 1277,
+      "sha256": "e71863ed8c788970223bf4c70b92d7a32cb9f661f322d1a2705e0a8571b4c7a6"
+    },
+    "mem_timing/source/common/console.s": {
+      "bytes": 5377,
+      "sha256": "495c8705f83480a989b33d32128c0e4d6dd00d80427b4efe30568ad147a466d6"
+    },
+    "mem_timing/source/common/crc.s": {
+      "bytes": 1224,
+      "sha256": "b3c2141dadf536e67345db4912e2859540f96abaef905cdec7ce46f69db31111"
+    },
+    "mem_timing/source/common/delay.s": {
+      "bytes": 5856,
+      "sha256": "74017361df9197c9dda157a28af40ca3890323ef313b2dad5936eee3218651ca"
+    },
+    "mem_timing/source/common/gb.inc": {
+      "bytes": 1303,
+      "sha256": "78812858fd240f4de3da817236016cdcd7497895ecadbedfd8a79942304b0748"
+    },
+    "mem_timing/source/common/macros.inc": {
+      "bytes": 1398,
+      "sha256": "c0a337b0472bc6204b0502973d749397f24f65bb5ec4584df417ce840acc9845"
+    },
+    "mem_timing/source/common/numbers.s": {
+      "bytes": 2575,
+      "sha256": "7e75323a7e3f33de1a1f3adec0f10747f0dbab73832243788e9b9f938f1f0c33"
+    },
+    "mem_timing/source/common/printing.s": {
+      "bytes": 1777,
+      "sha256": "e2480ab4988ff5f1ad66cb1c1724efd9ae9c45b6cc7497e4e35c05839ef7d477"
+    },
+    "mem_timing/source/common/runtime.s": {
+      "bytes": 2793,
+      "sha256": "cc30dad4456598fb93c9c598a08835118cf57db3cff434d7ad39867b89a75138"
+    },
+    "mem_timing/source/common/testing.s": {
+      "bytes": 3011,
+      "sha256": "fcf01d0695697454543e470218012014bfdeef68b6adb757a8d87567d55532d3"
+    },
+    "mem_timing/source/common/tima_64.s": {
+      "bytes": 519,
+      "sha256": "49c426991c66fa51ab6c7776378362409198c9fe2d0bcd6c67ec8dc13d570003"
+    },
+    "mem_timing/source/shell.inc": {
+      "bytes": 326,
+      "sha256": "a8762942908099f8bf3f4e345f6df776755d3807739e61f8985fafb828ecdda0"
+    },
+    "oam_bug/oam_bug.gb": {
+      "bytes": 65536,
+      "sha256": "21f0e7af73e525d14ca242ba28f97d4d381a40a61b3466dd6b4cae3e502e1ea1"
+    },
+    "oam_bug/readme.txt": {
+      "bytes": 4143,
+      "sha256": "78cb299c44f740309ab8d68388337e243fa751845718272b45318b6228e2b867"
+    },
+    "oam_bug/rom_singles/1-lcd_sync.gb": {
+      "bytes": 32768,
+      "sha256": "abc303a2c644528cbcf36e83f8020cad17fdb6abdf42940533c4f6c8830c530a"
+    },
+    "oam_bug/rom_singles/2-causes.gb": {
+      "bytes": 32768,
+      "sha256": "3f9c0db75222aae7c47382fe814b3806735b9ef76c791c6c26985b55c82235b9"
+    },
+    "oam_bug/rom_singles/3-non_causes.gb": {
+      "bytes": 32768,
+      "sha256": "33e474075def3c025ff7990af82f1effb31e83617fb88aa1ee401976c35b8978"
+    },
+    "oam_bug/rom_singles/4-scanline_timing.gb": {
+      "bytes": 32768,
+      "sha256": "5527c97665c3ad5474e5bda53a7e8e629bb1d0cb8ec54e6a1b42946dc9835ec7"
+    },
+    "oam_bug/rom_singles/5-timing_bug.gb": {
+      "bytes": 32768,
+      "sha256": "ca3500d92e77883a09e5bc560046ed3471ab362eca550689cd38a944dc558e4f"
+    },
+    "oam_bug/rom_singles/6-timing_no_bug.gb": {
+      "bytes": 32768,
+      "sha256": "e5ea594ddc7ad9a0e3063c3d6b050a2a10239cd43a23012551d4985c3712ea70"
+    },
+    "oam_bug/rom_singles/7-timing_effect.gb": {
+      "bytes": 32768,
+      "sha256": "b4bb86462a5701155d92ea7dafe826cbffae6faec2c48c10feef0a5f78154d6c"
+    },
+    "oam_bug/rom_singles/8-instr_effect.gb": {
+      "bytes": 32768,
+      "sha256": "11b372a91f65dd3bd2570aafc6f26e201fc0f05955ba3bb57f4c17cd642f7b2d"
+    },
+    "oam_bug/source/1-lcd_sync.s": {
+      "bytes": 710,
+      "sha256": "c02200bb8ccd4fcbd17c14cb420228ed7192e2692953eb5df0b5349e1ee41fbb"
+    },
+    "oam_bug/source/2-causes.s": {
+      "bytes": 1451,
+      "sha256": "750e2d34ed7407ef7baa460ca3972afa815d9048bed43155546e910825972f3e"
+    },
+    "oam_bug/source/3-non_causes.s": {
+      "bytes": 1483,
+      "sha256": "31c596d34378ce954da291d74069fad30b321462005a44f37c172dcf79e6a60b"
+    },
+    "oam_bug/source/4-scanline_timing.s": {
+      "bytes": 1223,
+      "sha256": "6104262aee53c7ffd1b27bb314691d1e7947fa206bac0f0bb65be337e9469f96"
+    },
+    "oam_bug/source/5-timing_bug.s": {
+      "bytes": 852,
+      "sha256": "06ee1f342632da31dce68c0201aa864a1e6e79fcd2ff4d3e64946ccc04e5a772"
+    },
+    "oam_bug/source/6-timing_no_bug.s": {
+      "bytes": 926,
+      "sha256": "b9e892ddb10be667faefe17398ca09d0cf38ebccffa95d9459432c74bd34531b"
+    },
+    "oam_bug/source/7-timing_effect.s": {
+      "bytes": 563,
+      "sha256": "33ffb64449f5516dd1c8107886b3d2d174ce40a2c9e24b3b8848181e8ce92a2e"
+    },
+    "oam_bug/source/8-instr_effect.s": {
+      "bytes": 1019,
+      "sha256": "7593c2343d67325dfbd96d60b7645785a0d8144b7087d1f3d09fcda0536c7cee"
+    },
+    "oam_bug/source/common/build_gbs.s": {
+      "bytes": 2514,
+      "sha256": "e1b9bf0f6240bf5c2737ef0b54ce5fe00bd0299115dc68197c2d0849e5d63f24"
+    },
+    "oam_bug/source/common/build_rom.s": {
+      "bytes": 1354,
+      "sha256": "05071fd7274e21ab950e741e09035df9233c9b207e8d4c1cc7ff8e31c507530d"
+    },
+    "oam_bug/source/common/console.s": {
+      "bytes": 5281,
+      "sha256": "d2f5c3d09ab2266cff315bf71ca65cfce9017fdfd8733e4de1786dce4ff16bfe"
+    },
+    "oam_bug/source/common/crc.s": {
+      "bytes": 1224,
+      "sha256": "b3c2141dadf536e67345db4912e2859540f96abaef905cdec7ce46f69db31111"
+    },
+    "oam_bug/source/common/delay.s": {
+      "bytes": 5841,
+      "sha256": "36df84f15c9aee1da9e0d717cedf2dcb01483b5a47dfde7d7ad72be409300fc7"
+    },
+    "oam_bug/source/common/gb.inc": {
+      "bytes": 1741,
+      "sha256": "12c4dfd275a9cce7d4e49e99f1c53390047d49c2fa6199e47684651cb51ffbc7"
+    },
+    "oam_bug/source/common/macros.inc": {
+      "bytes": 1685,
+      "sha256": "e85f4a4805e2a996431bbf9566eb8785eaa7883adca9803860649e41edf266fa"
+    },
+    "oam_bug/source/common/numbers.s": {
+      "bytes": 2575,
+      "sha256": "7e75323a7e3f33de1a1f3adec0f10747f0dbab73832243788e9b9f938f1f0c33"
+    },
+    "oam_bug/source/common/ppu.s": {
+      "bytes": 219,
+      "sha256": "b1a5180a38a797586554bd3ab7ae43196c1b032f553b0fadc98574b9ab95476a"
+    },
+    "oam_bug/source/common/printing.s": {
+      "bytes": 1380,
+      "sha256": "f137fb456ab29768ca99aa31931339b69fa817b1482c52ab0a5a1576a97454d4"
+    },
+    "oam_bug/source/common/shell.s": {
+      "bytes": 5162,
+      "sha256": "acfb6c7f6433fbb023103f299d6d26badf450671254c4c7e2e1d9ad1d4e11137"
+    },
+    "oam_bug/source/common/testing.s": {
+      "bytes": 3488,
+      "sha256": "ae3f594bafeceebf6c11722c3d5ed8f4eae408d790480a93b2b72c1532671dca"
+    },
+    "oam_bug/source/readme.txt": {
+      "bytes": 2711,
+      "sha256": "538ce25d3bf4058a4fbb2e30f4a2b8966b10c69bb4c082e49f51a79bf63705c6"
+    },
+    "oam_bug/source/shell.inc": {
+      "bytes": 454,
+      "sha256": "955da66c9cf04fc67074cf9dcf6afe1e5c9a7fc9e307e0041ffd04c026baf815"
+    },
+    "readme.txt": {
+      "bytes": 198,
+      "sha256": "a7311561d48881c0c7aa18aad76a842dfde99e8b25d7b956d17bbac528ea18dc"
+    }
+  },
+  "oracle_manifest_sha256": "3399576b593b5dea7d8532e8d0bf06196700789604d4eb4867b1fae568cd0224",
+  "tests": [
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 9797080,
+      "m_cycles": 2449270,
+      "instructions": 1278349,
+      "frames": 137,
+      "seconds": 0.234991,
+      "serial_bytes": 20,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 149,
+        "c": 96,
+        "d": 114,
+        "e": 117,
+        "h": 153,
+        "l": 80
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 73,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/01-special.gb",
+      "sha256": "fe61349cbaee10cc384b50f356e541c90d1bc380185716706b5d8c465a03cf89",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 1791500,
+      "m_cycles": 447875,
+      "instructions": 190325,
+      "frames": 23,
+      "seconds": 0.0363971,
+      "serial_bytes": 23,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 0,
+        "c": 0,
+        "d": 199,
+        "e": 186,
+        "h": 223,
+        "l": 252
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 29,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 4,
+        "if": 237
+      },
+      "rom": "cpu_instrs/individual/02-interrupts.gb",
+      "sha256": "fb90b0d2b9501910c49709abda1d8e70f757dc12020ebf8409a7779bbfd12229",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 9867060,
+      "m_cycles": 2466765,
+      "instructions": 1090389,
+      "frames": 138,
+      "seconds": 0.213631,
+      "serial_bytes": 21,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 180,
+        "c": 240,
+        "d": 255,
+        "e": 255,
+        "h": 198,
+        "l": 19
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 285,
+        "ly": 144,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/03-op sp,hl.gb",
+      "sha256": "ca553e606d9b9c86fbd318f1b916c6f0b9df0cf1774825d4361a3fdff2e5a136",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 11482124,
+      "m_cycles": 2870531,
+      "instructions": 1282535,
+      "frames": 161,
+      "seconds": 0.267602,
+      "serial_bytes": 21,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 255,
+        "c": 240,
+        "d": 222,
+        "e": 244,
+        "h": 198,
+        "l": 43
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 197,
+        "ly": 144,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/04-op r,imm.gb",
+      "sha256": "7686aa7a39ef3d2520ec1037371b5f94dc283fbbfd0f5051d1f64d987bdd6671",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 15766524,
+      "m_cycles": 3941631,
+      "instructions": 1789877,
+      "frames": 222,
+      "seconds": 0.374897,
+      "serial_bytes": 18,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 180,
+        "c": 240,
+        "d": 255,
+        "e": 255,
+        "h": 198,
+        "l": 22
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 21,
+        "ly": 146,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/05-op rp.gb",
+      "sha256": "d504adfa0a4c4793436a154f14492f044d38b3c6db9efc44138f3c9ad138b775",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 2423704,
+      "m_cycles": 605926,
+      "instructions": 269692,
+      "frames": 32,
+      "seconds": 0.0518108,
+      "serial_bytes": 19,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 52,
+        "c": 86,
+        "d": 222,
+        "e": 244,
+        "h": 198,
+        "l": 184
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 217,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/06-ld r,r.gb",
+      "sha256": "17ada54b0b9c1a33cd5429fce5b765e42392189ca36da96312222ffe309e7ed1",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 2985248,
+      "m_cycles": 746312,
+      "instructions": 321490,
+      "frames": 40,
+      "seconds": 0.0649341,
+      "serial_bytes": 31,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 18,
+        "c": 0,
+        "d": 222,
+        "e": 251,
+        "h": 198,
+        "l": 82
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 425,
+        "ly": 144,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/07-jr,jp,call,ret,rst.gb",
+      "sha256": "ab31d3daaaa3a98bdbd9395b64f48c1bdaa889aba5b19dd5aaff4ec2a7d228a3",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 2283444,
+      "m_cycles": 570861,
+      "instructions": 251816,
+      "frames": 30,
+      "seconds": 0.0480399,
+      "serial_bytes": 24,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 86,
+        "c": 145,
+        "d": 87,
+        "e": 155,
+        "h": 198,
+        "l": 52
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 405,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/08-misc instrs.gb",
+      "sha256": "974a71fe4c67f70f5cc6e98d4dc8c096057ff8a028b7bfa9f7a4330038cf8b7e",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 38308088,
+      "m_cycles": 9577022,
+      "instructions": 4442300,
+      "frames": 543,
+      "seconds": 0.923207,
+      "serial_bytes": 19,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 255,
+        "c": 240,
+        "d": 1,
+        "e": 15,
+        "h": 199,
+        "l": 141
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 137,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/09-op r,r.gb",
+      "sha256": "b28e1be5cd95f22bd1ecacdd33c6f03e607d68870e31a47b15a0229033d5ba2a",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 58181792,
+      "m_cycles": 14545448,
+      "instructions": 6733001,
+      "frames": 826,
+      "seconds": 1.3343,
+      "serial_bytes": 20,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 255,
+        "c": 240,
+        "d": 1,
+        "e": 2,
+        "h": 199,
+        "l": 243
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 449,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/10-bit ops.gb",
+      "sha256": "7f5b8e488c6988b5aaba8c2a74529b7c180c55a58449d5ee89d606a07c53514a",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 73771216,
+      "m_cycles": 18442804,
+      "instructions": 7454326,
+      "frames": 1048,
+      "seconds": 1.7192,
+      "serial_bytes": 22,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 64,
+        "c": 240,
+        "d": 222,
+        "e": 245,
+        "h": 198,
+        "l": 148
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 145,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/individual/11-op a,(hl).gb",
+      "sha256": "0ec0cf9fda3f00becaefa476df6fb526c434abd9d4a4beac237c2c2692dac5d3",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 224437256,
+      "m_cycles": 56109314,
+      "instructions": 24824819,
+      "frames": 3193,
+      "seconds": 5.67422,
+      "serial_bytes": 108,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 541,
+        "sp": 54862,
+        "a": 0,
+        "f": 176,
+        "b": 11,
+        "c": 0,
+        "d": 112,
+        "e": 0,
+        "h": 214,
+        "l": 92
+      },
+      "ppu": {
+        "mode": 3,
+        "dot": 157,
+        "ly": 69,
+        "stat": 131,
+        "fifo_depth": 7,
+        "fetch_phase": 0,
+        "output_x": 65
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": true,
+        "oam_locked": true,
+        "ie": 0,
+        "if": 233
+      },
+      "rom": "cpu_instrs/cpu_instrs.gb",
+      "sha256": "8c5e12f41e0ba5bbca796944f92ffe6de28809198682c4332e38d1b3cf56fcf2",
+      "exit_code": 0,
+      "all_eleven_modules_ok": true
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 2704452,
+      "m_cycles": 676113,
+      "instructions": 273681,
+      "frames": 36,
+      "seconds": 0.0764842,
+      "serial_bytes": 22,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 216,
+        "c": 38,
+        "d": 216,
+        "e": 38,
+        "h": 204,
+        "l": 0
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 69,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 237
+      },
+      "rom": "instr_timing/instr_timing.gb",
+      "sha256": "646067b3d6c79fda810e9c3f1cb7c0efd5abb0a7ac06437c54e65720c15d9925",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 1931988,
+      "m_cycles": 482997,
+      "instructions": 204319,
+      "frames": 25,
+      "seconds": 0.0535411,
+      "serial_bytes": 24,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 3,
+        "c": 171,
+        "d": 127,
+        "e": 160,
+        "h": 195,
+        "l": 68
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 69,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 237
+      },
+      "rom": "mem_timing/individual/01-read_timing.gb",
+      "sha256": "52724532c5709e38e947eb429337c124c38bc68f373874435a7460548098b617",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 1861752,
+      "m_cycles": 465438,
+      "instructions": 197232,
+      "frames": 24,
+      "seconds": 0.0494596,
+      "serial_bytes": 25,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 4,
+        "c": 255,
+        "d": 255,
+        "e": 5,
+        "h": 195,
+        "l": 8
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 57,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 237
+      },
+      "rom": "mem_timing/individual/02-write_timing.gb",
+      "sha256": "eea92d3f4e95aab5910e0f7080916a3c42a2b8deae1ee5d45d1e3751d648f3f6",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "serial",
+      "t_cycles": 2072444,
+      "m_cycles": 518111,
+      "instructions": 217553,
+      "frames": 27,
+      "seconds": 0.0514256,
+      "serial_bytes": 26,
+      "cartridge_ram_bytes": 0,
+      "ram_override": false,
+      "registers": {
+        "pc": 49165,
+        "sp": 57321,
+        "a": 0,
+        "f": 176,
+        "b": 4,
+        "c": 255,
+        "d": 3,
+        "e": 4,
+        "h": 195,
+        "l": 78
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 77,
+        "ly": 145,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 237
+      },
+      "rom": "mem_timing/individual/03-modify_timing.gb",
+      "sha256": "2e9067c670ff8b45916bf321677ad04a6896d06a057dbcb82ae9f208a1ae9c34",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "cartridge RAM signature",
+      "t_cycles": 2007876,
+      "m_cycles": 501969,
+      "instructions": 219136,
+      "frames": 26,
+      "seconds": 0.0571946,
+      "serial_bytes": 0,
+      "cartridge_ram_bytes": 8192,
+      "ram_override": false,
+      "registers": {
+        "pc": 51390,
+        "sp": 57344,
+        "a": 0,
+        "f": 192,
+        "b": 3,
+        "c": 171,
+        "d": 127,
+        "e": 160,
+        "h": 192,
+        "l": 161
+      },
+      "ppu": {
+        "mode": 0,
+        "dot": 269,
+        "ly": 3,
+        "stat": 128,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 229
+      },
+      "rom": "mem_timing-2/rom_singles/01-read_timing.gb",
+      "sha256": "d9c6e86b7008fdaec2d4345c59192af4cea98b812e9b7b07239d16ad6770b576",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "cartridge RAM signature",
+      "t_cycles": 1933648,
+      "m_cycles": 483412,
+      "instructions": 211968,
+      "frames": 25,
+      "seconds": 0.0463375,
+      "serial_bytes": 0,
+      "cartridge_ram_bytes": 8192,
+      "ram_override": false,
+      "registers": {
+        "pc": 51324,
+        "sp": 57344,
+        "a": 0,
+        "f": 192,
+        "b": 4,
+        "c": 255,
+        "d": 255,
+        "e": 5,
+        "h": 192,
+        "l": 101
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 369,
+        "ly": 148,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 229
+      },
+      "rom": "mem_timing-2/rom_singles/02-write_timing.gb",
+      "sha256": "9188e5d9cf9dfc9e25f7b7c5d67e5c8e36e1b25e5ef4be0089dad1ddb526706a",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "cartridge RAM signature",
+      "t_cycles": 2143524,
+      "m_cycles": 535881,
+      "instructions": 232448,
+      "frames": 28,
+      "seconds": 0.058818,
+      "serial_bytes": 0,
+      "cartridge_ram_bytes": 8192,
+      "ram_override": false,
+      "registers": {
+        "pc": 51428,
+        "sp": 57344,
+        "a": 0,
+        "f": 192,
+        "b": 4,
+        "c": 255,
+        "d": 3,
+        "e": 4,
+        "h": 192,
+        "l": 171
+      },
+      "ppu": {
+        "mode": 1,
+        "dot": 29,
+        "ly": 147,
+        "stat": 129,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": false,
+        "ie": 0,
+        "if": 229
+      },
+      "rom": "mem_timing-2/rom_singles/03-modify_timing.gb",
+      "sha256": "818256ab477bb8fbb0709d28e3ec932a55c0ecd044292e760838efbb2b7fc09b",
+      "exit_code": 0
+    },
+    {
+      "status": "passed",
+      "mechanism": "cartridge RAM signature",
+      "t_cycles": 7418568,
+      "m_cycles": 1854642,
+      "instructions": 681058,
+      "frames": 103,
+      "seconds": 0.209405,
+      "serial_bytes": 0,
+      "cartridge_ram_bytes": 8192,
+      "ram_override": true,
+      "registers": {
+        "pc": 51224,
+        "sp": 57344,
+        "a": 0,
+        "f": 192,
+        "b": 77,
+        "c": 111,
+        "d": 159,
+        "e": 89,
+        "h": 144,
+        "l": 0
+      },
+      "ppu": {
+        "mode": 2,
+        "dot": 37,
+        "ly": 11,
+        "stat": 130,
+        "fifo_depth": 8,
+        "fetch_phase": 0,
+        "output_x": 160
+      },
+      "bus": {
+        "dma": false,
+        "vram_locked": false,
+        "oam_locked": true,
+        "ie": 225,
+        "if": 225
+      },
+      "rom": "halt_bug.gb",
+      "sha256": "ddebfb81f992132954a5580e16cfb97346a4e061c762634d7701328e23fea7c6",
+      "exit_code": 0
+    }
+  ],
+  "source_unchanged": true,
+  "binary_unchanged": true,
+  "oracles_unchanged": true,
+  "seconds": 12.699009499978274
+}

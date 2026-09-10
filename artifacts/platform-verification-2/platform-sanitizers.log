@@ -1,0 +1,19 @@
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -pthread -fsanitize=address,undefined -fno-omit-frame-pointer src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp src/gym.cpp tests/gym_tests.cpp -o build/gym_tests_sanitize
+./build/gym_tests_sanitize
+PASS 80000 concurrent SPSC jobs across four producer/consumer pairs, full/empty/wrap; 16 independent machines x20 frames, worker-order replay, rewards, reset and termination
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -fsanitize=address,undefined -fno-omit-frame-pointer src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp tests/snapshot_tests.cpp -o build/snapshot_tests_sanitize
+./build/snapshot_tests_sanitize
+Snapshot benchmark: 253408 canonical bytes; 500 warmed calls; 0 measured allocations
+save_us median=232.5 p95=463.542 max=1345.92
+restore_us median=179.854 p95=378.208 max=1346.58
+SNAPSHOT_BENCHMARK {"bytes":253408,"samples":500,"save_median_us":232.5,"save_p95_us":463.542,"save_max_us":1345.92,"restore_median_us":179.854,"restore_p95_us":378.208,"restore_max_us":1346.58,"allocations":0}
+PASS 298 snapshot assertions
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -fsanitize=address,undefined -fno-omit-frame-pointer src/apu.cpp tests/apu_tests.cpp -o build/apu_tests_sanitize
+./build/apu_tests_sanitize
+APU: 36 checks passed
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -pthread -fsanitize=address,undefined -fno-omit-frame-pointer src/netplay.cpp tests/netplay_tests.cpp -o build/netplay_tests_sanitize
+./build/netplay_tests_sanitize
+PASS netplay wire corruption, real UDP delivery, backpressure, retransmission, duplicates, sequence wrap and stale ACKs
+clang++ -Iinclude -std=c++20 -O1 -g -Wall -Wextra -Werror -Wpedantic -DENABLE_AUTOPSY -pthread -fsanitize=address,undefined -fno-omit-frame-pointer src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp src/autopsy.cpp tests/autopsy_tests.cpp -o build/autopsy_tests_sanitize
+./build/autopsy_tests_sanitize
+Autopsy: 19 checks passed

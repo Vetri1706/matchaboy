@@ -1,0 +1,10 @@
+mkdir -p build
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp src/harness.cpp -o build/dmg
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp tests/unit_tests.cpp -o build/unit_tests
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp tests/oam_tests.cpp -o build/oam_tests
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp tests/ppu_edge_tests.cpp -o build/ppu_edge_tests
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic src/apu.cpp tests/apu_tests.cpp -o build/apu_tests
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp tests/snapshot_tests.cpp -o build/snapshot_tests
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic -pthread -fPIC -dynamiclib src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp src/gym.cpp -o build/libmatcha.dylib
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic -pthread src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp src/gym.cpp src/gym_benchmark.cpp -o build/gym_benchmark
+clang++ -Iinclude -std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic -pthread src/cpu.cpp src/mmu.cpp src/timer.cpp src/mbc.cpp src/ppu.cpp src/oam.cpp src/apu.cpp src/snapshot.cpp src/gym.cpp tests/gym_tests.cpp -o build/gym_tests
