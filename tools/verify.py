@@ -91,7 +91,7 @@ def main():
     if not names:
         raise RuntimeError("no test ROMs selected; run tools/fetch_roms.py first")
     paths = [rom_root / name for name in names]
-    sources = {str(p.relative_to(ROOT)): sha(p) for directory in ("include", "src", "tests", "tools")
+    sources = {p.relative_to(ROOT).as_posix(): sha(p) for directory in ("include", "src", "tests", "tools")
                for p in (ROOT / directory).rglob("*") if p.is_file() and "__pycache__" not in p.parts}
     sources["Makefile"] = sha(ROOT / "Makefile")
     binary_sha = sha(binary)
@@ -102,7 +102,9 @@ def main():
     started = time.monotonic()
     save(output / "summary.json", summary)
     for path in paths:
-        relative = str(path.relative_to(rom_root))
+        # Original archive manifests use '/' on every host. This key also
+        # selects the aggregate ROM's mandatory per-module output checks.
+        relative = path.relative_to(rom_root).as_posix()
         expected = manifest["files"][relative]["sha256"]
         if sha(path) != expected:
             raise RuntimeError(f"external ROM integrity mismatch: {relative}")

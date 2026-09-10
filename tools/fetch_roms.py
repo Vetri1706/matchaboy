@@ -35,10 +35,11 @@ def main():
             if source is None:
                 raise RuntimeError("missing archive member")
             contents = source.read()
-            path = destination / str(relative)
+            name = relative.as_posix()
+            path = destination / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(contents)
-            manifest["files"][str(relative)] = {"bytes": len(contents), "sha256": hashlib.sha256(contents).hexdigest()}
+            manifest["files"][name] = {"bytes": len(contents), "sha256": hashlib.sha256(contents).hexdigest()}
     (ROOT / "roms" / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"Fetched {len(manifest['files'])} original binary/source files at {REVISION}")
 

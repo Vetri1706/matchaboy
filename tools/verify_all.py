@@ -28,7 +28,7 @@ def inventory():
     for directory in ("include", "src", "tests", "tools", "cmake", ".github"):
         paths.extend(p for p in (ROOT / directory).rglob("*")
                      if p.is_file() and "__pycache__" not in p.parts)
-    return {str(p.relative_to(ROOT)): sha(p) for p in sorted(paths)}
+    return {p.relative_to(ROOT).as_posix(): sha(p) for p in sorted(paths)}
 
 
 def archive_sources(sources, destination):

@@ -94,7 +94,7 @@ def main():
     binary=args.binary.resolve()
     binary_before=hashlib.sha256(binary.read_bytes()).hexdigest()
     source_paths=sorted((ROOT/"src").glob("*.cpp"))+sorted((ROOT/"include"/"dmg").glob("*.hpp"))
-    source_before={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
+    source_before={path.relative_to(ROOT).as_posix():hashlib.sha256(path.read_bytes()).hexdigest()
                    for path in source_paths}
     output=args.output or ROOT/"artifacts"/f"ppu-{time.time_ns()}"
     output.mkdir(parents=True,exist_ok=False)
@@ -115,7 +115,7 @@ def main():
         raise RuntimeError("framebuffer size mismatch")
     mismatch=[{"x":i%160,"y":i//160,"expected":e,"actual":a} for i,(e,a) in enumerate(zip(expected,actual)) if e!=a]
     binary_after=hashlib.sha256(binary.read_bytes()).hexdigest()
-    source_after={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
+    source_after={path.relative_to(ROOT).as_posix():hashlib.sha256(path.read_bytes()).hexdigest()
                   for path in source_paths}
     oracle_unchanged=all(hashlib.sha256((external/name).read_bytes()).hexdigest()==item["sha256"]
                          for name,item in manifest["files"].items())
