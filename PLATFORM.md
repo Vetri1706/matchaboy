@@ -4,7 +4,8 @@ Matcha extends the existing DMG CPU and pixel-FIFO core with deterministic
 snapshots, serial rollback over real UDP, native hardware instrumentation, and
 independent threaded learning environments. Core and network code use C++20,
 the standard library and operating-system sockets. The optional macOS HUD uses
-system AppKit/OpenGL frameworks. The optional Python adapter uses ctypes,
+system AppKit/OpenGL frameworks; the Windows HUD uses Win32/GDI+/OpenGL.
+The optional Python adapter uses ctypes,
 NumPy, and Gymnasium; none is linked into the emulator.
 
 Measured results, retained evidence, unmet performance targets, and the exact
@@ -20,9 +21,10 @@ python3 tools/verify_all.py --output artifacts/my-rom-regression
 ```
 
 Every C++ target uses strict warnings. Release targets use `-O3`; the optional
-`build/gym_benchmark_lto` adds link-time optimization. The native HUD is a macOS
-target; the headless core, telemetry tests, UDP peers and Gym support POSIX
-hosts. No third-party emulator core or GUI toolkit is bundled.
+`build/gym_benchmark_lto` adds link-time optimization. The native HUD supports
+macOS and Windows; the headless core, telemetry tests, UDP peers and Gym also
+support Windows through CMake. See [DOWNLOADS.md](DOWNLOADS.md) for native
+Windows commands. The Windows player statically bundles mGBA for GBA games; the original DMG core remains independent. No external GUI toolkit or runtime installation is required. See THIRD_PARTY.md.
 
 ## Snapshots
 
@@ -111,6 +113,10 @@ reached, including nested corrections. Actual 0.5 ms and frame-rate targets
 must be assessed from those measurements.
 
 ## Silicon Autopsy
+
+On Windows use `build\Matchaboy.exe` with the same arguments below, or launch it
+without arguments to choose a ROM. F12 captures the live OpenGL viewport.
+The window scales the same 1280 by 920 dashboard with its aspect ratio intact.
 
 ```sh
 ./build/autopsy roms/acid2/dmg-acid2.gb --paused --frames 120 --line 48 --dot 115

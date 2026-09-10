@@ -96,6 +96,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--binary", type=Path, default=ROOT/"build/autopsy")
     parser.add_argument("--rom", type=Path, default=ROOT/"roms/acid2/dmg-acid2.gb")
+    parser.add_argument("--player", action="store_true", help="verify the Windows player display instead of Inspector")
     args = parser.parse_args()
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=False)
     binary, rom = args.binary.resolve(), args.rom.resolve()
@@ -104,6 +105,8 @@ def main():
         for name, option in (("headless", "--headless"), ("gpu", "--window-test")):
             command = [str(binary), str(rom), option, "--frames", "120", "--line", "48", "--dot", "115",
                        "--capture", str(output/(name+".png"))]
+            if sys.platform == "win32" and not args.player:
+                command.append("--inspector")
             with (output/(name+".log")).open("w") as log:
                 result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=45, check=False)
             summary["commands"].append({"command": command, "exit_code": result.returncode})

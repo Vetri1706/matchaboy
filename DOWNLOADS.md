@@ -15,7 +15,8 @@ Gymnasium tests, real UDP replay, and extracted-package smoke tests pass.
 
 Each ZIP includes the headless emulator, UDP netplay runner, Gym benchmark,
 `libmatcha` shared library, Python wrapper, C header, and documentation. macOS
-also includes `MatchaAutopsy.app`. `BUILD_INFO.json` records the source commit,
+also includes `MatchaAutopsy.app`; Windows includes `Matchaboy.exe`, the native
+Silicon Autopsy dashboard. `BUILD_INFO.json` records the source commit,
 compiler, test results and file hashes; the adjacent `.sha256` file checks the
 whole ZIP. Source ROMs, commercial games and Python packages are not bundled.
 
@@ -43,12 +44,37 @@ Linux/macOS, from the extracted directory:
 
 `dmg` runs headlessly; it does not open a game window. The benchmark retains its
 50,000 aggregate FPS target and reports failure when the machine misses it.
-The existing native hardware dashboard uses macOS system frameworks and is
-not included in the Windows or Linux packages. On macOS:
+The native hardware dashboard is available on Windows and macOS. Linux remains
+headless. On Windows, double-click `Matchaboy.exe` to choose a ROM, or run:
+
+```powershell
+.\Matchaboy.exe C:\roms\game.gb
+```
+
+On macOS:
 
 ```sh
 ./MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy /path/to/game.gb --paused
 ```
+
+Windows opens in a clean player view with a large LCD and persistent keyboard
+controls. **Open game...** or **File > Open game** (Ctrl+O) loads another `.gb`
+ROM in the same window. Cancelling preserves the current game. Color-only ROMs receive a clear unsupported-format message.
+**Inspector** or Tab toggles the hardware panels without restarting the game.
+Use `--inspector` to start directly in that view.
+
+The Windows player uses grayscale by default. **View > Player palette** offers
+grayscale or original green, without restarting the game. The game texture uses
+nearest-neighbor scaling and a hardware-rate frame schedule (about 59.73 fps).
+The Inspector retains its diagnostic colors.
+
+The optional Inspector preserves the address heatmap, LCD, live FIFO/fetcher,
+registers, instruction history and four digital APU scopes. Space pauses;
+S/F/D step one instruction/frame/peripheral dot in Inspector. Scroll moves through the trace.
+Arrows, Z/X, Enter and Shift supply joypad input. F12 saves the displayed OpenGL
+viewport to `autopsy-capture.png` and its hardware-state JSON in the working
+directory. Use `--capture PATH` to select another capture destination. The
+scopes inspect digital outputs; this dashboard does not play sound to speakers.
 
 These builds are not signed with a paid Windows publisher certificate or
 notarized with an Apple Developer identity. Operating-system trust prompts can
@@ -79,6 +105,10 @@ cmake --install build --prefix stage
 
 Clang is the compiler; Microsoft's headers and system libraries provide the
 native Windows SDK and C++ runtime. Release builds use the static MSVC runtime.
+The dashboard uses Win32, GDI+ and OpenGL from Windows; no external GUI library
+is required. `MATCHA_BUILD_AUTOPSY` defaults to ON on Windows/macOS. For an
+existing build directory previously configured with it disabled, add
+`-DMATCHA_BUILD_AUTOPSY=ON` to the configure command.
 Networking uses actual nonblocking Winsock sockets, and benchmark memory
 measurement uses the Windows process API. GNU-driver Clang uses
 `-std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic`.
@@ -94,7 +124,20 @@ ROM executions, seven adversarial UDP protocol cases, and real two-process
 UDP replay with 100 ms one-way delay and 5% loss for 100 frames plus an idle-peer
 case. It also unpacks each ZIP into a different directory containing spaces,
 runs the packaged emulator, and steps 16 real VMs through the packaged DLL.
-The macOS packaged dashboard must produce a real headless PNG.
+Both Windows and macOS packaged dashboards must produce a real headless PNG.
+Windows additionally checks native OpenGL readback against the headless render
+at the same emulated state and exercises its real window message handlers for
+pause, stepping, joypad, trace scroll, resizing, capture and closing. Run those
+checks locally with:
+
+```powershell
+python tools/verify_autopsy.py --binary build/Matchaboy.exe --rom roms/homebrew/silicon_audio.gb --output artifacts/windows-hud
+python tools/test_autopsy_windows.py --binary build/Matchaboy.exe --output artifacts/windows-controls
+```
+
+Generate that demo ROM first with `python tools/make_audio_demo.py`. Each check
+requires a fresh output directory. GUI checks require an interactive Windows
+desktop; headless capture does not require a window.
 
 This does not mean every upstream hardware test passes. Hardware exclusions
 and unverified commercial-ROM compatibility remain as documented. Older
@@ -111,3 +154,21 @@ different source inventories as if they were the same workload.
 Official references: [artifact downloads](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts),
 [hosted runner platforms](https://docs.github.com/en/actions/reference/runners/github-hosted-runners),
 and the [Windows runner toolchain](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md).
+
+## Portable Windows GBA player
+
+The Windows player accepts `.gb` and `.gba` files. Game Boy games use the
+original Matchaboy engine; GBA games use the statically bundled mGBA 0.10.5 core.
+No separate emulator, external BIOS, Qt, SDL or runtime installation is needed.
+GBA adds Q/W for L/R shoulder buttons. Its Inspector is unavailable, and the
+player currently has no speaker playback or GBA netplay.
+
+GBA cartridge saves use `<game>.matchaboy.sav` beside the ROM, flushed on normal
+close or game switch. Keep games in a writable folder. Existing mGBA `.sav`
+files are not overwritten. Source and license notices accompany portable builds;
+see THIRD_PARTY.md. To build explicitly select both `clang` for C and `clang++`
+for C++, with the static MSVC runtime already configured by CMake.
+
+`python tools/test_gba_windows.py --binary build/Matchaboy.exe --output artifacts/gba`
+checks an authored ARM ROM, actual A/L/R hardware input, and save/reload from
+an isolated folder with a system-only PATH. This is not a clean Windows VM test.

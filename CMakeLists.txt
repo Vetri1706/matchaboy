@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(Matchaboy VERSION 0.1.0 LANGUAGES CXX)
+project(Matchaboy VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,7 +11,11 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build configuration" FORCE)
 endif()
-option(MATCHA_BUILD_AUTOPSY "Build the native macOS hardware dashboard" ${APPLE})
+set(MATCHA_AUTOPSY_DEFAULT OFF)
+if(APPLE OR WIN32)
+    set(MATCHA_AUTOPSY_DEFAULT ON)
+endif()
+option(MATCHA_BUILD_AUTOPSY "Build the native hardware dashboard" ${MATCHA_AUTOPSY_DEFAULT})
 include(CTest)
 find_package(Threads REQUIRED)
 
@@ -79,7 +83,7 @@ target_link_libraries(netplay PRIVATE matcha_core matcha_transport)
 
 # Telemetry changes class layout, so every translation unit in these targets
 # uses a separate core compiled with the same ENABLE_AUTOPSY definition.
-if(BUILD_TESTING OR (APPLE AND MATCHA_BUILD_AUTOPSY))
+if(BUILD_TESTING OR ((APPLE OR WIN32) AND MATCHA_BUILD_AUTOPSY))
     add_library(matcha_autopsy_core STATIC ${MATCHA_CORE_SOURCES} src/autopsy.cpp)
     target_link_libraries(matcha_autopsy_core PUBLIC matcha_options Threads::Threads)
     target_compile_definitions(matcha_autopsy_core PUBLIC ENABLE_AUTOPSY)
@@ -123,6 +127,15 @@ if(APPLE AND MATCHA_BUILD_AUTOPSY)
         OUTPUT_NAME MatchaAutopsy
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/AutopsyInfo.plist")
     install(TARGETS autopsy BUNDLE DESTINATION .)
+endif()
+
+if(WIN32 AND MATCHA_BUILD_AUTOPSY)
+    include(cmake/GbaCore.cmake)
+    matcha_executable(autopsy src/autopsy_windows.cpp)
+    target_compile_definitions(autopsy PRIVATE UNICODE _UNICODE)
+    target_link_libraries(autopsy PRIVATE matcha_autopsy_core matcha_gba gdiplus opengl32 shell32 user32 gdi32 comdlg32)
+    set_target_properties(autopsy PROPERTIES WIN32_EXECUTABLE TRUE OUTPUT_NAME Matchaboy)
+    install(TARGETS autopsy RUNTIME DESTINATION .)
 endif()
 
 install(TARGETS dmg netplay gym_benchmark matcha

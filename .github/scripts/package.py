@@ -51,6 +51,10 @@ def main():
                                          ".github", "matcha_gym.py"], cwd=ROOT, text=True).strip())
     # A previous packaging run may have left its manifest in the staging tree.
     # The manifest cannot include its own hash.
+    if sys.platform == "win32":
+        sys.path.insert(0, str(ROOT / "tools"))
+        from package_player import add_sources
+        add_sources(stage)
     files = sorted(path for path in stage.rglob("*")
                    if path.is_file() and path != stage / "BUILD_INFO.json")
     build_info = {"commit": commit, "source_dirty": dirty, "platform": platform.platform(), "architecture": platform.machine(),
@@ -104,8 +108,8 @@ with matcha_gym.NativeBatch(sys.argv[2], 16) as batch:
                        if key not in ("MATCHA_LIBRARY", "PYTHONPATH")}
         subprocess.run([sys.executable, "-c", smoke, str(installed), str(rom)],
                        cwd=destination, env=environment, check=True)
-        if sys.platform == "darwin":
-            app = installed / "MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy"
+        if sys.platform in ("darwin", "win32"):
+            app = installed / ("Matchaboy.exe" if sys.platform == "win32" else "MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy")
             subprocess.run([str(app), str(rom), "--headless", "--frames", "2", "--capture", str(destination / "hud.png")],
                            cwd=destination, check=True, stdout=subprocess.DEVNULL)
             if not (destination / "hud.png").read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):

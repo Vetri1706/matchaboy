@@ -25,6 +25,8 @@ def main():
     emulator, netplay = binaries / ("dmg" + suffix), binaries / ("netplay" + suffix)
     library = binaries / ("libmatcha." + extension)
     paths = [emulator, netplay, library]
+    if sys.platform == "win32":
+        paths.append(binaries / "Matchaboy.exe")
     before = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
     report = {"passed": False, "platform": sys.platform, "binaries": before, "checks": []}
     environment = dict(os.environ, MATCHA_LIBRARY=str(library), MATCHA_NETPLAY=str(netplay))
@@ -48,6 +50,15 @@ def main():
     save()
     try:
         run("python-gymnasium", ["-m", "unittest", "discover", "-s", "tests", "-p", "test_matcha_gym.py"])
+        if sys.platform == "win32":
+            run("windows-dashboard", ["tools/verify_autopsy.py", "--binary", str(binaries / "Matchaboy.exe"),
+                                      "--output", str(output / "windows-dashboard")])
+            run("windows-player", ["tools/verify_autopsy.py", "--player", "--binary", str(binaries / "Matchaboy.exe"),
+                                   "--output", str(output / "windows-player")])
+            run("windows-gba", ["tools/test_gba_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
+                                "--output", str(output / "windows-gba")])
+            run("windows-controls", ["tools/test_autopsy_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
+                                     "--output", str(output / "windows-controls")])
         for name, script, options in (
             ("blargg", "verify.py", ["--extra"]),
             ("sound", "verify.py", ["--sound"]),
