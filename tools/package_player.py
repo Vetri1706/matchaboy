@@ -17,10 +17,10 @@ def add_sources(destination):
                          ('src/third-party/inih/LICENSE.txt','inih-BSD.txt')]:
         shutil.copy2(ROOT/'third_party/mgba'/source, licenses/name)
     with zipfile.ZipFile(destination/'source.zip','w',zipfile.ZIP_DEFLATED) as archive:
-        for directory in ['assets','src','include','cmake','tests','tools','third_party/mgba']:
+        for directory in ['assets','games','src','include','cmake','tests','tools','third_party/mgba']:
             for path in sorted((ROOT/directory).rglob('*')):
                 relative=path.relative_to(ROOT)
-                if path.is_file() and not any(part in {'.git','__pycache__','cinema'} for part in relative.parts):
+                if path.is_file() and not any(part in {'.git','__pycache__','cinema','build'} for part in relative.parts):
                     archive.write(path, relative.as_posix())
         for name in ['LICENSE','CMakeLists.txt','README.md','DOWNLOADS.md','PLATFORM.md','PLATFORM_VERIFICATION.md',
                      'VERIFICATION.md','MOONEYE.md','MEALYBUG.md','ARTIFACTS.md','THIRD_PARTY.md','matcha_gym.py']:
@@ -36,8 +36,15 @@ def main():
     add_sources(args.output)
     (args.output/'Read me.txt').write_text('''Matchaboy portable for Windows 10/11 x64
 
-Double-click Matchaboy.exe and choose a .gb or .gba file. No installer,
+Double-click Matchaboy.exe to open the original ten-game arcade. Choose a game
+and Play, or Open game to load your own .gb or .gba. Ctrl+L returns to the library.
+The five GB and five GBA games are embedded in this executable. No installer,
 additional emulator, external BIOS or runtime package is needed.
+Game code, pixel art, levels and sounds were authored with the Codex assistant
+under user direction. See games/PROVENANCE.md in source.zip for the evidence and
+credits. The original games are GPL-3.0-only; all their source is in source.zip.
+Bundled ROMs are prepared in Matchaboy Data/Library beside the app when writable,
+otherwise in this user's LocalAppData/Matchaboy/Library. No download is needed.
 
 Arrows: move. Z: A. X: B. Enter: Start. Shift: Select.
 GBA: Q is L shoulder, W is R shoulder.

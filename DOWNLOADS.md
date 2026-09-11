@@ -18,9 +18,11 @@ Each ZIP includes the headless emulator, UDP netplay runner, Gym benchmark,
 also includes `MatchaAutopsy.app`; Windows includes `Matchaboy.exe`, the native
 Matchaboy Inspector dashboard. `BUILD_INFO.json` records the source commit,
 compiler, test results and file hashes; the adjacent `.sha256` file checks the
-whole ZIP. Source ROMs, commercial games and Python packages are not bundled.
+whole ZIP. Current Windows builds embed the ten original games under `games/`;
+their corresponding sources and redistribution notices accompany the player.
+Commercial games and Python packages are not bundled.
 
-The repository is private: downloads and releases require repository access.
+The repository is public; Actions artifact downloads require GitHub sign-in.
 Artifacts are retained for 30 days. Pushing a `v*` tag creates or updates a
 release with the three tested ZIPs and checksums after every build succeeds.
 Releases inherit the repository's visibility; the workflow does not make them
@@ -45,7 +47,8 @@ Linux/macOS, from the extracted directory:
 `dmg` runs headlessly; it does not open a game window. The benchmark retains its
 50,000 aggregate FPS target and reports failure when the machine misses it.
 The native hardware dashboard is available on Windows and macOS. Linux remains
-headless. On Windows, double-click `Matchaboy.exe` to choose a ROM, or run:
+headless. On Windows, double-click `Matchaboy.exe` to open the original arcade,
+select a game and Play. Use Open game to choose your own ROM, or run:
 
 ```powershell
 .\Matchaboy.exe C:\roms\game.gb
@@ -57,13 +60,16 @@ On macOS:
 ./MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy /path/to/game.gb --paused
 ```
 
-Windows opens in a clean player view with a large LCD and persistent keyboard
-controls. **Open game...** or **File > Open game** (Ctrl+O) loads another `.gb`
-ROM in the same window. Cancelling preserves the current game. Color-only ROMs receive a clear unsupported-format message.
+In the Windows player, opening a ROM shows a clean view with a large LCD and optional keyboard
+controls. **Open game...** or **File > Open game** (Ctrl+O) loads a `.gb` or `.gba`
+ROM in the same window. Cancelling preserves the current game. **Ctrl+L** or
+**File > Game library** returns to the ten-game catalog and pauses the game.
+The library shows each game's goal, controls and an Inspector reading guide.
+Color-only ROMs receive a clear unsupported-format message.
 **Inspector** or Tab toggles the hardware panels without restarting the game.
 Use `--inspector` to start directly in that view.
 
-The Windows player uses grayscale by default. **View > Player palette** offers
+The Windows player uses grayscale by default. **Audio/Video > Player palette** offers
 grayscale or original green, without restarting the game. The game texture uses
 nearest-neighbor scaling and a hardware-rate frame schedule (about 59.73 fps).
 The Inspector retains its diagnostic colors.

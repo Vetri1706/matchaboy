@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "checks": [
+    "EXE-only Unicode directory opens real library without ROM chooser or external game files",
+    "All ten embedded games launch, show distinct title/play screens, accept cartridge input and open Inspector",
+    "Library blocks emulation/debug stepping, releases buttons, preserves paused state and resumes previously running games",
+    "Prepared ROMs byte-match their source artifacts, without downloads or installed game assets"
+  ],
+  "games": [
+    {
+      "id": "pocket-racer",
+      "system": "GB",
+      "passed": true,
+      "start_changes_lcd": 25971,
+      "rom_sha256": "b27fbfe66fb6c4d8112df45d7c04b66c4fff3e7356e518bcf5b9442bc6dfacc0"
+    },
+    {
+      "id": "moon-courier",
+      "system": "GB",
+      "passed": true,
+      "start_changes_lcd": 4282,
+      "rom_sha256": "7e77223f44c7ab3ad9ec71d4083dd21d02cf0b22994c8d6d261309b29b87446c"
+    },
+    {
+      "id": "matcha-garden",
+      "system": "GB",
+      "passed": true,
+      "start_changes_lcd": 7452,
+      "rom_sha256": "04066d1eb92c785caf0f1b9212691e64e00c300d7b3f6fe6350bb3ce6f8d5a1e"
+    },
+    {
+      "id": "signal-lost",
+      "system": "GB",
+      "passed": true,
+      "start_changes_lcd": 14957,
+      "rom_sha256": "e0b02f09294f811cb2c211c8d8b3fd52aece7e05b2026befd3002bda6ee560f9"
+    },
+    {
+      "id": "orbit-guard",
+      "system": "GB",
+      "passed": true,
+      "start_changes_lcd": 3398,
+      "rom_sha256": "0ad772bfc39903530abc7a3c2495fbfecaf88a6978356f02b51fcd88ca307ac3"
+    },
+    {
+      "id": "drift-circuit",
+      "system": "GBA",
+      "passed": true,
+      "start_changes_lcd": 29170,
+      "rom_sha256": "fcc3f456ab56078c57b224b8b5e9562371b8d9739c28b37870a312648fcc2d19"
+    },
+    {
+      "id": "cloud-pilot",
+      "system": "GBA",
+      "passed": true,
+      "start_changes_lcd": 23977,
+      "rom_sha256": "78d58c0a9a8cc9759a5be28a8c0d196137e109bf556db4a22b371c2e94793696"
+    },
+    {
+      "id": "prism-break",
+      "system": "GBA",
+      "passed": true,
+      "start_changes_lcd": 14671,
+      "rom_sha256": "a2ead9e5dc2316f0f92f5b7cf31520cd35efb425d2b507208613e9aa10687e81"
+    },
+    {
+      "id": "tiny-tactics",
+      "system": "GBA",
+      "passed": true,
+      "start_changes_lcd": 24209,
+      "rom_sha256": "f07d45b481bb63ce51011a85c3304e30b88f554c44db0941edfa7ef8cd47bbec"
+    },
+    {
+      "id": "parcel-dash",
+      "system": "GBA",
+      "passed": true,
+      "start_changes_lcd": 31276,
+      "rom_sha256": "94f0eaaee63c47dbcdc24eee107eac0506ba6491db5119f085da700e3dbf8844"
+    }
+  ],
+  "binary_sha256": "e5f3164666c6c19c8672f773ffefc9fa0cd4d86e25ad42aedb727e80c4d58882"
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "games": [
+    {
+      "id": "drift-circuit",
+      "title": "Drift Circuit",
+      "system": "GBA",
+      "controls": "Enter: Start/restart; Left/Right: steer; Z (A): boost; X (B): brake; Shift (Select): title.",
+      "goal": "Finish a 3600-metre time trial within 40 seconds. Dodge traffic and stay inside the road; three hits end the round.",
+      "learn": "A changing road centre, collision rectangles, a fixed frame clock and a three-speed car create a time trial.",
+      "inspector_hint": "CPU shows ARM7TDMI execution. Memory: EWRAM 0200003C holds distance; 02000018 holds lives. Video uses Mode 4 page flipping.",
+      "source": "games/gba/src/game.c",
+      "rom": "games/gba/roms/drift-circuit.gba",
+      "license": "GPL-3.0-only",
+      "authorship": "Assistant-generated original code, pixel art, levels and sound, under user direction. No external game assets.",
+      "sha256": "fcc3f456ab56078c57b224b8b5e9562371b8d9739c28b37870a312648fcc2d19"
+    },
+    {
+      "id": "cloud-pilot",
+      "title": "Cloud Pilot",
+      "system": "GBA",
+      "controls": "Enter: Start/restart; Up/Down: fly; Z (A): speed up; Shift (Select): title.",
+      "goal": "Fly through 24 moving gates before the 55-second timer expires. Three wall collisions end the round.",
+      "learn": "Recycled obstacle slots, scrolling scenery and gap collision checks make a compact flying course.",
+      "inspector_hint": "Memory: EWRAM 02000010 holds gates cleared; 02000020 holds height. Video shows the Mode 4 palette and active page.",
+      "source": "games/gba/src/game.c",
+      "rom": "games/gba/roms/cloud-pilot.gba",
+      "license": "GPL-3.0-only",
+      "authorship": "Assistant-generated original code, pixel art, levels and sound, under user direction. No external game assets.",
+      "sha256": "78d58c0a9a8cc9759a5be28a8c0d196137e109bf556db4a22b371c2e94793696"
+    },
+    {
+      "id": "prism-break",
+      "title": "Prism Break",
+      "system": "GBA",
+      "controls": "Enter: Start/restart; Left/Right: paddle; Z (A): launch; Shift (Select): title.",
+      "goal": "Break all 24 coloured bricks in 100 seconds. Aim the ball with the paddle edge. You have three balls.",
+      "learn": "Ball velocity reflects from walls and the paddle; a 24-cell array tracks remaining bricks.",
+      "inspector_hint": "Memory: brick flags begin at EWRAM 0200004C; ball x/y at 020000AC/B0. Audio shows real PSG music and collision tones.",
+      "source": "games/gba/src/game.c",
+      "rom": "games/gba/roms/prism-break.gba",
+      "license": "GPL-3.0-only",
+      "authorship": "Assistant-generated original code, pixel art, levels and sound, under user direction. No external game assets.",
+      "sha256": "a2ead9e5dc2316f0f92f5b7cf31520cd35efb425d2b507208613e9aa10687e81"
+    },
+    {
+      "id": "tiny-tactics",
+      "title": "Tiny Tactics",
+      "system": "GBA",
+      "controls": "Enter: Start/restart; Arrows: move one tile; Z (A): attack within 2 tiles; X (B): select enemy; Shift (Select): title.",
+      "goal": "Defeat three sentries with nine health points and at most 40 turns. Every successful move or attack lets surviving enemies act.",
+      "learn": "A small turn-based state machine combines board occupancy, attack range, enemy movement and health.",
+      "inspector_hint": "Memory: EWRAM 02000018 is health; 02000048 is turns used; three enemy records begin at 020000AC. No turn passes when viewing Inspector.",
+      "source": "games/gba/src/game.c",
+      "rom": "games/gba/roms/tiny-tactics.gba",
+      "license": "GPL-3.0-only",
+      "authorship": "Assistant-generated original code, pixel art, levels and sound, under user direction. No external game assets.",
+      "sha256": "f07d45b481bb63ce51011a85c3304e30b88f554c44db0941edfa7ef8cd47bbec"
+    },
+    {
+      "id": "parcel-dash",
+      "title": "Parcel Dash",
+      "system": "GBA",
+      "controls": "Enter: Start/restart; Arrows: move; Z (A): pick up/drop parcel; X (B): slow walk; Shift (Select): title.",
+      "goal": "Pick up at POST and deliver to the gold address. Complete five deliveries in 60 seconds while avoiding three traffic hazards.",
+      "learn": "Pickup and delivery states, waypoint arrays and moving hazard rectangles form a delivery score attack.",
+      "inspector_hint": "Memory: EWRAM 02000044 is the carrying flag; 02000040 is the address index; 02000010 counts deliveries. Audio shows pickup/delivery tones.",
+      "source": "games/gba/src/game.c",
+      "rom": "games/gba/roms/parcel-dash.gba",
+      "license": "GPL-3.0-only",
+      "authorship": "Assistant-generated original code, pixel art, levels and sound, under user direction. No external game assets.",
+      "sha256": "94f0eaaee63c47dbcdc24eee107eac0506ba6491db5119f085da700e3dbf8844"
+    }
+  ]
+}

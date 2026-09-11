@@ -1,0 +1,926 @@
+{
+  "passed": true,
+  "scope": "Unmodified checked-in ARM ROMs executed by Matchaboy GbaCore; real EWRAM state, keypad inputs, native game loop and generated PSG PCM. This does not claim human playtesting or speaker listening.",
+  "games": {
+    "drift-circuit": {
+      "passed": true,
+      "sha256": "fcc3f456ab56078c57b224b8b5e9562371b8d9739c28b37870a312648fcc2d19",
+      "title": {
+        "frames": 60,
+        "kind": 0,
+        "phase": 0,
+        "game_frame": 58,
+        "tick": 0,
+        "score": 0,
+        "time": 0,
+        "hp": 0,
+        "x": 0,
+        "y": 0,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 3820
+      },
+      "start": {
+        "frames": 68,
+        "kind": 0,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 2397,
+        "hp": 3,
+        "x": 120,
+        "y": 124,
+        "stage": 6,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 86,
+            "y": -18
+          },
+          {
+            "x": 115,
+            "y": -82
+          },
+          {
+            "x": 144,
+            "y": -146
+          },
+          {
+            "x": 104,
+            "y": -210
+          }
+        ],
+        "peak": 10649
+      },
+      "input": {
+        "frames": 84,
+        "kind": 0,
+        "phase": 1,
+        "game_frame": 19,
+        "tick": 19,
+        "score": 0,
+        "time": 2381,
+        "hp": 3,
+        "x": 136,
+        "y": 124,
+        "stage": 38,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 86,
+            "y": 14
+          },
+          {
+            "x": 115,
+            "y": -50
+          },
+          {
+            "x": 144,
+            "y": -114
+          },
+          {
+            "x": 104,
+            "y": -178
+          }
+        ],
+        "peak": 10649
+      },
+      "pace": {
+        "hardware_frames": 100,
+        "game_updates": 100
+      },
+      "loss": {
+        "frames": 804,
+        "kind": 0,
+        "phase": 3,
+        "game_frame": 603,
+        "tick": 363,
+        "score": 9,
+        "time": 2037,
+        "hp": 0,
+        "x": 120,
+        "y": 124,
+        "stage": 726,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 98,
+            "y": -326
+          },
+          {
+            "x": 117,
+            "y": 107
+          },
+          {
+            "x": 130,
+            "y": 26
+          },
+          {
+            "x": 81,
+            "y": -55
+          }
+        ],
+        "peak": 11547
+      },
+      "win": null,
+      "restarted": {
+        "frames": 812,
+        "kind": 0,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 2397,
+        "hp": 3,
+        "x": 120,
+        "y": 124,
+        "stage": 6,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 86,
+            "y": -18
+          },
+          {
+            "x": 115,
+            "y": -82
+          },
+          {
+            "x": 144,
+            "y": -146
+          },
+          {
+            "x": 104,
+            "y": -210
+          }
+        ],
+        "peak": 11588
+      }
+    },
+    "cloud-pilot": {
+      "passed": true,
+      "sha256": "78d58c0a9a8cc9759a5be28a8c0d196137e109bf556db4a22b371c2e94793696",
+      "title": {
+        "frames": 60,
+        "kind": 1,
+        "phase": 0,
+        "game_frame": 58,
+        "tick": 0,
+        "score": 0,
+        "time": 0,
+        "hp": 0,
+        "x": 0,
+        "y": 0,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 3840
+      },
+      "start": {
+        "frames": 68,
+        "kind": 1,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 3297,
+        "hp": 3,
+        "x": 48,
+        "y": 80,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 244,
+            "y": 42
+          },
+          {
+            "x": 332,
+            "y": 73
+          },
+          {
+            "x": 420,
+            "y": 104
+          },
+          {
+            "x": 508,
+            "y": 63
+          }
+        ],
+        "peak": 11083
+      },
+      "input": {
+        "frames": 84,
+        "kind": 1,
+        "phase": 1,
+        "game_frame": 19,
+        "tick": 19,
+        "score": 0,
+        "time": 3281,
+        "hp": 3,
+        "x": 48,
+        "y": 96,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 212,
+            "y": 42
+          },
+          {
+            "x": 300,
+            "y": 73
+          },
+          {
+            "x": 388,
+            "y": 104
+          },
+          {
+            "x": 476,
+            "y": 63
+          }
+        ],
+        "peak": 11083
+      },
+      "pace": {
+        "hardware_frames": 100,
+        "game_updates": 100
+      },
+      "loss": {
+        "frames": 804,
+        "kind": 1,
+        "phase": 3,
+        "game_frame": 603,
+        "tick": 407,
+        "score": 7,
+        "time": 2893,
+        "hp": 0,
+        "x": 48,
+        "y": 80,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 156,
+            "y": 59
+          },
+          {
+            "x": 244,
+            "y": 99
+          },
+          {
+            "x": 332,
+            "y": 70
+          },
+          {
+            "x": 60,
+            "y": 111
+          }
+        ],
+        "peak": 11463
+      },
+      "win": null,
+      "restarted": {
+        "frames": 812,
+        "kind": 1,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 3297,
+        "hp": 3,
+        "x": 48,
+        "y": 80,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 244,
+            "y": 42
+          },
+          {
+            "x": 332,
+            "y": 73
+          },
+          {
+            "x": 420,
+            "y": 104
+          },
+          {
+            "x": 508,
+            "y": 63
+          }
+        ],
+        "peak": 11588
+      }
+    },
+    "prism-break": {
+      "passed": true,
+      "sha256": "a2ead9e5dc2316f0f92f5b7cf31520cd35efb425d2b507208613e9aa10687e81",
+      "title": {
+        "frames": 60,
+        "kind": 2,
+        "phase": 0,
+        "game_frame": 58,
+        "tick": 0,
+        "score": 0,
+        "time": 0,
+        "hp": 0,
+        "x": 0,
+        "y": 0,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 3863
+      },
+      "start": {
+        "frames": 68,
+        "kind": 2,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 5997,
+        "hp": 3,
+        "x": 120,
+        "y": 126,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 120,
+            "y": 118
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 10650
+      },
+      "input": {
+        "frames": 84,
+        "kind": 2,
+        "phase": 1,
+        "game_frame": 19,
+        "tick": 19,
+        "score": 0,
+        "time": 5981,
+        "hp": 3,
+        "x": 144,
+        "y": 126,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 144,
+            "y": 118
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 10650
+      },
+      "pace": {
+        "hardware_frames": 100,
+        "game_updates": 100
+      },
+      "loss": {
+        "frames": 6234,
+        "kind": 2,
+        "phase": 3,
+        "game_frame": 6033,
+        "tick": 6000,
+        "score": 0,
+        "time": 0,
+        "hp": 3,
+        "x": 120,
+        "y": 126,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 120,
+            "y": 118
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11547
+      },
+      "win": null,
+      "restarted": {
+        "frames": 6242,
+        "kind": 2,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 5997,
+        "hp": 3,
+        "x": 120,
+        "y": 126,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 120,
+            "y": 118
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11547
+      }
+    },
+    "tiny-tactics": {
+      "passed": true,
+      "sha256": "f07d45b481bb63ce51011a85c3304e30b88f554c44db0941edfa7ef8cd47bbec",
+      "title": {
+        "frames": 60,
+        "kind": 3,
+        "phase": 0,
+        "game_frame": 58,
+        "tick": 0,
+        "score": 0,
+        "time": 0,
+        "hp": 0,
+        "x": 0,
+        "y": 0,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 3820
+      },
+      "start": {
+        "frames": 68,
+        "kind": 3,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 0,
+        "hp": 9,
+        "x": 0,
+        "y": 4,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 4
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 10745
+      },
+      "input": {
+        "frames": 84,
+        "kind": 3,
+        "phase": 1,
+        "game_frame": 19,
+        "tick": 19,
+        "score": 0,
+        "time": 0,
+        "hp": 9,
+        "x": 1,
+        "y": 4,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 1,
+        "objects": [
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 4
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 10745
+      },
+      "pace": {
+        "hardware_frames": 100,
+        "game_updates": 100
+      },
+      "loss": null,
+      "win": {
+        "frames": 300,
+        "kind": 3,
+        "phase": 2,
+        "game_frame": 97,
+        "tick": 96,
+        "score": 3,
+        "time": 0,
+        "hp": 7,
+        "x": 5,
+        "y": 3,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 11,
+        "objects": [
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 3,
+            "y": 4
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11547
+      },
+      "restarted": {
+        "frames": 308,
+        "kind": 3,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 0,
+        "hp": 9,
+        "x": 0,
+        "y": 4,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 5,
+            "y": 0
+          },
+          {
+            "x": 5,
+            "y": 2
+          },
+          {
+            "x": 5,
+            "y": 4
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11547
+      }
+    },
+    "parcel-dash": {
+      "passed": true,
+      "sha256": "94f0eaaee63c47dbcdc24eee107eac0506ba6491db5119f085da700e3dbf8844",
+      "title": {
+        "frames": 60,
+        "kind": 4,
+        "phase": 0,
+        "game_frame": 58,
+        "tick": 0,
+        "score": 0,
+        "time": 0,
+        "hp": 0,
+        "x": 0,
+        "y": 0,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 3852
+      },
+      "start": {
+        "frames": 68,
+        "kind": 4,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 3597,
+        "hp": 3,
+        "x": 36,
+        "y": 80,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 79,
+            "y": 42
+          },
+          {
+            "x": 107,
+            "y": 78
+          },
+          {
+            "x": 147,
+            "y": 114
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11364
+      },
+      "input": {
+        "frames": 84,
+        "kind": 4,
+        "phase": 1,
+        "game_frame": 19,
+        "tick": 19,
+        "score": 0,
+        "time": 3581,
+        "hp": 3,
+        "x": 52,
+        "y": 80,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 95,
+            "y": 42
+          },
+          {
+            "x": 91,
+            "y": 78
+          },
+          {
+            "x": 163,
+            "y": 114
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11364
+      },
+      "pace": {
+        "hardware_frames": 100,
+        "game_updates": 100
+      },
+      "loss": {
+        "frames": 3834,
+        "kind": 4,
+        "phase": 3,
+        "game_frame": 3633,
+        "tick": 3600,
+        "score": 0,
+        "time": 0,
+        "hp": 3,
+        "x": 36,
+        "y": 80,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 101,
+            "y": 42
+          },
+          {
+            "x": 159,
+            "y": 78
+          },
+          {
+            "x": 95,
+            "y": 114
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11547
+      },
+      "win": null,
+      "restarted": {
+        "frames": 3842,
+        "kind": 4,
+        "phase": 1,
+        "game_frame": 3,
+        "tick": 3,
+        "score": 0,
+        "time": 3597,
+        "hp": 3,
+        "x": 36,
+        "y": 80,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 79,
+            "y": 42
+          },
+          {
+            "x": 107,
+            "y": 78
+          },
+          {
+            "x": 147,
+            "y": 114
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11547
+      }
+    }
+  }
+}

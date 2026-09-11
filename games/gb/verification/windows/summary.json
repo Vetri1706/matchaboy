@@ -1,0 +1,125 @@
+{
+  "binary": "C:\\Users\\Nemean Cestus\\Documents\\Codex\\2026-09-10\\https-github-com-vetri1706-matchaboy-https\\work\\matchaboy\\build\\smooth\\Matchaboy.exe",
+  "binary_sha256": "e554665d8c8add7e9769d3336cb05ba49d9a2951182f27352764ac066abedf17",
+  "results": [
+    {
+      "id": "pocket-racer",
+      "passed": true,
+      "rom_sha256": "b27fbfe66fb6c4d8112df45d7c04b66c4fff3e7356e518bcf5b9442bc6dfacc0",
+      "speaker": {
+        "device_open": true,
+        "muted": false,
+        "paused": false,
+        "queued_buffers": 14,
+        "submitted_frames": 103200,
+        "completed_frames": 96480,
+        "peak": 4096,
+        "sample_rate": 48000,
+        "generated_frames": 103574,
+        "generated_peak": 8192,
+        "underruns": 0,
+        "dropped_frames": 0,
+        "max_gap_ms": 157,
+        "underrun_gap_ms": 0
+      },
+      "native_capture": "pocket-racer-native.png",
+      "display_gpu_readback": true
+    },
+    {
+      "id": "moon-courier",
+      "passed": true,
+      "rom_sha256": "7e77223f44c7ab3ad9ec71d4083dd21d02cf0b22994c8d6d261309b29b87446c",
+      "speaker": {
+        "device_open": true,
+        "muted": false,
+        "paused": false,
+        "queued_buffers": 8,
+        "submitted_frames": 104160,
+        "completed_frames": 100320,
+        "peak": 4025,
+        "sample_rate": 48000,
+        "generated_frames": 104378,
+        "generated_peak": 8051,
+        "underruns": 0,
+        "dropped_frames": 0,
+        "max_gap_ms": 32,
+        "underrun_gap_ms": 0
+      },
+      "native_capture": "moon-courier-native.png",
+      "display_gpu_readback": true
+    },
+    {
+      "id": "matcha-garden",
+      "passed": true,
+      "rom_sha256": "04066d1eb92c785caf0f1b9212691e64e00c300d7b3f6fe6350bb3ce6f8d5a1e",
+      "speaker": {
+        "device_open": true,
+        "muted": false,
+        "paused": false,
+        "queued_buffers": 8,
+        "submitted_frames": 104160,
+        "completed_frames": 100320,
+        "peak": 3983,
+        "sample_rate": 48000,
+        "generated_frames": 104233,
+        "generated_peak": 7967,
+        "underruns": 0,
+        "dropped_frames": 0,
+        "max_gap_ms": 32,
+        "underrun_gap_ms": 0
+      },
+      "native_capture": "matcha-garden-native.png",
+      "display_gpu_readback": true
+    },
+    {
+      "id": "signal-lost",
+      "passed": true,
+      "rom_sha256": "e0b02f09294f811cb2c211c8d8b3fd52aece7e05b2026befd3002bda6ee560f9",
+      "speaker": {
+        "device_open": true,
+        "muted": false,
+        "paused": false,
+        "queued_buffers": 9,
+        "submitted_frames": 104160,
+        "completed_frames": 99840,
+        "peak": 3983,
+        "sample_rate": 48000,
+        "generated_frames": 104232,
+        "generated_peak": 7966,
+        "underruns": 0,
+        "dropped_frames": 0,
+        "max_gap_ms": 32,
+        "underrun_gap_ms": 0
+      },
+      "native_capture": "signal-lost-native.png",
+      "display_gpu_readback": true
+    },
+    {
+      "id": "orbit-guard",
+      "passed": true,
+      "rom_sha256": "0ad772bfc39903530abc7a3c2495fbfecaf88a6978356f02b51fcd88ca307ac3",
+      "speaker": {
+        "device_open": true,
+        "muted": false,
+        "paused": false,
+        "queued_buffers": 8,
+        "submitted_frames": 104160,
+        "completed_frames": 100320,
+        "peak": 4024,
+        "sample_rate": 48000,
+        "generated_frames": 104378,
+        "generated_peak": 8049,
+        "underruns": 0,
+        "dropped_frames": 0,
+        "max_gap_ms": 32,
+        "underrun_gap_ms": 0
+      },
+      "native_capture": "orbit-guard-native.png",
+      "display_gpu_readback": true
+    }
+  ],
+  "limitations": [
+    "Automated device completion and PCM amplitude, not subjective listening.",
+    "Short native smoke test, not a full human playthrough."
+  ]
+}

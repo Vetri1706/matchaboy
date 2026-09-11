@@ -1,0 +1,4 @@
+/build/
+/tests/__pycache__/
+/roms/*.sav
+/roms/*.sav.tmp

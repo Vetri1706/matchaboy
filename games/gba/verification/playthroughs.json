@@ -1,0 +1,161 @@
+{
+  "scope": "Actual ARM ROM playthroughs using only GBA keypad inputs; no memory writes or ROM modifications.",
+  "games": {
+    "cloud-pilot": {
+      "won": true,
+      "end": {
+        "frames": 1205,
+        "kind": 1,
+        "phase": 2,
+        "game_frame": 1140,
+        "tick": 1140,
+        "score": 24,
+        "time": 2160,
+        "hp": 3,
+        "x": 48,
+        "y": 108,
+        "stage": 0,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 130,
+            "y": 55
+          },
+          {
+            "x": 218,
+            "y": 95
+          },
+          {
+            "x": 306,
+            "y": 66
+          },
+          {
+            "x": 34,
+            "y": 107
+          }
+        ],
+        "peak": 11545
+      },
+      "sha256": "78d58c0a9a8cc9759a5be28a8c0d196137e109bf556db4a22b371c2e94793696"
+    },
+    "prism-break": {
+      "won": true,
+      "end": {
+        "frames": 1149,
+        "kind": 2,
+        "phase": 2,
+        "game_frame": 1084,
+        "tick": 1084,
+        "score": 24,
+        "time": 4916,
+        "hp": 3,
+        "x": 57,
+        "y": 126,
+        "stage": 0,
+        "target": 0,
+        "carrying": 1,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 42,
+            "y": 42
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11531
+      },
+      "sha256": "a2ead9e5dc2316f0f92f5b7cf31520cd35efb425d2b507208613e9aa10687e81"
+    },
+    "parcel-dash": {
+      "won": true,
+      "end": {
+        "frames": 800,
+        "kind": 4,
+        "phase": 2,
+        "game_frame": 733,
+        "tick": 732,
+        "score": 5,
+        "time": 2868,
+        "hp": 3,
+        "x": 36,
+        "y": 112,
+        "stage": 0,
+        "target": 5,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 124,
+            "y": 42
+          },
+          {
+            "x": 66,
+            "y": 78
+          },
+          {
+            "x": 164,
+            "y": 114
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "peak": 11364
+      },
+      "sha256": "94f0eaaee63c47dbcdc24eee107eac0506ba6491db5119f085da700e3dbf8844"
+    },
+    "drift-circuit": {
+      "won": true,
+      "end": {
+        "frames": 1269,
+        "kind": 0,
+        "phase": 2,
+        "game_frame": 1208,
+        "tick": 1206,
+        "score": 48,
+        "time": 1194,
+        "hp": 3,
+        "x": 124,
+        "y": 124,
+        "stage": 3602,
+        "target": 0,
+        "carrying": 0,
+        "moves": 0,
+        "objects": [
+          {
+            "x": 82,
+            "y": -14
+          },
+          {
+            "x": 134,
+            "y": -202
+          },
+          {
+            "x": 152,
+            "y": 156
+          },
+          {
+            "x": 81,
+            "y": 1
+          }
+        ],
+        "peak": 11056
+      },
+      "sha256": "fcc3f456ab56078c57b224b8b5e9562371b8d9739c28b37870a312648fcc2d19"
+    }
+  }
+}

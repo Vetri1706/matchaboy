@@ -47,7 +47,7 @@ def main():
                 raise RuntimeError("installed executable differs from tested build: " + name)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     dirty = bool(subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=all", "--",
-                                         "Makefile", "CMakeLists.txt", "include", "src", "tests", "tools",
+                                         "Makefile", "CMakeLists.txt", "include", "src", "tests", "tools", "games", "assets",
                                          ".github", "matcha_gym.py"], cwd=ROOT, text=True).strip())
     # A previous packaging run may have left its manifest in the staging tree.
     # The manifest cannot include its own hash.

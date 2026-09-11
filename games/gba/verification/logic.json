@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "Exact ROM game.c compiled to a native test DLL; hardware/UI verification is separate.",
+  "checks": [
+    "All five accept Start, movement, Select/title and timed round restart (tactics has turn limits instead).",
+    "Drift course finish, steering, boost, traffic collision loss and restart.",
+    "Cloud automated full 24-gate flight, moving gap collision loss and restart.",
+    "Prism launch, moving ball, paddle collision, final brick win, lost ball and restart.",
+    "Tactics default board has a verified legal winning route; enemy retaliation loss and restart.",
+    "Parcel five pickup/travel/delivery loops, traffic collision loss and restart."
+  ],
+  "tactics_winning_keys": [
+    16,
+    16,
+    1,
+    1,
+    1,
+    1,
+    16,
+    16,
+    16,
+    64,
+    1,
+    1
+  ]
+}

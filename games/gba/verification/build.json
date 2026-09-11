@@ -1,0 +1,41 @@
+{
+  "roms": {
+    "drift-circuit": {
+      "bytes": 32768,
+      "sha256": "fcc3f456ab56078c57b224b8b5e9562371b8d9739c28b37870a312648fcc2d19"
+    },
+    "cloud-pilot": {
+      "bytes": 32768,
+      "sha256": "78d58c0a9a8cc9759a5be28a8c0d196137e109bf556db4a22b371c2e94793696"
+    },
+    "prism-break": {
+      "bytes": 32768,
+      "sha256": "a2ead9e5dc2316f0f92f5b7cf31520cd35efb425d2b507208613e9aa10687e81"
+    },
+    "tiny-tactics": {
+      "bytes": 32768,
+      "sha256": "f07d45b481bb63ce51011a85c3304e30b88f554c44db0941edfa7ef8cd47bbec"
+    },
+    "parcel-dash": {
+      "bytes": 32768,
+      "sha256": "94f0eaaee63c47dbcdc24eee107eac0506ba6491db5119f085da700e3dbf8844"
+    }
+  },
+  "source_sha256": {
+    "src/arcade.h": "51267c98c88c7266d6e7a946426a53ee7f8f076079838983eae1e1290b8b9166",
+    "src/draw.c": "d5fd274bb256bc6a14967d8d4d8932d74bf7b3e4543fa3fbe672cfaf2f0361d3",
+    "src/game.c": "292bbec15e3db8f4e829c1bcdc8210a0ca1febd4c879a491418346903f484cd2",
+    "src/main.c": "961f743a273c563f51995fdad2b65e76e4a39b2f42e26d3f64c9c0b08bedb892",
+    "src/rom.ld": "097bd9f176136680750b7fba3b8e24478be3aff95b2101c5ff4b7d36eb64544e",
+    "src/start.s": "11d77e2f1b4acd4bc3c1466a5a62a831e3a1e486e36f60b9b015101821cfc34d"
+  },
+  "compiler": "clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)",
+  "repeated_build_identical": true,
+  "screen_captures": "games/gba/build/ui-final-frozen",
+  "all_five_native_wins": true,
+  "limitations": [
+    "Automated verification, no human playtesting or subjective audio review.",
+    "No physical GBA boot compatibility claim; manufacturer-logo region is blank.",
+    "Single course/board per game, no persistent saves or multiplayer."
+  ]
+}

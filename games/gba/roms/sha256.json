@@ -1,0 +1,22 @@
+{
+  "drift-circuit": {
+    "bytes": 32768,
+    "sha256": "fcc3f456ab56078c57b224b8b5e9562371b8d9739c28b37870a312648fcc2d19"
+  },
+  "cloud-pilot": {
+    "bytes": 32768,
+    "sha256": "78d58c0a9a8cc9759a5be28a8c0d196137e109bf556db4a22b371c2e94793696"
+  },
+  "prism-break": {
+    "bytes": 32768,
+    "sha256": "a2ead9e5dc2316f0f92f5b7cf31520cd35efb425d2b507208613e9aa10687e81"
+  },
+  "tiny-tactics": {
+    "bytes": 32768,
+    "sha256": "f07d45b481bb63ce51011a85c3304e30b88f554c44db0941edfa7ef8cd47bbec"
+  },
+  "parcel-dash": {
+    "bytes": 32768,
+    "sha256": "94f0eaaee63c47dbcdc24eee107eac0506ba6491db5119f085da700e3dbf8844"
+  }
+}

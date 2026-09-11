@@ -1,0 +1,99 @@
+{
+  "suite": "Original GB arcade full input replays",
+  "library": "C:\\Users\\Nemean Cestus\\Documents\\Codex\\2026-09-10\\https-github-com-vetri1706-matchaboy-https\\work\\matchaboy\\build\\smooth\\libmatcha.dll",
+  "library_sha256": "56dd561251b1bad7d5f6999776767e31643cabbf389ca4768c8a0f21f8f76a01",
+  "elapsed_seconds": 22.914,
+  "ram_writes": false,
+  "results": [
+    {
+      "id": "pocket-racer",
+      "passed": true,
+      "checks": [
+        "Boots into the title/instruction screen",
+        "Start begins a fresh playable round",
+        "Left changes exactly one lane",
+        "Right returns one lane",
+        "Avoiding rivals completes all 20 passes",
+        "Start restarts and clears score/loss state",
+        "Three actual collisions consume shields and end the round",
+        "Start restarts and clears score/loss state"
+      ],
+      "emulated_frames": 2309,
+      "input_sha256": "192728d4f41f89d3abda66d159c617b1af6f8ce0a062c4f3aa4e6dcfec45562f",
+      "rom_sha256": "b27fbfe66fb6c4d8112df45d7c04b66c4fff3e7356e518bcf5b9442bc6dfacc0"
+    },
+    {
+      "id": "moon-courier",
+      "passed": true,
+      "checks": [
+        "Boots into the title/instruction screen",
+        "Start begins a fresh playable round",
+        "Jump, collect, and deliver all three parcels without losing a life",
+        "Start restarts and clears score/loss state",
+        "Falling into three gaps consumes lives and ends the round",
+        "Start restarts and clears score/loss state"
+      ],
+      "emulated_frames": 603,
+      "input_sha256": "4e8f50c8d9b971db7e65fa7ac03d762b1380f7a80c1c80aea449be19d502b8c0",
+      "rom_sha256": "7e77223f44c7ab3ad9ec71d4083dd21d02cf0b22994c8d6d261309b29b87446c"
+    },
+    {
+      "id": "matcha-garden",
+      "passed": true,
+      "checks": [
+        "Boots into the title/instruction screen",
+        "Start begins a fresh playable round",
+        "Arrows move the gardener on the grid",
+        "B restores the current puzzle, including its mutable board",
+        "Solid garden walls block player movement",
+        "Actual pushes solve garden 1",
+        "Actual pushes solve garden 2",
+        "Actual pushes solve garden 3",
+        "All three puzzles reach a completed round",
+        "Start restarts and clears score/loss state"
+      ],
+      "emulated_frames": 275,
+      "input_sha256": "6ac29fe682b8b10ab8d738ad1eb71a0e85dde65968a56872786e9be8ded431b6",
+      "rom_sha256": "04066d1eb92c785caf0f1b9212691e64e00c300d7b3f6fe6350bb3ce6f8d5a1e"
+    },
+    {
+      "id": "signal-lost",
+      "passed": true,
+      "checks": [
+        "Boots into the title/instruction screen",
+        "Start begins a fresh playable round",
+        "Maze walls block movement",
+        "Finding the exit before collecting all beacons does not win",
+        "All three beacons can be reached and collected",
+        "Three signals plus the exit complete the mission",
+        "Start restarts and clears score/loss state",
+        "The real 90-second battery timer can expire and end the round",
+        "Start restarts and clears score/loss state"
+      ],
+      "emulated_frames": 6078,
+      "input_sha256": "3d9837982ffe55785ded76dc97b0b83b4d4122ca6b0457ff24ece87b6765e2fb",
+      "rom_sha256": "e0b02f09294f811cb2c211c8d8b3fd52aece7e05b2026befd3002bda6ee560f9"
+    },
+    {
+      "id": "orbit-guard",
+      "passed": true,
+      "checks": [
+        "Boots into the title/instruction screen",
+        "Start begins a fresh playable round",
+        "Player ship responds to held direction input",
+        "Firing real projectiles destroys 15 drones and completes the round",
+        "Start restarts and clears score/loss state",
+        "Three unopposed drone invasions consume lives and end the round",
+        "Start restarts and clears score/loss state"
+      ],
+      "emulated_frames": 7199,
+      "input_sha256": "36a04f71aabf5ecab91fbe86f1391870c9818768e859a8411682e66b091d9f55",
+      "rom_sha256": "0ad772bfc39903530abc7a3c2495fbfecaf88a6978356f02b51fcd88ca307ac3"
+    }
+  ],
+  "limitations": [
+    "Automated input replays, not human playtesting.",
+    "Learning ABI does not synthesize speaker PCM.",
+    "Physical Game Boy hardware not tested."
+  ]
+}

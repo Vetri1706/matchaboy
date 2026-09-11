@@ -2,10 +2,15 @@
 
 [Download builds or build with Clang on Windows, Linux, and macOS](DOWNLOADS.md).
 
-A C++20 Game Boy DMG emulator built from scratch, using only the C++ standard
-library. The executable has no SDL, emulator-library, package-manager, or
-dynamic framework dependency. The optional verification scripts use Python's
-standard library to fetch external test binaries and preserve evidence.
+A C++20 Game Boy DMG engine built from scratch, with a portable Windows player
+and a bundled mGBA core for Game Boy Advance. The Windows player needs no
+installer or extra runtime-package setup. Its original arcade includes five
+GB and five GBA mini-games with goals, controls, source and Inspector reading
+guides: see [the collection](games/README.md) and [authorship/credits](games/PROVENANCE.md).
+The original headless DMG engine uses the C++ standard library; the Windows
+frontend and GBA integration have the dependencies documented in THIRD_PARTY.md.
+The optional verification scripts use Python's standard library to fetch
+external test binaries and preserve evidence.
 
 Run commands from the cloned repository root. Downloaded test ROMs and build
 products are generated locally; [ARTIFACTS.md](ARTIFACTS.md) describes the

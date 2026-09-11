@@ -13,6 +13,7 @@
 #include "dmg/autopsy.hpp"
 #include "gba_core.hpp"
 #include "windows_audio.hpp"
+#include "arcade_library.hpp"
 #include "dmg/cpu.hpp"
 #include "dmg/mmu.hpp"
 #include <algorithm>
@@ -24,6 +25,7 @@
 #include <iostream>
 #include <memory>
 #include <map>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -159,9 +161,25 @@ void text(Gdiplus::Graphics *context, double x, double y, const std::string &val
         Gdiplus::PointF(static_cast<float>(x), static_cast<float>(y)), Gdiplus::StringFormat::GenericTypographic(), &brush);
 }
 template<typename... Args> std::string format(const char *pattern, Args... args) {
-    std::array<char, 512> buffer{};
+    std::array<char, 2048> buffer{};
     std::snprintf(buffer.data(), buffer.size(), pattern, args...);
     return buffer.data();
+}
+void wrapped_text(Gdiplus::Graphics *context, double x, double y, const char *value,
+                  unsigned columns, unsigned lines, double size = 15, Color color = foreground) {
+    std::istringstream words(value ? value : "");
+    std::string word, row;
+    unsigned line = 0;
+    while (words >> word) {
+        if (!row.empty() && row.size() + word.size() + 1 > columns) {
+            if (line + 1 == lines) { text(context, x, y + line*(size+4), row + "...", size, color); return; }
+            text(context, x, y + line++*(size+4), row, size, color);
+            row.clear();
+        }
+        if (!row.empty()) row += ' ';
+        row += word;
+    }
+    if (!row.empty() && line < lines) text(context, x, y + line*(size+4), row, size, color);
 }
 struct Imaging {
     ULONG_PTR token{};
@@ -203,6 +221,11 @@ class Runtime {
     std::unique_ptr<dmg::Cpu> cpu;
     std::unique_ptr<GbaCore> gba;
     std::string title;
+    bool library_view = true;
+    unsigned library_selection = 0;
+    bool library_was_paused = false;
+    int library_game = -1;
+    bool has_game() const { return bus || gba; }
     bool inspector_view = false;
     unsigned inspector_tab = 0;
     unsigned memory_region = 0, memory_offset = 0;
@@ -216,9 +239,9 @@ class Runtime {
     unsigned lcd_left() const { return controls_visible ? 48 : 240; }
     bool sound_muted = false;
     bool paused = false;
-    void enable_audio() { if (gba) gba->enable_audio(); else bus->apu.set_sample_rate(48000); }
+    void enable_audio() { if (gba) gba->enable_audio(); else if (bus) bus->apu.set_sample_rate(48000); }
     std::size_t drain_audio(std::span<std::int16_t> samples) {
-        return gba ? gba->drain_audio(samples) : bus->apu.drain_samples(samples);
+        return gba ? gba->drain_audio(samples) : bus ? bus->apu.drain_samples(samples) : 0;
     }
     unsigned trace_scroll = 0;
     std::uint16_t buttons = 0;
@@ -232,16 +255,17 @@ class Runtime {
     }
     void set_buttons(std::uint16_t value) {
         buttons = value;
-        if (!gba) { bus->set_buttons(static_cast<std::uint8_t>(value)); return; }
+        if (!gba) { if (bus) bus->set_buttons(static_cast<std::uint8_t>(value)); return; }
         constexpr std::array<unsigned, 10> mapping{4,5,6,7,0,1,2,3,9,8};
         std::uint16_t mapped = 0;
         for (unsigned i=0; i<mapping.size(); ++i) if (value & (1U<<i)) mapped |= static_cast<std::uint16_t>(1U<<mapping[i]);
         gba->set_buttons(mapped);
     }
     void flush_save() { if (gba) gba->flush_save(); }
-    void toggle_inspector() { inspector_view = !inspector_view; }
+    void toggle_inspector() { if (has_game() && !library_view) inspector_view = !inspector_view; }
 
-    explicit Runtime(const std::filesystem::path &path) : title(utf8(path.filename().wstring())) {
+    Runtime() = default;
+    explicit Runtime(const std::filesystem::path &path) : title(utf8(path.filename().wstring())), library_view(false) {
         auto extension = path.extension().wstring();
         std::transform(extension.begin(), extension.end(), extension.begin(), [](wchar_t c) { return static_cast<wchar_t>(towlower(c)); });
         if (extension == L".gba") { gba = std::make_unique<GbaCore>(path); return; }
@@ -256,8 +280,9 @@ class Runtime {
         bus->autopsy = inspector.get();
         bus->apu.set_sample_rate(0); // Headless warm-up does not queue old audio.
     }
-    void step() { if (gba) { gba->step(); return; } bus->autopsy = inspector.get(); cpu->step(); }
+    void step() { if (!has_game() || library_view) return; if (gba) { gba->step(); return; } bus->autopsy = inspector.get(); cpu->step(); }
     void run_frame() {
+        if (!has_game() || library_view) return;
         if (gba) { gba->run_frame(); return; }
         // Disassembly/heatmap/scopes are inspection work, not part of playing.
         // Keep the player fast enough to feed the audio device continuously.
@@ -271,6 +296,7 @@ class Runtime {
         }
     }
     void position(unsigned line, unsigned dot) {
+        if (!has_game()) throw std::runtime_error("Choose a game before positioning its PPU.");
         if (gba) throw std::runtime_error("PPU positioning is available for Game Boy only.");
         const auto deadline = bus->cycles() + 70224 * 2;
         do {
@@ -280,6 +306,63 @@ class Runtime {
             if (bus->cycles() == before) break;
         } while (bus->cycles() < deadline);
         throw std::runtime_error("requested PPU position not reached (LCD disabled or CPU stopped)");
+    }
+    std::unique_ptr<Gdiplus::Bitmap> render_library() {
+        auto bitmap = std::make_unique<Gdiplus::Bitmap>(canvas_width, canvas_height, PixelFormat32bppARGB);
+        Gdiplus::Graphics graphics(bitmap.get()); auto *context = &graphics;
+        context->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAliasGridFit);
+        fill(context,0,0,1280,920,{0.035,0.06,0.08});
+        fill(context,0,0,1280,88,{0.065,0.105,0.13});
+        draw_logo(context,24,22,40); text(context,78,25,"MATCHABOY",26,cyan);
+        text(context,282,34,"ORIGINAL ARCADE",13,muted);
+        if (has_game()) {
+            fill(context,834,20,190,48,{0.10,0.17,0.20});
+            text(context,851,35,"Return to game",16,foreground);
+        }
+        fill(context,1040,20,208,48,{0.16,0.34,0.32});
+        text(context,1061,35,"Open your game...",16,foreground);
+        text(context,32,114,"Small games. Big discoveries.",27,foreground);
+        text(context,32,153,"Pick a game, then see the machine behind it.",16,muted);
+        text(context,32,196,"01 / GAME BOY",14,green);
+        text(context,426,196,"02 / GAME BOY ADVANCE",14,cyan);
+        const auto games = arcade_games();
+        constexpr std::array<Color,10> accents{{{0.53,0.89,0.65},{0.83,0.73,0.99},{0.65,0.89,0.45},{0.97,0.73,0.39},{0.51,0.81,0.99},
+            {0.99,0.67,0.42},{0.52,0.81,0.99},{0.90,0.64,0.97},{0.87,0.84,0.48},{0.57,0.90,0.71}}};
+        for (unsigned i = 0; i < games.size() && i < 10; ++i) {
+            const auto &game = games[i]; const bool selected = i == library_selection;
+            const double x = i < 5 ? 32 : 426, y = 230 + (i%5)*122;
+            const auto accent = accents[i];
+            fill(context,x,y,370,110,selected ? Color{0.13,0.24,0.25} : Color{0.065,0.105,0.13});
+            fill(context,x,y,selected ? 4 : 2,110,selected ? accent : Color{0.13,0.23,0.25});
+            // Small geometric cartridge marks are UI decoration, never gameplay previews.
+            fill(context,x+18,y+22,48,62,{0.035,0.075,0.09});
+            fill(context,x+25,y+30,34,27,accent);
+            fill(context,x+32+(i%3)*4,y+36,8,9,{0.035,0.075,0.09});
+            fill(context,x+25,y+64,20,3,accent);
+            fill(context,x+25,y+72,13,3,accent);
+            text(context,x+84,y+23,game.title,19,selected ? foreground : Color{0.72,0.81,0.85});
+            text(context,x+84,y+55,game.genre,13,muted);
+            text(context,x+84,y+80,selected ? "SELECTED  >" : "SELECT TO EXPLORE",11,selected ? accent : muted);
+        }
+        fill(context,820,148,428,700,{0.065,0.105,0.13});
+        if (!games.empty()) {
+            const auto &game = games[std::min<std::size_t>(library_selection,games.size()-1)];
+            text(context,844,169,std::string(game.system)+"  /  "+game.genre,13,green);
+            text(context,844,202,game.title,25,foreground);
+            wrapped_text(context,844,246,game.description,42,4,15,muted);
+            fill(context,844,334,380,46,{0.28,0.63,0.49});
+            text(context,866,347,"PLAY GAME",18,{0.02,0.08,0.07});
+            text(context,1132,350,"ENTER",13,{0.02,0.08,0.07});
+            text(context,844,407,"CONTROLS",13,cyan);
+            wrapped_text(context,844,433,game.controls,44,6,14,foreground);
+            text(context,844,554,"LEARN",13,cyan);
+            wrapped_text(context,844,580,game.learn,48,6,13,muted);
+            text(context,844,704,"INSPECT / PRESS TAB WHILE PLAYING",13,cyan);
+            wrapped_text(context,844,730,game.inspector_hint,48,6,13,muted);
+        }
+        text(context,32,870,"ARROWS select   ENTER play   CTRL+O open a file   CTRL+L library   F12 screenshot",13,muted);
+        text(context,32,898,has_game() ? "Your current game is paused while you browse." : "Five GB games + five GBA games. Included and ready to play.",12,muted);
+        return bitmap;
     }
     std::unique_ptr<Gdiplus::Bitmap> render_player(bool include_lcd = true) {
         auto bitmap = std::make_unique<Gdiplus::Bitmap>(canvas_width, canvas_height, PixelFormat32bppARGB);
@@ -291,6 +374,8 @@ class Runtime {
         draw_logo(context, 24, 22, 40);
         text(context, 78, 25, "MATCHABOY", 26, cyan);
         text(context, 260, 34, gba ? "GAME BOY ADVANCE" : "GAME BOY PLAYER", 13, muted);
+        fill(context, 578, 20, 116, 48, {0.10, 0.17, 0.20});
+        text(context, 598, 34, "Library", 17, foreground);
         fill(context, 710, 20, 174, 48, {0.10, 0.17, 0.20});
         text(context, 726, 32, controls_visible ? "Hide controls" : "Show controls", 17, foreground);
         fill(context, 900, 20, 158, 48, {0.16, 0.34, 0.32});
@@ -323,8 +408,13 @@ class Runtime {
             text(context, 1014, y+10, labels[i], 16, foreground);
         }
         if (gba) text(context, 900, 635, "Q: L shoulder   W: R shoulder", 14, foreground);
-        text(context, 900, 664, "These keys work for every game.", 14, muted);
-        text(context, 900, 691, "A/B actions depend on the game.", 14, muted);
+        const auto games = arcade_games();
+        if (library_game >= 0 && static_cast<std::size_t>(library_game) < games.size())
+            wrapped_text(context,900,662,games[library_game].controls,37,4,13,foreground);
+        else {
+            text(context, 900, 664, "These keys work for every game.", 14, muted);
+            text(context, 900, 691, "A/B actions depend on the game.", 14, muted);
+        }
         text(context, 900, 757, "Ctrl+O  Choose another game", 14, muted);
         text(context, 900, 786, "Tab     Toggle Inspector", 14, muted);
         text(context, 900, 815, "F12     Save screenshot", 14, ::muted);
@@ -553,20 +643,27 @@ class Runtime {
     }
     void save(const std::filesystem::path &path, Gdiplus::Bitmap &bitmap, bool gpu) {
         save_png(bitmap, path);
+        if (!has_game()) {
+            std::ofstream metadata(path.wstring()+L".json");
+            metadata << format("{\"platform\":\"library\",\"width\":%u,\"height\":%u,\"gpu_readback\":%s,\"frames\":0,\"paused\":true,\"buttons\":0,\"inspector_view\":false,\"library_view\":true,\"library_selection\":%u,\"library_game\":-1}\n",
+                bitmap.GetWidth(), bitmap.GetHeight(), gpu ? "true" : "false", library_selection);
+            if (!metadata) throw std::runtime_error("Cannot write library capture metadata.");
+            return;
+        }
         if (gba) {
             const auto debug = gba->inspect(memory_bases[memory_region]+memory_offset);
             std::ofstream metadata(path.wstring()+L".json");
-            metadata << format("{\"platform\":\"gba\",\"width\":%u,\"height\":%u,\"gpu_readback\":%s,\"frames\":%llu,\"paused\":%s,\"buttons\":%u,\"inspector_view\":%s,\"inspector_tab\":%u,\"memory_base\":%u,\"pc\":%u,\"cpsr\":%u,\"dispcnt\":%u,\"memory_first\":%u,\"audio_frames\":%u}\n",
-                bitmap.GetWidth(), bitmap.GetHeight(), gpu ? "true" : "false", gba->frames(), paused ? "true" : "false", buttons, inspector_view ? "true" : "false", inspector_tab, debug.memory_base, debug.registers[15], debug.cpsr, debug.dispcnt, debug.memory[0], debug.audio_frames);
+            metadata << format("{\"platform\":\"gba\",\"width\":%u,\"height\":%u,\"gpu_readback\":%s,\"frames\":%llu,\"paused\":%s,\"buttons\":%u,\"inspector_view\":%s,\"inspector_tab\":%u,\"memory_base\":%u,\"pc\":%u,\"cpsr\":%u,\"dispcnt\":%u,\"memory_first\":%u,\"audio_frames\":%u,\"library_view\":%s,\"library_selection\":%u,\"library_game\":%d}\n",
+                bitmap.GetWidth(), bitmap.GetHeight(), gpu ? "true" : "false", gba->frames(), paused ? "true" : "false", buttons, inspector_view ? "true" : "false", inspector_tab, debug.memory_base, debug.registers[15], debug.cpsr, debug.dispcnt, debug.memory[0], debug.audio_frames, library_view ? "true" : "false", library_selection, library_game);
             if (!metadata) throw std::runtime_error("Cannot write capture metadata.");
             return;
         }
         inspector->capture(*cpu, *bus);
         const auto state = inspector->snapshot();
         std::ofstream metadata(path.wstring() + L".json");
-        metadata << format("{\"width\":%u,\"height\":%u,\"gpu_readback\":%s,\"frames\":%llu,\"cycles\":%llu,\"ly\":%u,\"dot\":%u,\"mode\":%u,\"fifo_depth\":%u,\"instructions\":%llu,\"paused\":%s,\"buttons\":%u,\"trace_scroll\":%u,\"inspector_view\":%s,\"inspector_tab\":%u}\n",
+        metadata << format("{\"width\":%u,\"height\":%u,\"gpu_readback\":%s,\"frames\":%llu,\"cycles\":%llu,\"ly\":%u,\"dot\":%u,\"mode\":%u,\"fifo_depth\":%u,\"instructions\":%llu,\"paused\":%s,\"buttons\":%u,\"trace_scroll\":%u,\"inspector_view\":%s,\"inspector_tab\":%u,\"library_view\":%s,\"library_selection\":%u,\"library_game\":%d}\n",
             bitmap.GetWidth(), bitmap.GetHeight(), gpu ? "true" : "false", state.frames, state.cycles,
-            state.ly, state.dot, state.mode, state.fifo_depth, state.instructions, paused ? "true" : "false", buttons, trace_scroll, inspector_view ? "true" : "false", inspector_tab);
+            state.ly, state.dot, state.mode, state.fifo_depth, state.instructions, paused ? "true" : "false", buttons, trace_scroll, inspector_view ? "true" : "false", inspector_tab, library_view ? "true" : "false", library_selection, library_game);
         if (!metadata) throw std::runtime_error("cannot write capture metadata");
         std::cout << "Captured " << utf8(path.wstring()) << '\n';
     }
@@ -582,6 +679,8 @@ class Window {
     GLuint lcd_texture{};
     unsigned texture_width = 0, texture_height = 0;
     bool chrome_valid = false, cached_paused = false, cached_controls = true, cached_inspector = false;
+    bool cached_library = false;
+    unsigned cached_library_selection = 0;
     unsigned cached_tab = 0;
     std::chrono::steady_clock::time_point inspector_refresh{};
     std::string cached_title;
@@ -594,7 +693,7 @@ class Window {
     std::uint64_t generated_frames = 0;
     unsigned generated_peak = 0;
     void sync_audio() {
-        const bool suspended = runtime.paused || runtime.sound_muted;
+        const bool suspended = runtime.library_view || !runtime.has_game() || runtime.paused || runtime.sound_muted;
         if (suspended == audio_suspended) return;
         audio.reset();
         std::array<std::int16_t, 8192> discarded{};
@@ -606,7 +705,7 @@ class Window {
         while (const auto count = runtime.drain_audio(samples)) {
             generated_frames += count/2;
             for (std::size_t i=0; i<count; ++i) generated_peak = std::max(generated_peak, static_cast<unsigned>(std::abs(static_cast<int>(samples[i]))));
-            if (!runtime.sound_muted && !runtime.paused) audio.submit(std::span(samples).first(count));
+            if (!runtime.library_view && !runtime.sound_muted && !runtime.paused) audio.submit(std::span(samples).first(count));
         }
     }
     void toggle_sound() {
@@ -621,6 +720,56 @@ class Window {
         CheckMenuItem(GetMenu(handle), 1005, MF_BYCOMMAND | (runtime.controls_visible ? MF_CHECKED : MF_UNCHECKED));
         InvalidateRect(handle, nullptr, FALSE);
     }
+    void update_title() {
+        SetWindowTextW(handle, runtime.library_view ? L"Matchaboy - Original arcade" : (L"Matchaboy - " + wide(runtime.title)).c_str());
+    }
+    void show_library() {
+        if (runtime.library_view) return;
+        runtime.library_was_paused = runtime.paused;
+        runtime.library_view = true;
+        runtime.paused = true;
+        runtime.set_buttons(0);
+        sync_audio();
+        chrome_valid = false; update_title();
+        InvalidateRect(handle, nullptr, FALSE);
+    }
+    void return_to_game() {
+        if (!runtime.library_view || !runtime.has_game()) return;
+        runtime.library_view = false;
+        runtime.paused = runtime.library_was_paused;
+        runtime.set_buttons(0);
+        next_frame = std::chrono::steady_clock::now()+frame_period;
+        sync_audio(); chrome_valid = false; update_title();
+        InvalidateRect(handle, nullptr, FALSE);
+    }
+    void load_game(const std::filesystem::path &path, int library_game = -1) {
+        // Flush before opening the next core, including when replaying the same cartridge.
+        // Construct the replacement first so a failed open leaves the old game recoverable.
+        runtime.flush_save();
+        Runtime replacement(path);
+        replacement.sound_muted = runtime.sound_muted;
+        replacement.green_palette = runtime.green_palette;
+        replacement.controls_visible = runtime.controls_visible;
+        replacement.library_selection = runtime.library_selection;
+        replacement.library_game = library_game;
+        if (library_game >= 0) replacement.title = arcade_games()[library_game].title;
+        replacement.run_frame();
+        runtime = std::move(replacement);
+        audio.reset(); audio_suspended = true;
+        if (!window_test) runtime.enable_audio();
+        next_frame = std::chrono::steady_clock::now()+frame_period;
+        chrome_valid = false; update_title();
+    }
+    void play_library_game() {
+        const auto games = arcade_games();
+        if (runtime.library_selection >= games.size()) return;
+        try {
+            load_game(arcade_rom_path(runtime.library_selection), static_cast<int>(runtime.library_selection));
+        } catch (const std::exception &error) {
+            MessageBoxW(handle,wide(error.what()).c_str(),L"Unable to play library game",MB_OK | MB_ICONINFORMATION);
+        }
+        sync_audio(); InvalidateRect(handle,nullptr,FALSE);
+    }
     void open_game() {
         const bool was_paused = runtime.paused;
         runtime.paused = true;
@@ -634,21 +783,13 @@ class Window {
         dialog.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR;
         if (GetOpenFileNameW(&dialog)) {
             try {
-                runtime.flush_save();
-                Runtime replacement(file.data());
-                replacement.sound_muted = runtime.sound_muted;
-                replacement.green_palette = runtime.green_palette;
-                replacement.controls_visible = runtime.controls_visible;
-                replacement.run_frame();
-                runtime = std::move(replacement);
-                if (!window_test) runtime.enable_audio();
-                chrome_valid = false;
-                SetWindowTextW(handle, (L"Matchaboy - " + wide(runtime.title)).c_str());
+                load_game(file.data());
             } catch (const std::exception &error) {
                 runtime.paused = was_paused;
                 MessageBoxW(handle, wide(error.what()).c_str(), L"Unable to open game", MB_OK | MB_ICONINFORMATION);
             }
         } else runtime.paused = was_paused;
+        sync_audio();
         next_frame = std::chrono::steady_clock::now() + frame_period;
         InvalidateRect(handle, nullptr, FALSE);
     }
@@ -658,11 +799,26 @@ class Window {
         if (scale <= 0) return;
         const double cx = (x-(client.right-canvas_width*scale)/2)/scale;
         const double cy = (y-(client.bottom-canvas_height*scale)/2)/scale;
+        if (runtime.library_view) {
+            if (cy >= 20 && cy <= 68) {
+                if (cx >= 1040 && cx <= 1248) open_game();
+                else if (cx >= 834 && cx <= 1024) return_to_game();
+            } else if (cx >= 844 && cx <= 1224 && cy >= 334 && cy <= 380) play_library_game();
+            else if (cy >= 230 && cy < 828) {
+                const unsigned row = static_cast<unsigned>((cy-230)/122);
+                if (cy-230-row*122 <= 110) {
+                    int choice = cx >= 32 && cx <= 402 ? static_cast<int>(row) : cx >= 426 && cx <= 796 ? static_cast<int>(row+5) : -1;
+                    if (choice >= 0 && static_cast<std::size_t>(choice) < arcade_games().size()) runtime.library_selection = static_cast<unsigned>(choice);
+                }
+            }
+            chrome_valid = false; InvalidateRect(handle,nullptr,FALSE); return;
+        }
         if (runtime.inspector_view && cy >= 92 && cy <= 140) {
             if (cx >= 48 && cx < 968) runtime.inspector_tab = static_cast<unsigned>((cx - 48) / 230);
             else if (cx >= 1016 && cx <= 1232) runtime.toggle_inspector();
         }
         if (!runtime.inspector_view) {
+            if (cx >= 578 && cx <= 694 && cy >= 20 && cy <= 68) { show_library(); return; }
             if (cx >= 710 && cx <= 884 && cy >= 20 && cy <= 68) toggle_controls();
             if (cx >= 900 && cx <= 1058 && cy >= 20 && cy <= 68) open_game();
             else if (cx >= 1076 && cx <= 1240 && cy >= 20 && cy <= 68) runtime.toggle_inspector();
@@ -693,6 +849,29 @@ class Window {
         }
     }
     void key(WPARAM key, bool down, bool repeated) {
+        if (down && !repeated && key == 'L' && (GetKeyState(VK_CONTROL) & 0x8000)) {
+            if (runtime.library_view) return_to_game(); else show_library();
+            return;
+        }
+        if (runtime.library_view) {
+            if (down && !repeated) {
+                if (key == 'O' && (GetKeyState(VK_CONTROL) & 0x8000)) open_game();
+                else if (key == VK_ESCAPE) return_to_game();
+                else if (key == VK_RETURN) play_library_game();
+                else if (key == VK_F12) capture_requested = true;
+                else if (key == 'M') toggle_sound();
+                else if (!arcade_games().empty()) {
+                    unsigned choice = runtime.library_selection;
+                    if (key == VK_UP && choice%5 > 0) --choice;
+                    else if (key == VK_DOWN && choice%5 < 4) ++choice;
+                    else if (key == VK_LEFT && choice >= 5) choice -= 5;
+                    else if (key == VK_RIGHT && choice < 5) choice += 5;
+                    if (choice < arcade_games().size()) runtime.library_selection = choice;
+                }
+                chrome_valid = false; InvalidateRect(handle,nullptr,FALSE);
+            }
+            return;
+        }
         if (down && !repeated) {
             if (key == 'O' && (GetKeyState(VK_CONTROL) & 0x8000)) { open_game(); return; }
             if (runtime.inspector_view && key >= '1' && key <= '4') runtime.inspector_tab = static_cast<unsigned>(key - '1');
@@ -719,10 +898,10 @@ class Window {
     void paint() {
         if (!wglMakeCurrent(dc, gl)) throw std::runtime_error("OpenGL context unavailable");
         const auto paint_time = std::chrono::steady_clock::now();
-        const bool refresh = capture_requested || window_test || !chrome_valid || cached_inspector != runtime.inspector_view || cached_tab != runtime.inspector_tab ||
+        const bool refresh = capture_requested || window_test || !chrome_valid || cached_library != runtime.library_view || cached_library_selection != runtime.library_selection || cached_inspector != runtime.inspector_view || cached_tab != runtime.inspector_tab ||
             (runtime.inspector_view && paint_time >= inspector_refresh) || cached_title != runtime.title || cached_paused != runtime.paused || cached_controls != runtime.controls_visible;
         if (refresh) {
-        auto rendered = runtime.inspector_view ? runtime.render(false) : runtime.render_player(false);
+        auto rendered = runtime.library_view ? runtime.render_library() : runtime.inspector_view ? runtime.render(false) : runtime.render_player(false);
         Gdiplus::Rect rect(0, 0, canvas_width, canvas_height);
         Gdiplus::BitmapData data{};
         if (rendered->LockBits(&rect, Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &data) != Gdiplus::Ok)
@@ -744,6 +923,7 @@ class Window {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, canvas_width, canvas_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba.data());
         chrome_valid = true;
+        cached_library = runtime.library_view; cached_library_selection = runtime.library_selection;
         cached_inspector = runtime.inspector_view; cached_tab = runtime.inspector_tab;
         inspector_refresh = paint_time + std::chrono::milliseconds(67);
         cached_title = runtime.title; cached_paused = runtime.paused;
@@ -764,7 +944,7 @@ class Window {
         glTexCoord2f(0,1); glVertex2f(0,0); glTexCoord2f(1,1); glVertex2f(1,0);
         glTexCoord2f(1,0); glVertex2f(1,1); glTexCoord2f(0,0); glVertex2f(0,1);
         glEnd();
-        if (!runtime.inspector_view || runtime.inspector_tab == 0) {
+        if (!runtime.library_view && runtime.has_game() && (!runtime.inspector_view || runtime.inspector_tab == 0)) {
             std::array<BYTE, 240*160*4> pixels{};
             for (unsigned i = 0; i < runtime.lcd_width()*runtime.lcd_height(); ++i) {
                 const auto c = runtime.lcd_color(i);
@@ -826,10 +1006,15 @@ class Window {
                 case WM_LBUTTONUP: self->click(GET_X_LPARAM(lp), GET_Y_LPARAM(lp)); return 0;
                 case WM_INITMENU:
                     CheckMenuItem(GetMenu(hwnd), 1011, MF_BYCOMMAND | (self->runtime.paused ? MF_CHECKED : MF_UNCHECKED));
-                    for (unsigned id : {1002U, 1012U, 1013U, 1014U, 1020U, 1021U, 1022U, 1023U})
-                        EnableMenuItem(GetMenu(hwnd), id, MF_BYCOMMAND | (self->runtime.gba && id == 1014U ? MF_GRAYED : MF_ENABLED));
+                    for (unsigned id : {1002U, 1011U, 1012U, 1013U, 1014U, 1020U, 1021U, 1022U, 1023U})
+                        EnableMenuItem(GetMenu(hwnd), id, MF_BYCOMMAND | (self->runtime.library_view || !self->runtime.has_game() || (self->runtime.gba && id == 1014U) ? MF_GRAYED : MF_ENABLED));
                     return 0;
                 case WM_COMMAND:
+                    if (LOWORD(wp) == 1050) { self->show_library(); return 0; }
+                    if (LOWORD(wp) == 1051) { self->return_to_game(); return 0; }
+                    if (LOWORD(wp) == 1052) { if (self->runtime.library_view) self->play_library_game(); return 0; }
+                    if ((self->runtime.library_view || !self->runtime.has_game()) &&
+                        (LOWORD(wp) == 1002 || (LOWORD(wp) >= 1011 && LOWORD(wp) <= 1014) || (LOWORD(wp) >= 1020 && LOWORD(wp) <= 1023))) return 0;
                     if (LOWORD(wp) >= 1030 && LOWORD(wp) <= 1032) {
                         try {
                             self->graphics_adapter.select(LOWORD(wp) - 1030);
@@ -871,6 +1056,7 @@ class Window {
                 case WM_KILLFOCUS:
                     self->runtime.set_buttons(0); return 0;
                 case WM_MOUSEWHEEL:
+                    if (self->runtime.library_view) return 0;
                     if (self->runtime.gba && self->runtime.inspector_view && self->runtime.inspector_tab==2) {
                         self->runtime.memory_page(GET_WHEEL_DELTA_WPARAM(wp)>0 ? -1 : 1);self->chrome_valid=false;
                         InvalidateRect(hwnd,nullptr,FALSE);return 0;
@@ -903,6 +1089,7 @@ class Window {
         HMENU menu = CreateMenu(), file_menu = CreatePopupMenu(), emulation_menu = CreatePopupMenu();
         HMENU audio_menu = CreatePopupMenu(), tools_menu = CreatePopupMenu(), panels_menu = CreatePopupMenu();
         AppendMenuW(file_menu, MF_STRING, 1001, L"&Open game...\tCtrl+O");
+        AppendMenuW(file_menu, MF_STRING, 1050, L"Game &library\tCtrl+L");
         AppendMenuW(file_menu, MF_SEPARATOR, 0, nullptr);
         AppendMenuW(file_menu, MF_STRING, 1010, L"E&xit");
         AppendMenuW(emulation_menu, MF_STRING, 1011, L"&Pause / resume\tSpace");
@@ -936,7 +1123,7 @@ class Window {
         AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(emulation_menu), L"&Emulation");
         AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(audio_menu), L"Audio/&Video");
         AppendMenuW(menu, MF_POPUP, reinterpret_cast<UINT_PTR>(tools_menu), L"&Tools");
-        const auto title = L"Matchaboy - " + wide(runtime.title);
+        const auto title = runtime.library_view ? L"Matchaboy - Original arcade" : L"Matchaboy - " + wide(runtime.title);
         handle = CreateWindowW(wc.lpszClassName, title.c_str(), WS_OVERLAPPEDWINDOW,
             work.left+20, work.top+20, bounds.right-bounds.left, bounds.bottom-bounds.top,
             nullptr, menu, instance, this);
@@ -995,7 +1182,7 @@ class Window {
             }
             sync_audio();
             auto now = std::chrono::steady_clock::now();
-            if (runtime.paused) next_frame = now + frame_period;
+            if (runtime.paused || runtime.library_view || !runtime.has_game()) next_frame = now + frame_period;
             else if (now >= next_frame) {
                 // Bound recovery after a stalled host or window drag.
                 if (now-next_frame > frame_period*8) next_frame = now;
@@ -1029,28 +1216,20 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
         auto *raw = CommandLineToArgvW(GetCommandLineW(), &argc);
         if (!raw) throw std::runtime_error("cannot read command line");
         std::vector<std::wstring> args(raw, raw+argc); LocalFree(raw);
-        if (argc < 2) {
-            std::array<wchar_t, 32768> file{};
-            OPENFILENAMEW dialog{}; dialog.lStructSize = sizeof(dialog);
-            dialog.lpstrFilter = L"Game Boy / Advance ROM (*.gb;*.gba)\0*.gb;*.gba\0All files\0*.*\0";
-            dialog.lpstrFile = file.data(); dialog.nMaxFile = static_cast<DWORD>(file.size());
-            dialog.lpstrTitle = L"Open a game in Matchaboy";
-            dialog.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR;
-            if (!GetOpenFileNameW(&dialog)) {
-                if (CommDlgExtendedError()) throw std::runtime_error("cannot open ROM chooser");
-                return 0;
-            }
-            args.emplace_back(file.data()); argc = 2;
-        }
+        // An empty invocation is the original arcade. A file argument still opens
+        // directly, and all existing ROM capture/test command lines keep working.
+        const bool has_rom_path = argc >= 2 && args[1].rfind(L"--",0) != 0;
+        bool library_view = !has_rom_path;
         unsigned frames = 120, line = 0, dot = 0;
         bool position = false, paused = false, inspector_view = false;
         std::filesystem::path capture;
-        for (int i = 2; i < argc; ++i) {
+        for (int i = has_rom_path ? 2 : 1; i < argc; ++i) {
             const auto &option = args[i];
             if (option == L"--headless") headless = true;
             else if (option == L"--window-test") window_test = true;
             else if (option == L"--paused") paused = true;
             else if (option == L"--inspector") inspector_view = true;
+            else if (option == L"--library") library_view = true;
             else {
                 if (i+1 == argc) throw std::runtime_error("missing option value");
                 const auto value = args[++i];
@@ -1069,13 +1248,16 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
         if ((headless || window_test) && capture.empty()) throw std::runtime_error("capture mode requires --capture");
         if (headless && window_test) throw std::runtime_error("choose headless or native window capture");
         Imaging imaging;
-        Runtime runtime(args[1]);
-        runtime.inspector_view = inspector_view;
-        for (unsigned frame = 0; frame < frames; ++frame) runtime.run_frame();
+        Runtime runtime;
+        if (has_rom_path) runtime = Runtime(args[1]);
+        runtime.inspector_view = inspector_view && runtime.has_game();
+        for (unsigned frame = 0; runtime.has_game() && !library_view && frame < frames; ++frame) runtime.run_frame();
         if (position) runtime.position(line, dot);
-        runtime.paused = paused || headless || window_test;
+        runtime.library_view = library_view;
+        runtime.library_was_paused = paused || headless || window_test;
+        runtime.paused = library_view || paused || headless || window_test;
         if (headless || (!capture.empty() && !window_test)) {
-            auto bitmap = runtime.render(); runtime.save(capture, *bitmap, false);
+            auto bitmap = runtime.library_view ? runtime.render_library() : runtime.render(); runtime.save(capture, *bitmap, false);
         }
         if (headless) return 0;
         Window window(runtime); window.capture = capture; window.window_test = window_test;

@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "license": "GPL-3.0-only",
+  "games": [
+    {
+      "id": "pocket-racer",
+      "title": "Pocket Racer",
+      "controls": "Left/Right: change lane. Enter (Start) or Z (A): start/restart.",
+      "goal": "Pass 20 rival cars before your three shields are gone.",
+      "learn": "A scrolling road, lane decisions and rectangle collision.",
+      "inspector_hint": "Memory highlights activity at C005 (passes), C006 (shields) and C007/C009 (car X). Video shows object-fetch activity for the cars.",
+      "system": "GB",
+      "source": "games/gb/build_games.py",
+      "rom": "games/gb/roms/pocket-racer.gb",
+      "license": "GPL-3.0-only",
+      "sha256": "b27fbfe66fb6c4d8112df45d7c04b66c4fff3e7356e518bcf5b9442bc6dfacc0",
+      "rom_bytes": 32768,
+      "provenance": "Original assistant-authored code, lettering, tile art, levels and synthesized sound, produced in Codex under the project owner's direction.",
+      "state_addresses": {
+        "state": "C000: 0 title, 1 playing, 2 won, 3 lost",
+        "score": "C005",
+        "lives": "C006",
+        "x": "C007",
+        "y": "C008"
+      }
+    },
+    {
+      "id": "moon-courier",
+      "title": "Moon Courier",
+      "controls": "Left/Right: walk. Z (A): jump. Enter (Start) or Z: start/restart.",
+      "goal": "Pick up a parcel and reach the moon base on each of three routes.",
+      "learn": "Signed vertical velocity, gravity, ground checks, parcels and delivery state.",
+      "inspector_hint": "Memory shows activity at C007/C008 (position), C00E (jump velocity), C016 (parcel) and C005 (deliveries). Audio shows the jump-note envelope.",
+      "system": "GB",
+      "source": "games/gb/build_games.py",
+      "rom": "games/gb/roms/moon-courier.gb",
+      "license": "GPL-3.0-only",
+      "sha256": "7e77223f44c7ab3ad9ec71d4083dd21d02cf0b22994c8d6d261309b29b87446c",
+      "rom_bytes": 32768,
+      "provenance": "Original assistant-authored code, lettering, tile art, levels and synthesized sound, produced in Codex under the project owner's direction.",
+      "state_addresses": {
+        "state": "C000: 0 title, 1 playing, 2 won, 3 lost",
+        "score": "C005",
+        "lives": "C006",
+        "x": "C007",
+        "y": "C008"
+      }
+    },
+    {
+      "id": "matcha-garden",
+      "title": "Matcha Garden",
+      "controls": "Arrows: move/push. X (B): reset this puzzle. Enter (Start) or Z (A): start/restart.",
+      "goal": "Push the tea crate onto the flower in three compact garden puzzles.",
+      "learn": "Grid movement, checking the next two cells, and a mutable tile board.",
+      "inspector_hint": "Memory highlights board activity beginning at C200, with 32 bytes per row. Moving a crate writes both the board and the background tile map at 9800.",
+      "system": "GB",
+      "source": "games/gb/build_games.py",
+      "rom": "games/gb/roms/matcha-garden.gb",
+      "license": "GPL-3.0-only",
+      "sha256": "04066d1eb92c785caf0f1b9212691e64e00c300d7b3f6fe6350bb3ce6f8d5a1e",
+      "rom_bytes": 32768,
+      "provenance": "Original assistant-authored code, lettering, tile art, levels and synthesized sound, produced in Codex under the project owner's direction.",
+      "state_addresses": {
+        "state": "C000: 0 title, 1 playing, 2 won, 3 lost",
+        "score": "C005",
+        "lives": "C006",
+        "x": "C007",
+        "y": "C008"
+      }
+    },
+    {
+      "id": "signal-lost",
+      "title": "Signal Lost",
+      "controls": "Arrows: explore. Enter (Start) or Z (A): start/restart.",
+      "goal": "Collect all three beacons, then find the exit before the 90-second battery runs out.",
+      "learn": "A connected maze, collectible state, timed objectives and input repeat.",
+      "inspector_hint": "Watch memory activity at C005 (signals), C013 (battery), and the maze at C200. Collecting a beacon writes its empty tile to the background map.",
+      "system": "GB",
+      "source": "games/gb/build_games.py",
+      "rom": "games/gb/roms/signal-lost.gb",
+      "license": "GPL-3.0-only",
+      "sha256": "e0b02f09294f811cb2c211c8d8b3fd52aece7e05b2026befd3002bda6ee560f9",
+      "rom_bytes": 32768,
+      "provenance": "Original assistant-authored code, lettering, tile art, levels and synthesized sound, produced in Codex under the project owner's direction.",
+      "state_addresses": {
+        "state": "C000: 0 title, 1 playing, 2 won, 3 lost",
+        "score": "C005",
+        "lives": "C006",
+        "x": "C007",
+        "y": "C008"
+      }
+    },
+    {
+      "id": "orbit-guard",
+      "title": "Orbit Guard",
+      "controls": "Left/Right: move. Hold Z (A): fire. Enter (Start) or Z: start/restart.",
+      "goal": "Defeat 15 approaching drones before three reach your orbit.",
+      "learn": "Independent player, projectile and enemy motion with AABB hits and enemy waves.",
+      "inspector_hint": "Memory shows drone activity at C009/C00A and projectile activity at C010/C011. Audio shows real pulse firing tones and noise impact envelopes.",
+      "system": "GB",
+      "source": "games/gb/build_games.py",
+      "rom": "games/gb/roms/orbit-guard.gb",
+      "license": "GPL-3.0-only",
+      "sha256": "0ad772bfc39903530abc7a3c2495fbfecaf88a6978356f02b51fcd88ca307ac3",
+      "rom_bytes": 32768,
+      "provenance": "Original assistant-authored code, lettering, tile art, levels and synthesized sound, produced in Codex under the project owner's direction.",
+      "state_addresses": {
+        "state": "C000: 0 title, 1 playing, 2 won, 3 lost",
+        "score": "C005",
+        "lives": "C006",
+        "x": "C007",
+        "y": "C008"
+      }
+    }
+  ]
+}
