@@ -86,10 +86,27 @@ def main():
                             key(code,False)
                         checks.append('A, L and R reach GBA hardware and change rendered pixels')
                         state=snapshot(); key(0x09)
-                        after=snapshot(); assert not after['inspector_view'] and after['frames']==state['frames']
+                        after=snapshot(); assert after['inspector_view'] and after['frames']==state['frames']
+                        assert after['dispcnt']==0x403 and not (after['cpsr'] & 32)
+                        for panel in range(4):
+                            send(0x111,1020+panel); view=snapshot()
+                            assert view['inspector_tab']==panel and view['frames']==state['frames']
+                            shutil.copy2(capture, output/f'panel-{panel}.png')
+                        send(0x111,1022); key(0x22); view=snapshot()
+                        assert view['memory_base']==0x02000100
+                        key(0x21); assert snapshot()['memory_base']==0x02000000
+                        send(0x111,1012); stepped=snapshot()
+                        assert stepped['paused']
+                        send(0x111,1013); advanced=snapshot()
+                        assert advanced['frames']==stepped['frames']+1 and advanced['paused']
+                        for _ in range(10): send(0x111,1013)
+                        advanced2=snapshot(); assert advanced2['frames']==advanced['frames']+10 and advanced2['paused']
+                        advanced=advanced2
+                        before_dot=advanced['pc']; key(ord('D')); assert snapshot()['pc']==before_dot
+                        key(0x09); state=snapshot(); assert not state['inspector_view']
                         key(ord('C')); assert snapshot()['frames']==state['frames']
                         key(ord('C')); snapshot()
-                        checks.append('Inspector is unavailable for GBA; controls toggle preserves paused machine')
+                        checks.append('GBA Inspector opens; four panels and memory paging preserve paused state; real display/CPU registers and instruction/frame stepping; unsupported dot step ignored')
                     send(0x10); assert proc.wait(timeout=5)==0
                     save=rom.with_suffix('.matchaboy.sav')
                     assert save.read_bytes()[0]==boot,(boot,save.read_bytes()[0])

@@ -25,3 +25,5 @@ Portable distributions include `source.zip` with the corresponding application
 and library source, license notices, and build instructions. The source is not
 needed to run the executable; it allows rebuilding/relinking with modified
 library code. Do not omit it or the license notices from redistributed packages.
+
+Matchaboy-owned code and original artwork are under GNU GPL version 3 (root `LICENSE`). The notices above remain applicable to their respective library source files. Gearboy was consulted as a debugger organization reference; no Gearboy code or artwork is included.

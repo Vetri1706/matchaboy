@@ -100,11 +100,13 @@ def main():
     args = parser.parse_args()
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=False)
     binary, rom = args.binary.resolve(), args.rom.resolve()
+    gba = rom.suffix.lower() == ".gba"
     summary = {"passed": False, "binary_sha256": sha(binary), "rom_sha256": sha(rom), "commands": []}
     try:
         for name, option in (("headless", "--headless"), ("gpu", "--window-test")):
-            command = [str(binary), str(rom), option, "--frames", "120", "--line", "48", "--dot", "115",
+            command = [str(binary), str(rom), option, "--frames", "120",
                        "--capture", str(output/(name+".png"))]
+            if not gba: command.extend(["--line", "48", "--dot", "115"])
             if sys.platform == "win32" and not args.player:
                 command.append("--inspector")
             with (output/(name+".log")).open("w") as log:
@@ -115,10 +117,10 @@ def main():
         cpu_state, gpu_state = [json.loads((output/(name+".png.json")).read_text()) for name in ("headless", "gpu")]
         if not gpu_state["gpu_readback"] or cpu_state["gpu_readback"]:
             raise RuntimeError("native capture was not read back from GPU")
-        for key in ("frames", "cycles", "ly", "dot", "mode", "fifo_depth"):
+        for key in (("frames", "pc", "cpsr", "dispcnt", "inspector_view") if gba else ("frames", "cycles", "ly", "dot", "mode", "fifo_depth")):
             if cpu_state[key] != gpu_state[key]:
                 raise RuntimeError(f"capture machine states differ: {key}")
-        if cpu_state["mode"] != 3 or cpu_state["fifo_depth"] == 0:
+        if not gba and (cpu_state["mode"] != 3 or cpu_state["fifo_depth"] == 0):
             raise RuntimeError("capture missed active mode-three FIFO")
         summary["machine"] = cpu_state
         summary["pixel_comparison"] = compare(output/"headless.png", output/"gpu.png")

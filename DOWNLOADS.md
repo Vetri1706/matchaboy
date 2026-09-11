@@ -16,7 +16,7 @@ Gymnasium tests, real UDP replay, and extracted-package smoke tests pass.
 Each ZIP includes the headless emulator, UDP netplay runner, Gym benchmark,
 `libmatcha` shared library, Python wrapper, C header, and documentation. macOS
 also includes `MatchaAutopsy.app`; Windows includes `Matchaboy.exe`, the native
-Silicon Autopsy dashboard. `BUILD_INFO.json` records the source commit,
+Matchaboy Inspector dashboard. `BUILD_INFO.json` records the source commit,
 compiler, test results and file hashes; the adjacent `.sha256` file checks the
 whole ZIP. Source ROMs, commercial games and Python packages are not bundled.
 
@@ -160,8 +160,9 @@ and the [Windows runner toolchain](https://github.com/actions/runner-images/blob
 The Windows player accepts `.gb` and `.gba` files. Game Boy games use the
 original Matchaboy engine; GBA games use the statically bundled mGBA 0.10.5 core.
 No separate emulator, external BIOS, Qt, SDL or runtime installation is needed.
-GBA adds Q/W for L/R shoulder buttons. Its Inspector is unavailable, and the
-player supports speaker playback; GBA netplay is not implemented.
+GBA adds Q/W for L/R shoulder buttons. Tab opens its Video, CPU, Memory and Audio
+Inspector panels. S/F step instructions/frames; memory pages use PgUp/PgDn or
+the mouse wheel. The player supports speaker playback; GBA netplay is not implemented.
 
 GBA cartridge saves use `<game>.matchaboy.sav` beside the ROM, flushed on normal
 close or game switch. Keep games in a writable folder. Existing mGBA `.sav`

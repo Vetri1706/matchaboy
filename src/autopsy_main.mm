@@ -108,7 +108,7 @@ class Runtime {
         CGContextSetInterpolationQuality(context, kCGInterpolationNone);
         fill(context, 0, 0, canvas_width, canvas_height, {0.035, 0.06, 0.08});
         fill(context, 0, 0, canvas_width, 66, {0.065, 0.105, 0.13});
-        text(context, 24, 14, "SILICON AUTOPSY", 23, cyan);
+        text(context, 24, 14, "MATCHABOY", 23, cyan);
         text(context, 305, 22, title, 14);
         text(context, 890, 16, paused ? "PAUSED / LIVE HARDWARE STATE" : "RUNNING / LIVE HARDWARE STATE", 12, green);
         text(context, 890, 36, format("FRAME %llu  T %llu", state.frames, state.cycles), 12, muted);
@@ -370,7 +370,7 @@ int main(int argc, char **argv) {
                 backing:NSBackingStoreBuffered defer:NO];
             AutopsyView *view = [[AutopsyView alloc] initWithFrame:bounds pixelFormat:pixel_format];
             [view setWantsBestResolutionOpenGLSurface:YES];
-            [window setTitle:@"Silicon Autopsy — DMG hardware inspector"];
+            [window setTitle:@"Matchaboy — DMG hardware inspector"];
             [window setContentView:view]; [window makeFirstResponder:view];
             [window setContentAspectRatio:NSMakeSize(canvas_width, canvas_height)];
             [window center]; [window makeKeyAndOrderFront:nil];

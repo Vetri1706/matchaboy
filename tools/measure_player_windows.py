@@ -11,6 +11,8 @@ p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--binary', type=Path, required=True)
 p.add_argument('--rom', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
+p.add_argument('--panel', type=int, choices=range(4), default=0)
+p.add_argument('--inspector', action='store_true')
 p.add_argument('--seconds', type=float, default=10)
 a = p.parse_args()
 a.output.mkdir(parents=True, exist_ok=False)
@@ -22,7 +24,7 @@ u.EnumWindows.argtypes = [callback, W.LPARAM]
 u.GetWindowThreadProcessId.argtypes = [W.HWND, C.POINTER(W.DWORD)]
 u.GetClassNameW.argtypes = [W.HWND, W.LPWSTR, C.c_int]
 u.SendMessageW.argtypes = [W.HWND, W.UINT, W.WPARAM, W.LPARAM]
-proc = subprocess.Popen([str(a.binary.resolve()), str(a.rom.resolve()), '--frames', '120', '--paused', '--capture', str(capture)])
+proc = subprocess.Popen([str(a.binary.resolve()), str(a.rom.resolve()), '--frames', '120', '--paused', '--capture', str(capture)] + (['--inspector'] if a.inspector else []))
 found = []
 @callback
 def enum(hwnd, _):
@@ -53,15 +55,18 @@ try:
         key(0x7B)
         wait(lambda: meta.stat().st_mtime_ns != previous)
         return json.loads(meta.read_text())
+    if a.inspector: key(ord('1') + a.panel)
     start = snapshot()
+    audio_start = json.loads(Path(str(capture)+'.audio.json').read_text())
     begin = time.perf_counter()
     key(0x20)
     time.sleep(a.seconds)
     key(0x20)
     elapsed = time.perf_counter() - begin
     end = snapshot()
+    audio_end = json.loads(Path(str(capture)+'.audio.json').read_text())
     fps = (end['frames'] - start['frames']) / elapsed
-    report = dict(binary=str(a.binary.resolve()), seconds=elapsed,
+    report = dict(inspector=a.inspector, panel=a.panel, audio_start=audio_start, audio_end=audio_end, binary=str(a.binary.resolve()), seconds=elapsed,
                   frames=end['frames']-start['frames'], fps=fps,
                   target_fps=4194304/70224, speed_percent=fps/(4194304/70224)*100)
     (a.output / 'speed.json').write_text(json.dumps(report, indent=2))

@@ -12,7 +12,7 @@ products are generated locally; [ARTIFACTS.md](ARTIFACTS.md) describes the
 compact verification evidence included in Git.
 
 The [Matcha platform guide](PLATFORM.md) covers deterministic snapshots,
-serial rollback over UDP, the optional native Silicon Autopsy dashboard,
+serial rollback over UDP, the optional native Matchaboy Inspector dashboard,
 the four-channel APU, and the batched C/Python Gym. It also provides the exact
 commands and agent prompt for comparing this host with a faster machine.
 Use `make platform` to build those optional targets.
@@ -132,3 +132,15 @@ acid2 author explicitly describes that test as rendering/priority acceptance,
 not a precise mode-3 timing torture test. The Mooneye timing campaign supplies
 separate external timing evidence. Finite acceptance tests do not prove every
 unexercised hardware behavior; the report identifies the remaining scope limits.
+
+## License
+
+Matchaboy code and original artwork are licensed under GNU GPL version 3. See [LICENSE](LICENSE). Bundled third-party components retain their own licenses; see [THIRD_PARTY.md](THIRD_PARTY.md).
+
+The Windows Inspector has separate Video, CPU, Memory and Audio tabs (keys 1-4). Netplay currently provides an automated Game Boy serial rollback test harness, not an interactive Host/Join player or GBA netplay.
+
+The Windows menus group controls under File, Emulation, Audio/Video and Tools. Inspector telemetry refreshes about 15 times per second while its game display remains at the hardware frame rate. Instruction text is decoded from recorded bytes only when capturing the bounded history. Windows audio uses continuous 10 ms packets and an 100 ms startup buffer; pause/mute still clear playback immediately.
+
+Audio/Video > Graphics processor detects adapters through Windows DXGI and displays the active OpenGL renderer. Automatic mode exports the NVIDIA/AMD high-performance hints. Manual power-saving/high-performance choices update only this executable's Windows graphics preference and require a restart; other settings on the same entry are preserved. Windows/driver policy may override preferences. See [NVIDIA hybrid graphics guidance](https://developer.nvidia.com/optimus) and [Windows preference precedence](https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/mergedProjects/3D%20Settings/Setting_the_Preferred_Graphics_Processor.htm). No extra GPU SDK or runtime package is required.
+
+The GBA Inspector now supports Video (display registers and background palette), CPU (ARM/Thumb registers and raw opcode memory near R15), Memory (read-only EWRAM/IWRAM/VRAM/palette/OAM/ROM pages), and Audio (the last 512 stereo PCM output samples). Tab toggles it, 1-4 select panels, S steps an instruction and F steps a frame. GBA dot stepping and a retired-instruction trace are not provided. Memory views use side-effect-free core reads; waveforms observe existing playback samples without draining extra audio.

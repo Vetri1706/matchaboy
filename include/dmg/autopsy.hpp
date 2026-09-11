@@ -59,6 +59,7 @@ class Autopsy {
     AutopsyFrame captured_{};
     std::array<InstructionRecord, AutopsyFrame::trace_length> trace_{};
     unsigned trace_head_{}, trace_count_{};
+    std::array<std::array<std::uint8_t, 3>, AutopsyFrame::trace_length> trace_bytes_{};
     std::array<std::array<std::uint8_t, AutopsyFrame::wave_length>, 4> waves_{};
     unsigned wave_head_{}, wave_count_{};
 };

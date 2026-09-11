@@ -44,11 +44,9 @@ void Autopsy::instruction(const Cpu &cpu, const Bus &bus) {
     record.pc = cpu.last_opcode_pc;
     record.sp = cpu.sp;
     record.registers = {cpu.a, cpu.f, cpu.b, cpu.c, cpu.d, cpu.e, cpu.h, cpu.l};
-    const auto text = Cpu::disassemble(cpu.last_opcode_pc, cpu.last_bytes[0],
-                                       cpu.last_bytes[1], cpu.last_bytes[2]);
-    std::copy_n(text.data(), std::min(text.size(), record.text.size() - 1), record.text.data());
     std::lock_guard lock(mutex_);
     trace_[trace_head_] = record;
+    trace_bytes_[trace_head_] = cpu.last_bytes;
     trace_head_ = (trace_head_ + 1) % AutopsyFrame::trace_length;
     trace_count_ = std::min(trace_count_ + 1, AutopsyFrame::trace_length);
 }
@@ -94,8 +92,15 @@ void Autopsy::capture(const Cpu &cpu, const Bus &bus) {
     out.lcd = ppu.framebuffer;
     out.levels = bus.apu.channel_levels();
     out.trace_count = trace_count_;
-    for (unsigned i = 0; i < trace_count_; ++i)
-        out.trace[i] = trace_[(trace_head_ + AutopsyFrame::trace_length - trace_count_ + i) % AutopsyFrame::trace_length];
+    // Record raw executed bytes in the hot path. Only disassemble the bounded
+    // visible history, not every instruction the machine executes.
+    for (unsigned i = 0; i < trace_count_; ++i) {
+        const auto index = (trace_head_ + AutopsyFrame::trace_length - trace_count_ + i) % AutopsyFrame::trace_length;
+        out.trace[i] = trace_[index];
+        const auto &bytes = trace_bytes_[index];
+        const auto text = Cpu::disassemble(out.trace[i].pc, bytes[0], bytes[1], bytes[2]);
+        std::copy_n(text.data(), std::min(text.size(), out.trace[i].text.size() - 1), out.trace[i].text.data());
+    }
     out.wave_count = wave_count_;
     for (unsigned channel = 0; channel < 4; ++channel)
         for (unsigned i = 0; i < wave_count_; ++i)

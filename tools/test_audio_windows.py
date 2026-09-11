@@ -13,6 +13,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--binary',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--require-continuity', action='store_true', help='Require no device starvation/dropouts on an otherwise idle host')
+    parser.add_argument('--system', choices=['both','gb','gba'], default='both')
+    parser.add_argument('--inspector', action='store_true')
+    parser.add_argument('--seconds', type=float, default=8)
     parser.add_argument('--require-device',action='store_true')
     args=parser.parse_args(); output=args.output.resolve(); output.mkdir(parents=True,exist_ok=False)
     # Enable the GBA's own PSG square channel, routed to both speakers. The
@@ -29,10 +33,11 @@ def main():
     user.SendMessageTimeoutW.restype=C.c_ssize_t
     reports={}
     for system,rom in [('gb',build()[0]),('gba',gba)]:
+        if args.system != 'both' and system != args.system: continue
         path=output/f'tone.{system}'; path.write_bytes(rom)
         capture=output/f'{system}.png'; meta=Path(str(capture)+'.audio.json')
         with (output/f'{system}.log').open('w') as log:
-            proc=subprocess.Popen([str(args.binary.resolve()),str(path),'--frames','120','--paused','--capture',str(capture)],stdout=log,stderr=log)
+            proc=subprocess.Popen([str(args.binary.resolve()),str(path),'--frames','120','--paused','--capture',str(capture)] + (['--inspector'] if args.inspector else []),stdout=log,stderr=log)
             found=[]
             @cb
             def enum(hwnd,_):
@@ -57,16 +62,28 @@ def main():
             def key(k): send(0x100,k)
             def snap():
                 old=meta.stat().st_mtime_ns if meta.exists() else 0
-                key(0x7B); wait(lambda: meta.exists() and meta.stat().st_mtime_ns!=old)
-                return json.loads(meta.read_text())
+                key(0x7B)
+                def completed_capture():
+                    # F12 schedules a paint; the timestamp can change before
+                    # the writer finishes the JSON sidecar.
+                    try:
+                        if meta.stat().st_mtime_ns == old: return None
+                        return json.loads(meta.read_text())
+                    except (OSError, json.JSONDecodeError):
+                        return None
+                return wait(completed_capture)
             try:
                 hwnd=wait(find); start=snap()
                 if args.require_device: assert start['device_open'],'No Windows audio output device'
-                key(0x20); time.sleep(1.2)
+                key(0x20); time.sleep(args.seconds)
                 running=snap()
+                if args.require_device: assert running['device_open'], running
                 assert running['generated_frames']>24000 and running['generated_peak']>100
                 if running['device_open']:
                     assert running['completed_frames']>24000 and running['peak']>50
+                    if args.require_continuity:
+                        assert running['underruns'] == 0, running
+                        assert running['dropped_frames'] == 0, running
                 key(ord('M')); muted=snap()
                 time.sleep(.2); silent=snap()
                 assert silent['muted'] and silent['queued_buffers']==0

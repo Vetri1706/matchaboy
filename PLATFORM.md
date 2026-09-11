@@ -112,7 +112,7 @@ whole interval from the first rewind until the old simulation horizon is
 reached, including nested corrections. Actual 0.5 ms and frame-rate targets
 must be assessed from those measurements.
 
-## Silicon Autopsy
+## Matchaboy Inspector
 
 On Windows use `build\Matchaboy.exe` with the same arguments below, or launch it
 without arguments to choose a ROM. F12 captures the live OpenGL viewport.

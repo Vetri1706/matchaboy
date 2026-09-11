@@ -92,6 +92,40 @@ def main():
 
             start = snapshot()
             assert start['inspector_view']
+            user.GetMenu.argtypes = [W.HWND]; user.GetMenu.restype = W.HMENU
+            user.GetMenuStringW.argtypes = [W.HMENU, W.UINT, W.LPWSTR, C.c_int, W.UINT]
+            names = []
+            for index in range(4):
+                label = C.create_unicode_buffer(100)
+                user.GetMenuStringW(user.GetMenu(hwnd), index, label, len(label), 0x400)
+                names.append(label.value.replace('&', ''))
+            assert names == ['File', 'Emulation', 'Audio/Video', 'Tools'], names
+            for tab in range(4):
+                send(0x111, 1020 + tab)
+                state = snapshot()
+                assert state['inspector_tab'] == tab and state['cycles'] == start['cycles']
+            checks.append('native menus expose Emulation, Audio/Video, Tools and working Inspector panel commands')
+            title = C.create_unicode_buffer(512)
+            user.GetWindowTextW.argtypes = [W.HWND, W.LPWSTR, C.c_int]
+            user.GetWindowTextW(hwnd, title, len(title))
+            assert title.value.startswith('Matchaboy - ')
+            for tab in range(4):
+                key(ord('1') + tab)
+                state = snapshot()
+                assert state['inspector_tab'] == tab and state['cycles'] == start['cycles']
+                shutil.copy2(capture, output / f'inspector-{tab}.png')
+            client = W.RECT()
+            user.GetClientRect.argtypes = [W.HWND, C.POINTER(W.RECT)]
+            user.GetClientRect(hwnd, C.byref(client))
+            scale = min(client.right / 1280, client.bottom / 920)
+            for tab in range(4):
+                x = int((client.right - 1280 * scale) / 2 + (100 + tab * 230) * scale)
+                y = int((client.bottom - 920 * scale) / 2 + 116 * scale)
+                send(0x201, 1, x | (y << 16)); send(0x202, 0, x | (y << 16))
+                state = snapshot()
+                assert state['inspector_tab'] == tab and state['cycles'] == start['cycles']
+            key(ord('1'))
+            checks.append('Matchaboy title; four Inspector tabs switch by keyboard and click without advancing emulation')
             key(0x09)
             player = snapshot()
             assert not player['inspector_view'] and player['cycles'] == start['cycles']

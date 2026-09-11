@@ -46,6 +46,7 @@ int main() {
     dmg::Cpu cpu(bus);
     bus.autopsy = probe.get();
     for (unsigned i = 0; i < 4; ++i) cpu.step();
+    cpu.last_bytes.fill(0); // Later CPU state must not change recorded instruction bytes.
     probe->capture(cpu, bus);
     auto snapshot = probe->snapshot();
     check(probe->count(dmg::AccessKind::Write, 0xC000) == 1, "real CPU store emits write event");
@@ -55,6 +56,9 @@ int main() {
           "captured registers and time come from retired CPU state");
     check(snapshot.trace_count == 4 && snapshot.trace[0].pc == 0x100 && snapshot.trace[3].pc == 0x108,
           "scrollback contains actual retired instruction PCs");
+    check(std::string(snapshot.trace[0].text.data()) == "LD A,$42" &&
+          std::string(snapshot.trace[3].text.data()) == "JR $0108",
+          "deferred disassembly preserves original instruction operands and relative address");
     const auto reads = probe->count(dmg::AccessKind::Read, 0xC000);
     (void)bus.peek(0xC000);
     probe->capture(cpu, bus);

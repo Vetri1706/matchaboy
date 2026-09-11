@@ -1,5 +1,6 @@
 #include "gba_core.hpp"
 #include <mgba/core/core.h>
+#include <mgba/internal/arm/arm.h>
 #include <mgba/core/blip_buf.h>
 #include <mgba/core/log.h>
 #include <mgba-util/vfs.h>
@@ -22,6 +23,8 @@ struct GbaCore::Impl {
     mCore *core = nullptr;
     bool initialized = false, configured = false;
     bool audio_enabled = false;
+    std::array<std::int16_t, 1024> audio_history{};
+    unsigned audio_head = 0, audio_count = 0;
     std::array<std::uint32_t, 240*160> video{};
     std::filesystem::path save_path;
     std::vector<char> previous_save;
@@ -96,6 +99,12 @@ std::size_t GbaCore::drain_audio(std::span<std::int16_t> destination) {
     if (count <= 0) return 0;
     blip_read_samples(left, destination.data(), count, true);
     blip_read_samples(right, destination.data()+1, count, true);
+    for (int i = 0; i < count; ++i) {
+        impl->audio_history[impl->audio_head*2] = destination[i*2];
+        impl->audio_history[impl->audio_head*2+1] = destination[i*2+1];
+        impl->audio_head = (impl->audio_head+1)%512;
+        impl->audio_count = std::min(512U, impl->audio_count+1);
+    }
     return static_cast<std::size_t>(count)*2;
 }
 void GbaCore::set_buttons(std::uint16_t buttons) { impl->core->setKeys(impl->core, buttons); }
@@ -118,4 +127,28 @@ void GbaCore::flush_save() {
     if (!MoveFileExW(temporary.c_str(), impl->save_path.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
         throw std::runtime_error("Cannot replace GBA save file; the previous save was preserved.");
     impl->previous_save = std::move(current);
+}
+
+void GbaCore::step() { impl->core->step(impl->core); }
+GbaInspection GbaCore::inspect(std::uint32_t memory_base) const {
+    GbaInspection out;
+    auto *core = impl->core;
+    const auto *cpu = static_cast<const ARMCore *>(core->cpu);
+    for (unsigned i=0; i<16; ++i) out.registers[i] = static_cast<std::uint32_t>(cpu->gprs[i]);
+    out.cpsr = cpu->cpsr.packed;
+    const bool thumb = (out.cpsr & 32) != 0;
+    out.code_base = out.registers[15] & (thumb ? ~1U : ~3U);
+    for (unsigned i=0; i<16; ++i) out.opcodes[i] = thumb ? core->rawRead16(core,out.code_base+i*2,-1) : core->rawRead32(core,out.code_base+i*4,-1);
+    out.memory_base = memory_base;
+    for (unsigned i=0; i<out.memory.size(); ++i) out.memory[i] = static_cast<std::uint8_t>(core->rawRead8(core,memory_base+i,-1));
+    for (unsigned i=0; i<256; ++i) out.palette[i] = static_cast<std::uint16_t>(core->rawRead16(core,0x05000000+i*2,-1));
+    const auto io = [core](unsigned offset) { return static_cast<std::uint16_t>(core->rawRead16(core,0x04000000+offset,-1)); };
+    out.dispcnt=io(0); out.dispstat=io(4); out.vcount=io(6);
+    out.sound_low=io(0x80); out.sound_high=io(0x82); out.sound_enable=io(0x84); out.sound_bias=io(0x88);
+    out.audio_frames=impl->audio_count;
+    for (unsigned i=0; i<out.audio_frames; ++i) {
+        const auto index=(impl->audio_head+512-impl->audio_count+i)%512;
+        out.audio[i*2]=impl->audio_history[index*2]; out.audio[i*2+1]=impl->audio_history[index*2+1];
+    }
+    return out;
 }

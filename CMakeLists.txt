@@ -131,15 +131,16 @@ endif()
 
 if(WIN32 AND MATCHA_BUILD_AUTOPSY)
     include(cmake/GbaCore.cmake)
-    matcha_executable(autopsy src/autopsy_windows.cpp src/windows_audio.cpp)
+    enable_language(RC)
+    matcha_executable(autopsy src/autopsy_windows.cpp src/windows_audio.cpp assets/matchaboy.rc)
     target_compile_definitions(autopsy PRIVATE UNICODE _UNICODE)
-    target_link_libraries(autopsy PRIVATE matcha_autopsy_core matcha_gba gdiplus opengl32 shell32 user32 gdi32 comdlg32 winmm)
+    target_link_libraries(autopsy PRIVATE matcha_autopsy_core matcha_gba gdiplus opengl32 shell32 user32 gdi32 comdlg32 winmm dxgi dxguid advapi32 avrt)
     set_target_properties(autopsy PROPERTIES WIN32_EXECUTABLE TRUE OUTPUT_NAME Matchaboy)
     install(TARGETS autopsy RUNTIME DESTINATION .)
 endif()
 
 install(TARGETS dmg netplay gym_benchmark matcha
     RUNTIME DESTINATION . LIBRARY DESTINATION . ARCHIVE DESTINATION lib)
-install(FILES matcha_gym.py README.md DOWNLOADS.md PLATFORM.md PLATFORM_VERIFICATION.md
+install(FILES LICENSE THIRD_PARTY.md matcha_gym.py README.md DOWNLOADS.md PLATFORM.md PLATFORM_VERIFICATION.md
     VERIFICATION.md MOONEYE.md MEALYBUG.md ARTIFACTS.md DESTINATION .)
 install(FILES include/dmg/gym.h DESTINATION include/dmg)

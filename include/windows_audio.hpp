@@ -13,17 +13,22 @@ public:
     void reset();
     void submit(std::span<const std::int16_t> samples);
     unsigned queued();
+    int pacing_adjustment_us();
     bool available() const { return device != nullptr; }
     std::uint64_t submitted_frames = 0, completed_frames = 0;
     unsigned peak = 0;
+    std::uint64_t underruns = 0, dropped_frames = 0, max_gap_ms = 0, last_submit_ms = 0, underrun_gap_ms = 0;
 private:
     struct Buffer {
         WAVEHDR header{};
-        std::array<std::int16_t, 2048> samples{};
+        std::array<std::int16_t, 960> samples{};
         bool prepared = false, pending = false;
     };
     HWAVEOUT device{};
-    std::array<Buffer, 6> buffers{};
+    HANDLE completion{};
+    std::array<Buffer, 16> buffers{};
     bool started = false;
+    std::array<std::int16_t, 960> staging{};
+    std::size_t staged = 0;
     void close();
 };
