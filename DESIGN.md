@@ -65,8 +65,8 @@ font. Text must fit the same reserved areas without hiding Play or navigation.
 ## Layout
 
 The 1280 by 920 canvas is proportionally scaled with a minimum usable window.
-An 88-point header owns global navigation. Two columns contain the five GB and
-five GBA cartridges; selection reveals description, controls and learning notes.
+An 88-point header owns global navigation. Two columns contain the licensed homebrew catalog; selection reveals the
+description, mapped controls, creator credits, license and player count.
 The player retains the original LCD aspect ratio and nearest-neighbor pixels.
 Controls can be hidden. Windows/Mac Inspector tabs share Video / CPU / Memory /
 Audio labels. Linux currently exposes a combined CPU/FIFO/memory inspector; do

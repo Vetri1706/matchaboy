@@ -23,7 +23,7 @@ licenses. The app also works after dragging it to **Applications**.
 Each ZIP includes the headless emulator, UDP netplay runner, Gym benchmark,
 `libmatcha` shared library, Python wrapper, C header, and documentation; these
 are in `Extras` on Mac. Windows includes `Matchaboy.exe`; Linux includes the
-`Matchaboy` desktop executable. The players include the ten original games and
+`Matchaboy` desktop executable. The players include the licensed homebrew games and
 optional GB/GBA Inspector. Linux needs its X11/Xft system libraries and optionally
 ALSA for sound; see [LINUX.md](LINUX.md).
 `BUILD_INFO.json` (`Extras/BUILD_INFO.json` on Mac) records the source commit,
@@ -67,7 +67,7 @@ cd Extras
 The native players are available on Windows, macOS and Linux.
 Open `Matchaboy.exe` on Windows, `Matchaboy.app` on Mac, or run `./Matchaboy`
 on Linux in a graphical X11/XWayland session to open the
-original arcade, select a game and Play. Use Open game to choose your own ROM,
+homebrew library, select a game and Play. Use Open game to choose your own ROM,
 or run:
 
 ```powershell
@@ -98,7 +98,7 @@ In each player, opening a ROM shows a clean view with a large LCD and optional
 keyboard controls. **Open game...** loads a `.gb` or `.gba` ROM in the same
 window: **File > Open game** (Ctrl+O) on Windows, **Game > Open Game** (Command-O)
 on Mac. Cancelling preserves the current game. **File > Game library** on
-Windows or **Game > Library** on Mac returns to the ten-game catalog and pauses
+Windows or **Game > Library** on Mac returns to the homebrew catalog and pauses
 the game (Ctrl+L on Windows, Command-L on Mac).
 The library shows each game's goal, controls and an Inspector reading guide.
 Color-only ROMs receive a clear unsupported-format message.
@@ -195,7 +195,7 @@ runs the packaged emulator, and steps 16 real VMs through the packaged DLL.
 Windows and macOS packaged players must produce a real headless PNG. Linux
 adds desktop-window checks under Xvfb and actual LCD headless captures; those
 new checks must pass on the Linux runner before their runtime results are claimed.
-Mac additionally executes all ten bundled cartridges from a relocated app,
+Mac additionally executes every bundled homebrew cartridge from a relocated app,
 checks title/gameplay LCD pixels, compares GB output with separate core CLI
 runs, inspects both machines, and verifies GBA hardware input and save/reload.
 Optional local native GPU parity checks use the app's `--window-test` capture mode. See

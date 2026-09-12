@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Verify the real Linux X11 player, persistent keyboard editor and live UDP link."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -19,6 +20,7 @@ from verify_autopsy import png_rgb
 BALANCED = [2, 0, 13, 1, 37, 40, 49, 36, 12, 34]
 CLASSIC = [124, 123, 126, 125, 6, 7, 56, 36, 12, 13]
 ORDER = [2, 1, 3, 0, 4, 5, 8, 9, 7, 6]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
@@ -58,6 +60,7 @@ def main():
         with tempfile.TemporaryDirectory(prefix='matchaboy linux player ') as temporary:
             root = Path(temporary)
             env.update(XDG_CONFIG_HOME=str(root / 'config'), XDG_DATA_HOME=str(root / 'data'),
+                       MATCHA_GAME_LIBRARY=str(root / 'library'),
                        XAUTHORITY=str(root / 'isolated-xauthority'))
             # -displayfd reserves an unused display atomically. The test never
             # changes focus, keys, clipboard or preferences on the user's desktop.
@@ -145,6 +148,19 @@ def main():
                 offset = (y * w + x) * 3
                 return tuple(pixels[offset:offset + 3])
 
+            def native_lcd(path, system):
+                w, h, pixels = png_rgb(path)
+                sw, sh = (160, 144) if system == 'GB' else (240, 160)
+                available_w, available_h = 824 * w // 1280, 620 * h // 900
+                scale = max(1, min(available_w // sw, available_h // sh))
+                left = 36 * w // 1280 + (available_w - sw * scale) // 2
+                top = 172 * h // 900 + (available_h - sh * scale) // 2
+                # Extract one pixel from each nearest-neighbour LCD block;
+                # exclude the controls guide and other changing UI elements.
+                return bytes(channel for y in range(sh) for x in range(sw)
+                             for channel in pixels[((top + y * scale) * w + left + x * scale) * 3:
+                                                   ((top + y * scale) * w + left + x * scale) * 3 + 3])
+
             def stop():
                 nonlocal active, window
                 key('ctrl+q')
@@ -161,19 +177,90 @@ def main():
                 row = ORDER.index(bit)
                 click(216 + row // 5 * 428 + 250, 302 + row % 5 * 65 + 19)
 
-            # Test packaged native GB and GBA views against bundled real games.
-            for game, system in [('pocket-racer', 'GB'), ('drift-circuit', 'GBA')]:
-                target = output / (game + '.png')
-                result = subprocess.run([str(binary), '--game', game, '--window-test',
-                                         '--frames', '30', '--capture', str(target)], cwd=root,
-                                        env=env, capture_output=True, text=True, timeout=30)
-                (output / (game + '.log')).write_text(result.stdout + result.stderr)
+            # Exercise every shipped homebrew ROM through its catalog entry,
+            # using the same pinned bytes and boot/input recipe as packaging.
+            catalog = json.loads((ROOT / 'games/homebrew/manifest.json').read_text())['games']
+            assert catalog and len({game['id'] for game in catalog}) == len(catalog)
+            for game in catalog:
+                source = ROOT / game['rom']
+                assert hashlib.sha256(source.read_bytes()).hexdigest() == game['sha256'], source
+                recipe = game['test']
+                target = output / (game['id'] + '.png')
+                result = subprocess.run([str(binary), '--game', game['id'], '--window-test',
+                                         '--frames', str(recipe['boot_frames']),
+                                         '--buttons', str(recipe['input_mask']),
+                                         '--input-frames', str(recipe['input_frames']),
+                                         '--capture', str(target)], cwd=root,
+                                        env=env, capture_output=True, text=True, timeout=45)
+                (output / (game['id'] + '.log')).write_text(result.stdout + result.stderr)
                 assert result.returncode == 0, result.stderr
                 state = json.loads(Path(str(target) + '.json').read_text())
-                assert state['system'] == system and state['frames'] >= 30
+                assert state['system'] == game['system']
+                assert state['frames'] == recipe['boot_frames'] + recipe['input_frames']
                 assert state['keyboard_mapping'] == BALANCED
                 assert target.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
-            checks.append('bundled GB and GBA games execute and render real native X11 captures')
+                if recipe['input_mask']:
+                    baseline = output / (game['id'] + '-no-input.png')
+                    neutral_env = dict(env, MATCHA_GAME_LIBRARY=str(root / 'neutral-library' / game['id']))
+                    result = subprocess.run([str(binary), '--game', game['id'], '--headless',
+                                             '--frames', str(recipe['boot_frames']), '--buttons', '0',
+                                             '--input-frames', str(recipe['input_frames']),
+                                             '--capture', str(baseline)], cwd=root, env=neutral_env,
+                                            capture_output=True, text=True, timeout=45)
+                    (output / (game['id'] + '-no-input.log')).write_text(result.stdout + result.stderr)
+                    assert result.returncode == 0, result.stderr
+                    neutral = json.loads(Path(str(baseline) + '.json').read_text())
+                    assert neutral['frames'] == state['frames']
+                    neutral_w, neutral_h, neutral_pixels = png_rgb(baseline)
+                    assert (neutral_w, neutral_h) == ((160, 144) if game['system'] == 'GB' else (240, 160))
+                    assert native_lcd(target, game['system']) != bytes(neutral_pixels), \
+                        f"{game['id']}: controller input did not change the LCD against an equal-duration neutral run"
+                    checks.append(f"{game['id']}: real controller response changes LCD pixels against an equal-duration zero-input baseline")
+            checks.append('every pinned homebrew catalog ROM executes its manifest boot/input recipe and renders a real native X11 capture')
+
+            # The replacement catalog contains GB games; keep independent GBA
+            # framebuffer coverage with the existing authored cartridge fixture.
+            target = output / 'drift-circuit.png'
+            result = subprocess.run([str(binary), str(ROOT / 'games/gba/roms/drift-circuit.gba'),
+                                     '--window-test', '--frames', '30', '--capture', str(target)],
+                                    cwd=root, env=env, capture_output=True, text=True, timeout=30)
+            (output / 'drift-circuit.log').write_text(result.stdout + result.stderr)
+            assert result.returncode == 0, result.stderr
+            state = json.loads(Path(str(target) + '.json').read_text())
+            assert state['system'] == 'GBA' and state['frames'] == 30
+            assert state['keyboard_mapping'] == BALANCED
+            assert target.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+            checks.append('the authored external GBA cartridge still executes and renders through the native player')
+
+            launch('homebrew-library', '--library', '--frames', '0')
+            library = snapshot('homebrew-library')
+            ids = [game['id'] for game in catalog]
+            assert library['library_view'] and library['library_selected'] == ids[0]
+            entries = library['library_games']
+            assert [entry['id'] for entry in entries] == ids
+            for entry, game in zip(entries, catalog):
+                assert entry['title'] and entry['author'] and entry['license'] and entry['players']
+                assert entry['system'] == game['system']
+                for field in ['title', 'author', 'license', 'players']:
+                    if field in game:
+                        assert entry[field] == game[field], (field, entry, game)
+            key('Left')
+            assert snapshot('library-last-game')['library_selected'] == ids[-1]
+            key('Right')
+            assert snapshot()['library_selected'] == ids[0]
+            for expected in ids[1:] + ids[:1]:
+                key('Right')
+                assert snapshot()['library_selected'] == expected
+            key('Down')
+            step = 2 if len(ids) > 2 else 1
+            assert snapshot()['library_selected'] == ids[step % len(ids)]
+            key('Up')
+            assert snapshot()['library_selected'] == ids[0]
+            key('Return')
+            selected = snapshot()
+            assert not selected['library_view'] and selected['system'] == catalog[0]['system']
+            stop()
+            checks.append('the native library presents the replacement catalog with credits/license/player counts, wraps keyboard selection, and starts the selected cartridge')
 
             launch('keyboard', rom, '--frames', '0', '--paused')
             start = snapshot('balanced-guide')

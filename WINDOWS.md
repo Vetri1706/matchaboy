@@ -14,7 +14,7 @@ does not contain these changes.
 ## Open a game
 
 Extract the Windows ZIP and open **Matchaboy.exe**. Keep its accompanying
-files together. The library contains ten original GB/GBA games; select one and
+files together. The library contains licensed Tobu Tobu Girl homebrew releases; select one and
 choose **Play**. **File > Open game…** (Ctrl+O) opens your own `.gb` or `.gba`
 cartridge. **File > Game library** (Ctrl+L) returns to the library. Cancelling
 an open dialog keeps the current game.

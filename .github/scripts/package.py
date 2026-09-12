@@ -37,6 +37,11 @@ def main():
         raise RuntimeError("runner architecture does not match package label")
     stage, output = args.stage.resolve(), args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
+    homebrew = json.loads((ROOT / "games/homebrew/manifest.json").read_text())["games"]
+    if sys.platform != "win32":
+        rom_directory = stage / ("MatchaAutopsy.app/Contents/Resources/Arcade" if sys.platform == "darwin" else "assets/roms")
+        if {path.name for path in rom_directory.iterdir()} != {entry["rom_filename"] for entry in homebrew}:
+            raise RuntimeError("staged library has missing/stale ROMs; rebuild and install into a fresh staging directory")
     verification = json.loads(args.verification.read_text())
     if verification.get("passed") is not True:
         raise RuntimeError("refusing to package an unverified build")
@@ -201,12 +206,18 @@ with matcha_gym.NativeBatch(sys.argv[2], 16) as batch:
             if sys.platform in ("darwin", "win32") or sys.platform.startswith("linux"):
                 # Exercise bundled resources outside the checkout too. A library
                 # page alone would not prove that its selected ROM can load.
-                for game in ("matcha-garden", "drift-circuit"):
+                game_environment = dict(environment, MATCHA_GAME_LIBRARY=str(destination / "game library"))
+                for entry in homebrew:
+                    game = entry["id"]
                     capture = destination / (game + ".png")
-                    subprocess.run([str(app), "--game", game, "--headless", "--frames", "3", "--capture", str(capture)],
-                                   cwd=destination, check=True, stdout=subprocess.DEVNULL)
+                    subprocess.run([str(app), "--game", game, "--headless", "--frames", str(entry["test"]["boot_frames"]), "--capture", str(capture)],
+                                   cwd=destination, env=game_environment, check=True, stdout=subprocess.DEVNULL)
                     if not capture.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
                         raise RuntimeError("packaged arcade ROM did not render: " + game)
+                    if sha(destination / "game library" / entry["rom_filename"]) != entry["sha256"]:
+                        raise RuntimeError("packaged homebrew differs from the licensed release: " + game)
+                if (developer_files / "licenses/homebrew/CREDITS.txt").read_bytes() != (ROOT / "games/homebrew/CREDITS.txt").read_bytes():
+                    raise RuntimeError("packaged homebrew credits are missing or altered")
                 subprocess.run([sys.executable, str(ROOT / "tools/test_friend_player.py"),
                                 "--binary", str(app), "--output", str(destination / "friendplay-smoke")],
                                cwd=destination, check=True, stdout=subprocess.DEVNULL)

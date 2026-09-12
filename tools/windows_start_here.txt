@@ -1,6 +1,6 @@
 MATCHABOY — START HERE (WINDOWS)
 
-Double-click Matchaboy.exe. Choose one of the ten bundled games, or Open game
+Double-click Matchaboy.exe. Choose an included homebrew game, or Open game
 for your own Game Boy (.gb) or Game Boy Advance (.gba) ROM. No separate BIOS,
 emulator, Python or Visual C++ runtime installation is required.
 
@@ -35,3 +35,9 @@ and license notices. Nothing in Extras needs to be run to play. Keep these
 notices/source with the ZIP when sharing. Read Extras/WINDOWS.md for more help.
 Commercial ROMs and saves are not included. Game Boy Color-only games and GBA
 wireless-adapter multiplayer are not supported.
+
+INCLUDED GAMES
+Tobu Tobu Girl and Deluxe by Tangram Games, music by potato-tan.
+Both are single-player. Deluxe runs in Game Boy compatibility mode.
+Full credits/licenses: Game (Mac/Linux) or File (Windows) > Game credits and
+licenses; also Extras/licenses/homebrew/CREDITS.txt. See Extras/HOMEBREW.md.

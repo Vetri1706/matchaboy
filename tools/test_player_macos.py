@@ -132,11 +132,9 @@ def main():
         original_executable = source_bundle / "Contents/MacOS" / executable_name
         report["binary_sha256"] = sha(original_executable)
         report["dmg_sha256"] = sha(args.dmg)
-        manifests = [json.loads((ROOT / "games" / system / "manifest.json").read_text())["games"]
-                     for system in ("gb", "gba")]
-        games = [game for manifest in manifests for game in manifest]
-        require(len(games) == 10 and len({game["id"] for game in games}) == 10,
-                "Expected ten distinct original arcade cartridges")
+        games = json.loads((ROOT / "games/homebrew/manifest.json").read_text())["games"]
+        require(2 <= len(games) <= 10 and len({game["id"] for game in games}) == len(games),
+                "Expected two to ten distinct homebrew cartridges")
         for game in games:
             require(sha(ROOT / game["rom"]) == game["sha256"], f"Source ROM hash mismatch: {game['id']}")
 
@@ -148,15 +146,27 @@ def main():
             environment = {key: value for key, value in os.environ.items()
                            if not key.startswith(("MATCHA", "DYLD_")) and key != "PYTHONPATH"}
             environment["PATH"] = "/usr/bin:/bin:/usr/sbin:/sbin"
+            environment["MATCHA_GAME_LIBRARY"] = str(isolated / "Library")
+            credits = moved / "Contents/Resources/CREDITS.txt"
+            require(credits.is_file() and credits.read_bytes() == (ROOT / "games/homebrew/CREDITS.txt").read_bytes(),
+                    "App-only distribution does not contain the complete, exact game credits and licenses")
+            expected_roms = {game["rom_filename"] for game in games}
+            installed_roms = {path.name for path in (moved / "Contents/Resources/Arcade").iterdir()
+                              if path.is_file()}
+            require(installed_roms == expected_roms,
+                    "App library resources contain missing or unexpected cartridges")
             for game in games:
                 candidates = list((moved / "Contents/Resources").rglob(Path(game["rom"]).name))
                 require(len(candidates) == 1 and sha(candidates[0]) == game["sha256"],
-                        f"Relocated bundle lacks the exact original cartridge: {game['id']}")
+                        f"Relocated bundle lacks the exact bundled cartridge: {game['id']}")
 
             def run(name, arguments, expected_success=True):
                 command = [str(binary), *map(str, arguments)]
                 with (output / f"{name}.log").open("w") as log:
-                    result = subprocess.run(command, cwd=isolated, env=environment,
+                    # Give each bundled-cartridge capture a fresh save directory.
+                    # Direct-file save fixtures intentionally keep their own path.
+                    capture_environment = dict(environment, MATCHA_GAME_LIBRARY=str(isolated / "Library" / name))
+                    result = subprocess.run(command, cwd=isolated, env=capture_environment,
                                             stdout=log, stderr=subprocess.STDOUT, timeout=30)
                 report["commands"].append({"name": name, "command": command, "exit_code": result.returncode})
                 require((result.returncode == 0) == expected_success,
@@ -177,28 +187,47 @@ def main():
             width, height, library_rgb = png_rgb(library_path)
             require(width >= 960 and height >= 600 and len(set(library_rgb)) > 64,
                     "Library capture is empty or undersized")
-            report["checks"].append("Relocated Unicode-path app opens its ten-game library without source-tree resources")
+            expected_entries = [{key: game[key] for key in ("id", "title", "author", "license", "players")}
+                                for game in games]
+            require(library.get("library_entries") == expected_entries,
+                    "Native catalog credits, licenses or player information differ from the manifest")
+            report["checks"].append(f"Relocated Unicode-path app opens its {len(games)}-game homebrew library with creator, license and player information")
             title_hashes = set()
             for index, game in enumerate(games):
-                title_path, title = capture(game["id"] + "-title", ["--game", game["id"], "--frames", 60])
+                plan = game["test"]
+                boot_frames, input_mask, input_frames = (plan[key] for key in
+                                                        ("boot_frames", "input_mask", "input_frames"))
+                require(boot_frames > 0 and input_frames > 0 and 0 < input_mask < 1024,
+                        f"Invalid real-cartridge verification plan: {game['id']}")
+                _, selected = capture(game["id"] + "-details", ["--game", game["id"], "--frames", 0, "--library"])
+                require(selected["library_view"] and selected["library_selection"] == index,
+                        f"Library cannot select {game['id']}")
+                title_path, title = capture(game["id"] + "-title", ["--game", game["id"], "--frames", boot_frames])
                 require(title["platform"] == game["system"].lower() and not title["library_view"] and
-                        not title["inspector_view"] and title["library_game"] == index and 0 < title["frames"] <= 60,
+                        not title["inspector_view"] and title["library_game"] == index and 0 < title["frames"] <= boot_frames,
                         f"Wrong game or view for {game['id']}")
                 title_rgb = lcd_capture(title_path, title)
                 title_hashes.add(hashlib.sha256(title_rgb).hexdigest())
                 colors = len(set(zip(title_rgb[::3], title_rgb[1::3], title_rgb[2::3])))
-                require(colors >= (3 if index < 5 else 5), f"Blank or incomplete title: {game['id']}")
-                play_path, play = capture(game["id"] + "-play", ["--game", game["id"], "--frames", 60,
-                                                                    "--buttons", 128, "--input-frames", 12])
+                require(colors >= (3 if game["system"] == "GB" else 5), f"Blank or incomplete title: {game['id']}")
+                play_path, play = capture(game["id"] + "-play", ["--game", game["id"], "--frames", boot_frames,
+                                                                    "--buttons", input_mask, "--input-frames", input_frames])
                 # A scene transition can also turn the LCD off while uploading
                 # its tile map. Observe physical PPU frames, without inventing
                 # a frame for each bounded host quantum.
-                require(0 < play["frames"] - title["frames"] <= 12 and play["buttons"] == 128,
-                        f"Start input did not advance {game['id']}")
+                require(0 < play["frames"] - title["frames"] <= input_frames and play["buttons"] == input_mask,
+                        f"Controller input did not advance {game['id']}")
                 play_rgb = lcd_capture(play_path, play)
                 changes = sum(title_rgb[i:i + 3] != play_rgb[i:i + 3] for i in range(0, len(title_rgb), 3))
-                require(changes > 50, f"Start did not change cartridge display: {game['id']}")
-                if index < 5:
+                require(changes > 50, f"Cartridge display did not change during its input plan: {game['id']}")
+                idle_path, idle = capture(game["id"] + "-without-input",
+                                           ["--game", game["id"], "--frames", boot_frames + input_frames])
+                idle_rgb = lcd_capture(idle_path, idle)
+                input_changes = sum(idle_rgb[i:i + 3] != play_rgb[i:i + 3]
+                                    for i in range(0, len(play_rgb), 3))
+                require(input_changes > 50,
+                        f"Controller input did not change the cartridge beyond its idle animation: {game['id']}")
+                if game["system"] == "GB":
                     # Separate CLI/core instance: prove UI scaling, palette and frame
                     # selection agree with the unchanged headless DMG harness.
                     oracle = output / (game["id"] + "-oracle.pgm")
@@ -217,16 +246,26 @@ def main():
                             f"Mac player does not match independent DMG framebuffer: {game['id']}")
                 report["games"].append({"id": game["id"], "system": game["system"], "passed": True,
                                         "rom_sha256": game["sha256"], "title_colors": colors,
-                                        "start_changed_pixels": changes, "frames": play["frames"],
-                                        "input_frame_quanta": 12,
+                                        "input_changed_pixels": input_changes, "boot_changed_pixels": changes,
+                                        "frames": play["frames"],
+                                        "input_mask": input_mask, "input_frame_quanta": input_frames,
                                         "input_ppu_frames": play["frames"] - title["frames"]})
-            require(len(title_hashes) == 10, "Arcade games did not produce ten distinct title framebuffers")
-            report["checks"].append("All ten original cartridges display distinct titles, accept Start and render gameplay")
-            report["checks"].append("Every displayed title/play LCD pixel matches raw core RGB; five GB titles also match separate core CLI runs")
+            require(len(title_hashes) == len(games), "Homebrew cartridges produced identical boot framebuffers")
+            report["checks"].append("Every bundled cartridge boots and renders after its declared controller-input sequence")
+            report["checks"].append("Every displayed homebrew LCD pixel matches raw core RGB; GB cartridges also match separate core CLI runs")
 
-            reference = json.loads((output / "matcha-garden-title.png.json").read_text())
-            gray_rgb = portable_pixels(output / "matcha-garden-title.png.lcd.ppm")[2]
-            green_path, green_state = capture("green-palette", ["--game", "matcha-garden", "--frames", 60, "--green"])
+            # Retain controlled original cartridges only as direct-file hardware
+            # fixtures. They are intentionally absent from the bundled catalog.
+            fixtures = []
+            for name, system, relative in (("fixture-gb", "GB", "games/gb/roms/matcha-garden.gb"),
+                                           ("fixture-gba", "GBA", "games/gba/roms/drift-circuit.gba")):
+                fixture = isolated / Path(relative).name
+                shutil.copy2(ROOT / relative, fixture)
+                fixtures.append({"id": name, "system": system, "path": fixture})
+            gb_fixture_path, gba_fixture_path = (fixture["path"] for fixture in fixtures)
+            reference_path, reference = capture("fixture-gb-title", [gb_fixture_path, "--frames", 60])
+            gray_rgb = lcd_capture(reference_path, reference)
+            green_path, green_state = capture("green-palette", [gb_fixture_path, "--frames", 60, "--green"])
             green_rgb = lcd_capture(green_path, green_state)
             mapping = {}
             for i in range(0, len(gray_rgb), 3):
@@ -237,7 +276,7 @@ def main():
                     mapping[original] = tinted
             require(gray_rgb != green_rgb and len(set(mapping.values())) == len(mapping),
                     "Green palette did not tint distinct hardware shades")
-            hidden_path, hidden_state = capture("hidden-controls", ["--game", "matcha-garden", "--frames", 60,
+            hidden_path, hidden_state = capture("hidden-controls", [gb_fixture_path, "--frames", 60,
                                                                     "--hide-controls"])
             require(lcd_capture(hidden_path, hidden_state) == gray_rgb and
                     hidden_state["lcd_rect"] != reference["lcd_rect"],
@@ -247,11 +286,11 @@ def main():
                     require(state[key] == reference[key], f"Presentation setting changed {key}")
             report["checks"].append("Green palette and hidden controls change presentation while preserving hardware state and LCD shade ordering")
 
-            for game in (games[2], games[5]):
+            for game in fixtures:
                 states, panels = [], set()
                 for tab in range(4):
                     path, state = capture(f"{game['system'].lower()}-inspector-{tab}",
-                                          ["--game", game["id"], "--frames", 60, "--inspector", "--tab", tab])
+                                          [game["path"], "--frames", 60, "--inspector", "--tab", tab])
                     require(state["inspector_view"] and state["inspector_tab"] == tab and 0 < state["frames"] <= 60,
                             "Inspector failed to select the requested panel or altered frame count")
                     if tab == 0:
@@ -267,7 +306,7 @@ def main():
                             "GBA Inspector did not report the cartridge's Mode 4 display/EWRAM")
             report["checks"].append("GB and GBA Video/CPU/Memory/Audio panels render distinct views with invariant machine state")
 
-            _, fifo = capture("active-fifo", ["--game", "matcha-garden", "--frames", 60,
+            _, fifo = capture("active-fifo", [gb_fixture_path, "--frames", 60,
                                                "--inspector", "--tab", 0, "--line", 48, "--dot", 115])
             # CLI positioning stops at a retired instruction boundary, matching
             # the existing native probe contract, not at a forged CPU state.
@@ -300,19 +339,19 @@ def main():
             for label, arguments in (("missing-rom", [missing]), ("invalid-rom", [tiny]),
                                       ("unsupported-color-only", [color_only]),
                                       ("invalid-game", ["--game", "no-such-game"]),
-                                      ("invalid-tab", ["--game", "matcha-garden", "--tab", 4]),
+                                      ("invalid-tab", [gb_fixture_path, "--tab", 4]),
                                       ("invalid-frames", ["--frames", -1]),
                                       ("invalid-frames-suffix", ["--frames", "12bad"]),
                                       ("overflow-frames", ["--frames", "18446744073709551616"]),
                                       ("invalid-buttons", ["--buttons", 1024]),
-                                      ("invalid-dot", ["--game", "matcha-garden", "--dot", 456])):
+                                      ("invalid-dot", [gb_fixture_path, "--dot", 456])):
                 run(label, [*arguments, "--headless", "--capture", output / (label + ".png")], False)
             run("invalid-capture", ["--headless", "--capture", isolated / "missing" / "capture.png"], False)
-            resource = next((moved / "Contents/Resources").rglob("matcha-garden.gb"))
+            resource = next((moved / "Contents/Resources").rglob(Path(games[0]["rom"]).name))
             absent = resource.with_suffix(".temporarily-absent")
             resource.rename(absent)
             try:
-                run("missing-bundled-resource", ["--game", "matcha-garden", "--headless",
+                run("missing-bundled-resource", ["--game", games[0]["id"], "--headless",
                                                   "--capture", output / "missing-resource.png"], False)
             finally:
                 absent.rename(resource)
@@ -322,8 +361,8 @@ def main():
             if args.window_tests:
                 report["gpu_comparisons"] = []
                 for name, arguments in (("library", ["--frames", 0]),
-                                        ("gb-player", ["--game", "matcha-garden", "--frames", 60]),
-                                        ("gba-player", ["--game", "drift-circuit", "--frames", 60])):
+                                        ("gb-player", [gb_fixture_path, "--frames", 60]),
+                                        ("gba-player", [gba_fixture_path, "--frames", 60])):
                     headless, expected = capture(name + "-cpu", arguments)
                     gpu, actual = capture(name + "-gpu", arguments, window=True)
                     for key in ("platform", "frames", "library_view", "inspector_view", "library_game"):

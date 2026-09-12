@@ -17,6 +17,7 @@
 #include <X11/keysym.h>
 #include <algorithm>
 #include <array>
+#include <cerrno>
 #include <cctype>
 #include <chrono>
 #include <cstdio>
@@ -31,12 +32,16 @@
 #include <map>
 #include <memory>
 #include <poll.h>
+#include <spawn.h>
 #include <span>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <sys/wait.h>
 #include <thread>
 #include <vector>
+
+extern char **environ;
 
 namespace {
 namespace key = matcha::keyboard;
@@ -439,7 +444,8 @@ enum Command {
     CopyCode,
     CopyDiagnostics,
     Quit,
-    QuitWithoutSaving
+    QuitWithoutSaving,
+    GameCredits
 };
 enum class Pane { Closed, Keyboard, Files, Host, Join, Details, Error, SaveError };
 constexpr std::array<int, 15> settings_commands{Balanced, Classic,   SetAll,       3002, 3001, 3003,
@@ -473,6 +479,8 @@ class Player {
     std::filesystem::path directory_, capture_path_;
     std::vector<std::filesystem::directory_entry> files_;
     std::future<std::unique_ptr<Runtime>> opening_;
+    std::future<void> credits_opening_;
+    std::string credits_status_ = "idle";
     Clock::time_point next_frame_ = Clock::now(), next_paint_ = Clock::now();
     bool pending() const { return opening_.valid(); }
     bool linked() const { return runtime_->link != nullptr; }
@@ -652,22 +660,40 @@ class Player {
         XDestroyImage(image);
     }
     void draw_library() {
-        text(36, 145, "MATCHABOY ORIGINALS", cyan);
+        text(36, 145, "HOMEBREW LIBRARY", cyan);
         text(36, 174, "Pick a game, or open your own GB / GBA cartridge.", muted);
         const auto games = arcade_games();
-        for (unsigned i = 0; i < games.size(); ++i) {
-            const int x = 36 + static_cast<int>(i % 2) * 620,
-                      y = 198 + static_cast<int>(i / 2) * 121;
-            const auto &g = games[i];
-            rect(x, y, 594, 108, i == selected_ ? 0x1c3c45 : panel);
-            text(x + 18, y + 26, std::string(g.title) + "  /  " + g.system,
-                 i == selected_ ? cyan : foreground);
-            text(x + 18, y + 53, fit(g.description, 558), muted);
-            text(x + 18, y + 82, "PLAY  /  " + std::string(g.genre), green);
-            hits_.push_back({x, y, 594, 108, 100 + static_cast<int>(i), !pending() && !linked()});
+        constexpr unsigned per_page = 6;
+        if (games.empty()) {
+            text(36, 230, "No bundled games are available. Use Open game to load a cartridge.");
+            return;
         }
-        if (!games.empty())
-            lines(36, 817, key::arcade_help(games[selected_].controls, mapping_), 130, 2);
+        selected_ = std::min(selected_, static_cast<unsigned>(games.size() - 1));
+        const unsigned first = selected_ / per_page * per_page;
+        const unsigned last = std::min(first + per_page, static_cast<unsigned>(games.size()));
+        text(958, 174,
+             std::to_string(games.size()) + " games  /  page " +
+                 std::to_string(first / per_page + 1) + " of " +
+                 std::to_string((games.size() + per_page - 1) / per_page),
+             muted);
+        for (unsigned i = first; i < last; ++i) {
+            const unsigned slot = i - first;
+            const int x = 36 + static_cast<int>(slot % 2) * 620,
+                      y = 198 + static_cast<int>(slot / 2) * 172;
+            const auto &g = games[i];
+            rect(x, y, 594, 158, i == selected_ ? 0x1c3c45 : panel);
+            text(x + 18, y + 27, fit(g.title, 558),
+                 i == selected_ ? cyan : foreground);
+            text(x + 18, y + 51, fit("By " + std::string(g.author), 558), muted);
+            text(x + 18, y + 75, fit(std::string(g.system) + "  /  " + g.players, 558), green);
+            text(x + 18, y + 99, fit(g.description, 558), muted);
+            text(x + 18, y + 123, fit("License: " + std::string(g.license), 558), muted);
+            text(x + 18, y + 147, "PLAY  /  " + std::string(g.genre), green);
+            hits_.push_back({x, y, 594, 158, 100 + static_cast<int>(i), !pending() && !linked()});
+        }
+        text(36, 748, fit(std::string(games[selected_].title) + "  /  " + games[selected_].source,
+                          1200), cyan);
+        lines(36, 780, key::arcade_help(games[selected_].controls, mapping_), 125, 3);
         text(36, 884,
              "Arrow keys: browse   Enter: play   Ctrl+O: open game   Ctrl+,: keyboard settings",
              muted);
@@ -745,7 +771,9 @@ class Player {
                        {"Quit  Ctrl+Q", Quit}};
             break;
         case 1:
-            entries = {{"Pause / Resume  Esc", Pause}, {"Sound on / off", Sound}};
+            entries = {{"Pause / Resume  Esc", Pause},
+                       {"Sound on / off", Sound},
+                       {"Game credits and licenses", GameCredits}};
             break;
         case 2:
             entries = {{"Controls  Ctrl+Shift+C", Controls},
@@ -784,6 +812,8 @@ class Player {
             return linked();
         if (command == Screenshot)
             return true;
+        if (command == GameCredits)
+            return !credits_opening_.valid();
         if (command == Inspector || command == Palette || command == Sound || command == Controls)
             return game();
         return true;
@@ -1220,6 +1250,45 @@ class Player {
             capture_ = -1;
             capture_all_ = false;
             break;
+        case GameCredits: {
+            const auto path = std::filesystem::absolute(arcade_credits_path()).string();
+            if (!std::filesystem::is_regular_file(path))
+                throw std::runtime_error("The game credits file is missing: " + path);
+            clear_input();
+            auto completion = std::make_shared<std::promise<void>>();
+            auto result = completion->get_future();
+            // Spawn and reap on a worker: some desktop launchers wait until
+            // their viewer closes. Never block rendering, netplay, or app exit.
+            std::thread([completion, path] {
+                try {
+                    std::array<char *, 3> arguments{
+                        const_cast<char *>("xdg-open"), const_cast<char *>(path.c_str()), nullptr};
+                    pid_t child{};
+                    const int spawned =
+                        posix_spawnp(&child, "xdg-open", nullptr, nullptr, arguments.data(), environ);
+                    if (spawned != 0)
+                        throw std::runtime_error("Cannot open the game credits (" +
+                                                 std::string(std::strerror(spawned)) +
+                                                 "). Install xdg-utils and a text viewer, or open " +
+                                                 path + " in your text editor.");
+                    int status{};
+                    pid_t waited{};
+                    do {
+                        waited = waitpid(child, &status, 0);
+                    } while (waited < 0 && errno == EINTR);
+                    if (waited < 0 || !WIFEXITED(status) || WEXITSTATUS(status) != 0)
+                        throw std::runtime_error(
+                            "The desktop could not open the game credits. Choose a default text "
+                            "viewer, or open " + path + " in your text editor.");
+                    completion->set_value();
+                } catch (...) {
+                    completion->set_exception(std::current_exception());
+                }
+            }).detach();
+            credits_opening_ = std::move(result);
+            credits_status_ = "opening";
+            break;
+        }
         case Controls:
             controls_ = !controls_;
             break;
@@ -1560,17 +1629,18 @@ class Player {
         if (pending())
             return;
         if (library_) {
+            const auto count = static_cast<unsigned>(arcade_games().size());
+            if (!count)
+                return;
             if (symbol == XK_Return || symbol == XK_KP_Enter) {
                 command(100 + static_cast<int>(selected_));
                 return;
             }
+            const unsigned vertical_step = count > 2 ? 2U : 1U;
             if (symbol == XK_Right || symbol == XK_Down)
-                selected_ = (selected_ + (symbol == XK_Down ? 2U : 1U)) %
-                            static_cast<unsigned>(arcade_games().size());
+                selected_ = (selected_ + (symbol == XK_Down ? vertical_step : 1U)) % count;
             if (symbol == XK_Left || symbol == XK_Up)
-                selected_ = (selected_ + static_cast<unsigned>(arcade_games().size()) -
-                             (symbol == XK_Up ? 2U : 1U)) %
-                            static_cast<unsigned>(arcade_games().size());
+                selected_ = (selected_ + count - (symbol == XK_Up ? vertical_step : 1U)) % count;
             dirty_ = true;
             return;
         }
@@ -1700,6 +1770,17 @@ class Player {
         }
     }
     void tick() {
+        if (credits_opening_.valid() &&
+            credits_opening_.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+            try {
+                credits_opening_.get();
+                credits_status_ = "opened";
+            } catch (const std::exception &error) {
+                credits_status_ = "failed";
+                show_error(error.what());
+            }
+            dirty_ = true;
+        }
         if (pending() && opening_.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
             try {
                 runtime_ = opening_.get();
@@ -1773,6 +1854,7 @@ class Player {
                << ",\"inspector_view\":" << (runtime_->inspector ? "true" : "false")
                << ",\"library_view\":" << (library_ ? "true" : "false")
                << ",\"settings_open\":" << (settings ? "true" : "false")
+               << ",\"credits_status\":" << json(credits_status_)
                << ",\"audio_available\":" << (audio_.available() ? "true" : "false")
                << ",\"audio_status\":" << json(audio_.status())
                << ",\"settings_focus\":" << settings_focus_ << ",\"settings_capture\":" << capture_
@@ -1802,6 +1884,20 @@ class Player {
             report << draft_[i];
         }
         report << "],\"width\":" << width_ << ",\"height\":" << height_;
+        const auto games = arcade_games();
+        report << ",\"library_selected\":"
+               << json(selected_ < games.size() ? games[selected_].id : "")
+               << ",\"library_games\":[";
+        for (unsigned i = 0; i < games.size(); ++i) {
+            if (i)
+                report << ',';
+            const auto &entry = games[i];
+            report << "{\"id\":" << json(entry.id) << ",\"title\":" << json(entry.title)
+                   << ",\"system\":" << json(entry.system) << ",\"author\":" << json(entry.author)
+                   << ",\"license\":" << json(entry.license) << ",\"players\":" << json(entry.players)
+                   << '}';
+        }
+        report << ']';
         if (runtime_->link)
             report << ",\"netplay\":{\"frames\":" << runtime_->link->frames()
                    << ",\"verified_frames\":" << runtime_->link->verified_frames()

@@ -4,6 +4,7 @@
 #include <array>
 #include <cerrno>
 #include <cstring>
+#include <cstdlib>
 #include <fstream>
 #include <iterator>
 #include <stdexcept>
@@ -73,8 +74,7 @@ std::filesystem::path arcade_rom_path(std::size_t index) {
     if (index >= catalog.size()) throw std::out_of_range("Unknown arcade game.");
     @autoreleasepool {
         const auto &game = catalog[index];
-        const std::string filename = std::string(game.id) +
-            (std::string(game.system) == "GB" ? ".gb" : ".gba");
+        const std::string filename = game.rom_filename;
         NSString *resources = [[NSBundle mainBundle] resourcePath];
         if (!resources) throw std::runtime_error("This build is missing its arcade resources.");
         const auto source = std::filesystem::path([resources fileSystemRepresentation]) / "Arcade" / filename;
@@ -83,6 +83,11 @@ std::filesystem::path arcade_rom_path(std::size_t index) {
         std::vector<char> bytes{std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>()};
         if (input.bad() || bytes.empty() || bytes.size() > 32 * 1024 * 1024)
             throw std::runtime_error("Invalid bundled game: " + filename);
+        if (const char *override_path = std::getenv("MATCHA_GAME_LIBRARY"); override_path && *override_path) {
+            const std::filesystem::path directory(override_path);
+            if (!directory.is_absolute()) throw std::runtime_error("MATCHA_GAME_LIBRARY must be an absolute path.");
+            return materialize(directory, filename, bytes);
+        }
         NSArray<NSString *> *locations = NSSearchPathForDirectoriesInDomains(
             NSApplicationSupportDirectory, NSUserDomainMask, YES);
         if ([locations count] == 0) throw std::runtime_error("Cannot locate your Application Support directory.");
@@ -91,5 +96,13 @@ std::filesystem::path arcade_rom_path(std::size_t index) {
         // Bundled resources are read-only inputs. Every extracted cartridge and
         // its eventual .matchaboy.sav lives in the user's Application Support.
         return materialize(directory, filename, bytes);
+    }
+}
+
+std::filesystem::path arcade_credits_path() {
+    @autoreleasepool {
+        NSString *resources = [[NSBundle mainBundle] resourcePath];
+        if (!resources) throw std::runtime_error("This build is missing its game credits.");
+        return std::filesystem::path([resources fileSystemRepresentation]) / "CREDITS.txt";
     }
 }

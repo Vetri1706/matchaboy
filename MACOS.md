@@ -1,6 +1,6 @@
 # Matchaboy for Mac
 
-The native Mac app now opens the same original ten-game arcade as Windows.
+The native Mac app now opens the same licensed homebrew library as Windows and Linux.
 Choose a cartridge and **Play game**, or use **Game > Open Game** to load a
 `.gb` or `.gba` file. Games open in the large player view; **Tab** opens the
 optional Video, CPU, Memory and Audio Inspector.
@@ -15,7 +15,7 @@ verified.
 Extract the Mac ZIP and double-click **Matchaboy.app** to play. You can also
 drag the app to **Applications**. The download contains three items:
 
-- **Matchaboy.app** — the player, with all ten original games inside.
+- **Matchaboy.app** — the player, with both Tobu Tobu Girl releases and their full licenses inside.
 - **Start Here.txt** — opening instructions and controls.
 - **Extras** — optional command-line/Gym tools, documentation, source and licenses.
 
@@ -38,8 +38,8 @@ an existing directory or choose another target explicitly, add
 `-DCMAKE_OSX_DEPLOYMENT_TARGET=13.0` to the configure command, then rebuild.
 
 The build produces `MatchaAutopsy.app`; packaging names the download
-`Matchaboy.app`. Both display as **Matchaboy**. The `.app` contains all ten original
-cartridges and can be moved independently of the checkout. `make platform` also
+`Matchaboy.app`. Both display as **Matchaboy**. The `.app` contains the bundled homebrew
+cartridges and full license notices and can be moved independently of the checkout. `make platform` also
 builds this complete app. Native frameworks handle the window, graphics and
 48 kHz stereo playback; no separate emulator, audio package or BIOS is required.
 

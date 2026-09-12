@@ -1,6 +1,6 @@
 # Matchaboy on Linux
 
-The Linux desktop player opens the same ten original GB/GBA games, a cartridge
+The Linux desktop player opens the same licensed homebrew games, a cartridge
 player, Inspector, keyboard settings and Host/Join friend play. It uses native
 X11 drawing, Xft/Fontconfig text and the existing Matchaboy DMG and bundled mGBA cores; it does not
 introduce Qt, SDL or another emulator framework. A normal X11 desktop or an
@@ -37,7 +37,7 @@ also pass a path directly:
 
 ```sh
 ./build/Matchaboy /path/to/game.gba
-./build/Matchaboy --game matcha-garden
+./build/Matchaboy --game tobu-tobu-girl
 ```
 
 Bundled games are prepared in `$XDG_DATA_HOME/Matchaboy/Library`, falling back
@@ -106,7 +106,7 @@ X server. It does not pretend that LCD-only output is a full desktop screenshot.
 `--window-test` captures the actual X11 window and is suitable for Xvfb in CI.
 
 ```sh
-./build/Matchaboy --game matcha-garden --headless --frames 120 --capture garden.png
+./build/Matchaboy --game tobu-tobu-girl --headless --frames 1200 --capture tobu.png
 ```
 
 The original `dmg`, `netplay`, Gym library and benchmark remain headless tools;

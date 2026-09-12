@@ -341,24 +341,23 @@ class Runtime {
         fill(context,0,0,1280,920,{0.035,0.06,0.08});
         fill(context,0,0,1280,88,{0.065,0.105,0.13});
         draw_logo(context,24,22,40); text(context,78,25,"MATCHABOY",26,cyan);
-        text(context,282,34,"ORIGINAL ARCADE",13,muted);
+        text(context,282,34,"HOMEBREW LIBRARY",13,muted);
         if (has_game()) {
             fill(context,834,20,190,48,{0.10,0.17,0.20});
             text(context,851,35,"Return to game",16,foreground);
         }
         fill(context,1040,20,208,48,{0.16,0.34,0.32});
         text(context,1061,35,"Open your game...",16,foreground);
-        text(context,32,114,"Small games. Big discoveries.",27,foreground);
-        text(context,32,153,"Pick a game, then see the machine behind it.",16,muted);
-        text(context,32,196,"01 / GAME BOY",14,green);
-        text(context,426,196,"02 / GAME BOY ADVANCE",14,cyan);
+        text(context,32,114,"Independent games. Ready to play.",27,foreground);
+        text(context,32,153,"Explore homebrew, then see the machine behind it.",16,muted);
+        text(context,32,196,"PICK YOUR NEXT GAME",14,green);
         const auto games = arcade_games();
         constexpr std::array<Color,10> accents{{{0.53,0.89,0.65},{0.83,0.73,0.99},{0.65,0.89,0.45},{0.97,0.73,0.39},{0.51,0.81,0.99},
             {0.99,0.67,0.42},{0.52,0.81,0.99},{0.90,0.64,0.97},{0.87,0.84,0.48},{0.57,0.90,0.71}}};
-        for (unsigned i = 0; i < games.size() && i < 10; ++i) {
+        for (unsigned i = 0; i < games.size(); ++i) {
             const auto &game = games[i]; const bool selected = i == library_selection;
-            const double x = i < 5 ? 32 : 426, y = 230 + (i%5)*122;
-            const auto accent = accents[i];
+            const double x = 32 + (i%2)*394, y = 230 + (i/2)*122;
+            const auto accent = accents[i%accents.size()];
             fill(context,x,y,370,110,selected ? Color{0.13,0.24,0.25} : Color{0.065,0.105,0.13});
             fill(context,x,y,selected ? 4 : 2,110,selected ? accent : Color{0.13,0.23,0.25});
             // Small geometric cartridge marks are UI decoration, never gameplay previews.
@@ -367,28 +366,31 @@ class Runtime {
             fill(context,x+32+(i%3)*4,y+36,8,9,{0.035,0.075,0.09});
             fill(context,x+25,y+64,20,3,accent);
             fill(context,x+25,y+72,13,3,accent);
-            text(context,x+84,y+23,game.title,19,selected ? foreground : Color{0.72,0.81,0.85});
-            text(context,x+84,y+55,game.genre,13,muted);
+            text(context,x+84,y+23,clipped_title(game.title,25),18,selected ? foreground : Color{0.72,0.81,0.85});
+            text(context,x+84,y+55,std::string(game.system)+" / "+game.genre,13,muted);
             text(context,x+84,y+80,selected ? "SELECTED  >" : "SELECT TO EXPLORE",11,selected ? accent : muted);
         }
         fill(context,820,148,428,700,{0.065,0.105,0.13});
         if (!games.empty()) {
             const auto &game = games[std::min<std::size_t>(library_selection,games.size()-1)];
             text(context,844,169,std::string(game.system)+"  /  "+game.genre,13,green);
-            text(context,844,202,game.title,25,foreground);
-            wrapped_text(context,844,246,game.description,42,4,15,muted);
+            text(context,844,202,clipped_title(game.title,26),22,foreground);
+            wrapped_text(context,844,237,("By "+std::string(game.author)).c_str(),50,2,12,muted);
+            wrapped_text(context,844,275,game.description,45,2,14,muted);
             fill(context,844,334,380,46,{0.28,0.63,0.49});
             text(context,866,347,"PLAY GAME",18,{0.02,0.08,0.07});
             text(context,1132,350,"ENTER",13,{0.02,0.08,0.07});
-            text(context,844,407,"CONTROLS",13,cyan);
-            wrapped_text(context,844,433,arcade_keyboard_help(game.controls).c_str(),44,6,14,foreground);
-            text(context,844,554,"LEARN",13,cyan);
-            wrapped_text(context,844,580,game.learn,48,6,13,muted);
-            text(context,844,704,"INSPECT / PRESS TAB WHILE PLAYING",13,cyan);
-            wrapped_text(context,844,730,game.inspector_hint,48,6,13,muted);
+            text(context,844,402,clipped_title(game.players,48),13,green);
+            wrapped_text(context,844,427,("License: "+std::string(game.license)).c_str(),48,2,12,muted);
+            text(context,844,490,"CONTROLS",13,cyan);
+            wrapped_text(context,844,516,arcade_keyboard_help(game.controls).c_str(),44,5,14,foreground);
+            text(context,844,628,"ABOUT THE GAME",13,cyan);
+            wrapped_text(context,844,654,game.learn,48,3,13,muted);
+            text(context,844,742,"INSPECT / PRESS TAB WHILE PLAYING",13,cyan);
+            wrapped_text(context,844,768,game.inspector_hint,48,4,12,muted);
         }
         text(context,32,870,"ARROWS select   ENTER play   CMD+O open a file   CMD+L library   F12 screenshot",13,muted);
-        text(context,32,898,has_game() ? "Your current game is paused while you browse." : "Five GB games + five GBA games. Included and ready to play.",12,muted);
+        text(context,32,898,has_game() ? "Your current game is paused while you browse." : std::to_string(games.size())+" homebrew games included. Creator credits and licenses accompany each game.",12,muted);
         return bitmap;
     }
     std::unique_ptr<MacGraphics::Bitmap> render_player(bool include_lcd = true) {
@@ -697,6 +699,18 @@ class Runtime {
             << ",\"library_view\":" << (library_view ? "true" : "false") << ",\"library_selection\":" << library_selection
             << ",\"library_game\":" << library_game << ",\"inspector_view\":" << (inspector_view ? "true" : "false")
             << ",\"inspector_tab\":" << inspector_tab << ",\"paused\":" << (paused ? "true" : "false") << ",\"buttons\":" << buttons;
+        if(library_view){
+            out << ",\"library_entries\":[";
+            bool first=true;
+            for(const auto &game:arcade_games()){
+                if(!first)out << ',';
+                first=false;
+                out << "{\"id\":" << std::quoted(game.id) << ",\"title\":" << std::quoted(game.title)
+                    << ",\"author\":" << std::quoted(game.author) << ",\"license\":" << std::quoted(game.license)
+                    << ",\"players\":" << std::quoted(game.players) << '}';
+            }
+            out << ']';
+        }
         if (friend_session) out << ",\"netplay\":{\"connected\":" << (friend_session->connected()?"true":"false")
             << ",\"finished\":" << (friend_session->finished()?"true":"false") << ",\"host\":" << (friend_host?"true":"false")
             << ",\"frames\":" << friend_session->frames() << ",\"verified_frames\":" << friend_session->verified_frames() << ",\"port\":" << friend_session->port()
@@ -997,7 +1011,7 @@ void show_error(const std::string &message,const std::string &title="Unable to o
     try{presentation->load_game([path fileSystemRepresentation]);}
     catch(const std::exception &e){presentation->runtime.paused=paused;show_error(e.what());}
     presentation->changed();
-    [[self window]setTitle:native(presentation->runtime.library_view?"Matchaboy — Original Arcade":"Matchaboy — "+presentation->runtime.title)];
+    [[self window]setTitle:native(presentation->runtime.library_view?"Matchaboy — Homebrew Library":"Matchaboy — "+presentation->runtime.title)];
     [self setNeedsDisplay:YES];
 }
 - (void)openGame{
@@ -1094,7 +1108,9 @@ void show_error(const std::string &message,const std::string &title="Unable to o
     if((r.friend_session || r.opening_friend) && (command==1 || command==2 || command==3 || command==4 || command==7 || (command>=11 && command<=13) || command==500 || command==501))return;
     if(host.keyboard_settings_open)return;
     try{
-        if(command>=200 && command<210){r.library_selection=static_cast<unsigned>(command-200);}
+        if(r.library_view&&command>=200&&static_cast<std::size_t>(command-200)<arcade_games().size()){
+            r.library_selection=static_cast<unsigned>(command-200);
+        }
         else if(command>=300 && command<304 && r.has_game() && !r.library_view){r.inspector_view=true;r.inspector_tab=static_cast<unsigned>(command-300);}
         else if(command>=400 && command<406 && r.gba){r.memory_region=static_cast<unsigned>(command-400);r.memory_offset=0;}
         else switch(command){
@@ -1117,6 +1133,14 @@ void show_error(const std::string &message,const std::string &title="Unable to o
             case 12:if(r.has_game()&&!r.library_view){r.paused=true;r.run_frame();}break;
             case 13:if(r.bus&&!r.library_view){r.paused=true;r.bus->tick(1);}break;
             case 14:[self keyboardSettings];break;
+            case 15:{
+                const auto credits=arcade_credits_path();
+                if(!std::filesystem::is_regular_file(credits))
+                    throw std::runtime_error("This app is missing its bundled game credits and licenses. Reinstall the complete Matchaboy app.");
+                if(![[NSWorkspace sharedWorkspace]openURL:[NSURL fileURLWithPath:native(credits.string())]])
+                    throw std::runtime_error("Cannot open game credits and licenses. Open CREDITS.txt in the app's Contents/Resources folder with a text editor.");
+                break;
+            }
             case 500:[self friendDialog:YES];break;
             case 501:[self friendDialog:NO];break;
             case 502:[self connectionDetails];break;
@@ -1125,7 +1149,7 @@ void show_error(const std::string &message,const std::string &title="Unable to o
         }
     }catch(const std::exception &e){show_error(e.what());}
     host.changed();host.pump_audio();
-    [[self window]setTitle:native(r.library_view?"Matchaboy — Original Arcade":"Matchaboy — "+r.title)];
+    [[self window]setTitle:native(r.library_view?"Matchaboy — Homebrew Library":"Matchaboy — "+r.title)];
     [[self window]makeFirstResponder:self];[self setNeedsDisplay:YES];
 }
 - (BOOL)validateMenuItem:(NSMenuItem *)item{
@@ -1168,8 +1192,9 @@ void show_error(const std::string &message,const std::string &title="Unable to o
         [self addControl:@"Open your game…" tag:1 x:1040 y:20 width:208 height:48];
         if(r.has_game())[self addControl:@"Return to game" tag:3 x:834 y:20 width:190 height:48];
         for(unsigned i=0;i<arcade_games().size();++i){
-            const std::string label=std::string(arcade_games()[i].title)+", "+arcade_games()[i].system+(i==r.library_selection?", selected":"");
-            [self addControl:native(label) tag:200+i x:i<5?32:426 y:230+(i%5)*122 width:370 height:110];
+            const auto &game=arcade_games()[i];
+            const std::string label=std::string(game.title)+", "+game.system+", by "+game.author+", "+game.players+", license "+game.license+(i==r.library_selection?", selected":"");
+            [self addControl:native(label) tag:200+i x:32+(i%2)*394 y:230+(i/2)*122 width:370 height:110];
         }
         [self addControl:@"Play selected game" tag:4 x:844 y:334 width:380 height:46];
     }else if(r.inspector_view){
@@ -1210,8 +1235,8 @@ void show_error(const std::string &message,const std::string &title="Unable to o
         else if(key==53)command=3;
         else if(key>=123&&key<=126){
             unsigned selection=r.library_selection;
-            if(key==126&&selection%5>0)--selection;else if(key==125&&selection%5<4)++selection;
-            else if(key==123&&selection>=5)selection-=5;else if(key==124&&selection<5)selection+=5;
+            if(key==126&&selection>=2)selection-=2;else if(key==125)selection+=2;
+            else if(key==123&&selection%2==1)--selection;else if(key==124&&selection%2==0)++selection;
             if(selection<arcade_games().size())r.library_selection=selection;
             presentation->changed();[self setNeedsDisplay:YES];return;
         }
@@ -1263,7 +1288,18 @@ void show_error(const std::string &message,const std::string &title="Unable to o
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender{(void)sender;return YES;}
 - (void)applicationDidResignActive:(NSNotification *)notification{(void)notification;[self.view focusLost];}
 - (void)windowDidResignKey:(NSNotification *)notification{(void)notification;[self.view focusLost];}
-- (BOOL)application:(NSApplication *)app openFile:(NSString *)filename{(void)app;[self.view openPath:filename];return YES;}
+- (BOOL)application:(NSApplication *)app openFile:(NSString *)filename{
+    (void)app;
+    // AppKit can deliver the argv cartridge again as a launch open-file event.
+    // Preserve the already loaded machine, including any requested frame/input
+    // positioning, rather than silently starting that same cartridge twice.
+    if(presentation->runtime.has_game()){
+        std::error_code error;
+        if(std::filesystem::equivalent(presentation->runtime.rom_path,
+                                       [filename fileSystemRepresentation],error)&&!error)return YES;
+    }
+    [self.view openPath:filename];return YES;
+}
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender{
     (void)sender;
     try{presentation->runtime.disconnect_friend();presentation->runtime.flush_save();return NSTerminateNow;}
@@ -1292,6 +1328,7 @@ void create_menus(AutopsyView *view){
     [app addItemWithTitle:@"Quit Matchaboy" action:@selector(terminate:) keyEquivalent:@"q"];
     auto game=add(@"Game");menu_command(game,@"Open Game…",@"o",1,view);menu_command(game,@"Library",@"l",2,view);
     menu_command(game,@"Return to Game",@"",3,view);menu_command(game,@"Play Selected Game",@"",4,view);
+    menu_command(game,@"Game Credits and Licenses…",@"",15,view);
     [game addItem:[NSMenuItem separatorItem]];menu_command(game,@"Pause",@"\x1b",7,view,0);
     menu_command(game,@"Sound",@"m",8,view,NSEventModifierFlagCommand|NSEventModifierFlagShift);menu_command(game,@"Save Screenshot",@"s",10,view,NSEventModifierFlagCommand|NSEventModifierFlagShift);
     auto net=add(@"Netplay");menu_command(net,@"Host Game…",@"",500,view);menu_command(net,@"Join Game…",@"",501,view);
@@ -1409,7 +1446,7 @@ int main(int argc,char **argv){
             auto *window=[[NSWindow alloc]initWithContentRect:bounds styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskClosable|NSWindowStyleMaskMiniaturizable|NSWindowStyleMaskResizable backing:NSBackingStoreBuffered defer:NO];
             auto *view=[[AutopsyView alloc]initWithFrame:bounds pixelFormat:pixel_format];[pixel_format release];
             [view setWantsBestResolutionOpenGLSurface:YES];delegate.view=view;[window setDelegate:delegate];
-            [window setTitle:native(runtime.library_view?"Matchaboy — Original Arcade":"Matchaboy — "+runtime.title)];
+            [window setTitle:native(runtime.library_view?"Matchaboy — Homebrew Library":"Matchaboy — "+runtime.title)];
             [window setContentMinSize:NSMakeSize(800,575)];[window setContentAspectRatio:NSMakeSize(canvas_width,canvas_height)];
             [window setContentView:view];[window makeFirstResponder:view];create_menus(view);[window center];[window makeKeyAndOrderFront:nil];
             if(!window_test){host.audio.open();runtime.enable_audio();host.sync_audio();}

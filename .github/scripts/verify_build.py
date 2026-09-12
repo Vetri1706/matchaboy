@@ -56,6 +56,7 @@ def main():
 
     save()
     try:
+        run("homebrew-catalog", ["tools/update_arcade_catalog.py", "--check"])
         run("python-gymnasium", ["-m", "unittest", "discover", "-s", "tests", "-p", "test_matcha_gym.py"])
         if sys.platform == "darwin":
             run("macos-player", ["tools/test_player_macos.py", "--binary", str(binaries / "MatchaAutopsy.app"),

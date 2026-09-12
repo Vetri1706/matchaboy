@@ -55,3 +55,9 @@ source and notices accompany the app. License details: Extras/THIRD_PARTY.md.
 
 Commercial game ROMs and saves are not included. Keep your own ROMs in a
 writable folder; Matchaboy saves progress beside them when closing normally.
+
+INCLUDED GAMES
+Tobu Tobu Girl and Deluxe by Tangram Games, music by potato-tan.
+Both are single-player. Deluxe runs in Game Boy compatibility mode.
+Full credits/licenses: Game (Mac/Linux) or File (Windows) > Game credits and
+licenses; also Extras/licenses/homebrew/CREDITS.txt. See Extras/HOMEBREW.md.

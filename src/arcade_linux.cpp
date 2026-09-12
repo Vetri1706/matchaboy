@@ -44,14 +44,17 @@ std::filesystem::path arcade_rom_path(std::size_t index) {
     if (index >= catalog.size())
         throw std::out_of_range("Unknown arcade game.");
     const auto &game = catalog[index];
-    const std::string filename =
-        std::string(game.id) + (std::string(game.system) == "GB" ? ".gb" : ".gba");
+    const std::string filename = game.rom_filename;
     std::ifstream input(source_path(filename), std::ios::binary);
     std::vector<char> bytes{std::istreambuf_iterator<char>(input),
                             std::istreambuf_iterator<char>()};
     if (input.bad() || bytes.empty() || bytes.size() > 32 * 1024 * 1024)
         throw std::runtime_error("Invalid bundled game: " + filename);
-    const auto directory = data_home() / "Matchaboy/Library";
+    std::filesystem::path directory;
+    if (const char *override_path = std::getenv("MATCHA_GAME_LIBRARY"); override_path && *override_path) {
+        directory = override_path;
+        if (!directory.is_absolute()) throw std::runtime_error("MATCHA_GAME_LIBRARY must be an absolute path.");
+    } else directory = data_home() / "Matchaboy/Library";
     std::filesystem::create_directories(directory);
     const auto destination = directory / filename;
     std::ifstream existing(destination, std::ios::binary);
@@ -92,4 +95,9 @@ std::filesystem::path arcade_rom_path(std::size_t index) {
         throw;
     }
     return destination;
+}
+
+std::filesystem::path arcade_credits_path() {
+    // Reuse the executable-relative resource roots, keeping assets relocatable.
+    return source_path("../licenses/CREDITS.txt");
 }

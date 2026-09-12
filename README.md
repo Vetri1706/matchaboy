@@ -5,9 +5,9 @@
 A C++20 Game Boy DMG engine built from scratch, with Windows, Mac and Linux desktop
 players and a bundled mGBA core for Game Boy Advance. Windows and Mac players
 need no installer or extra runtime-package setup; the Linux player uses X11/Xft
-and optional ALSA system libraries. Their original arcade includes five
-GB and five GBA mini-games with goals, controls, source and Inspector reading
-guides: see [the collection](games/README.md) and [authorship/credits](games/PROVENANCE.md).
+and optional ALSA system libraries. Their homebrew library includes Tobu Tobu Girl and Deluxe with creator credits,
+licenses, controls and Inspector reading
+guides: see [the games and their licenses](HOMEBREW.md).
 The original headless DMG engine uses the C++ standard library; the native
 frontends and GBA integration have the dependencies documented in THIRD_PARTY.md.
 The optional verification scripts use Python's standard library to fetch
@@ -16,7 +16,7 @@ external test binaries and preserve evidence.
 The [Mac guide](MACOS.md) explains the cartridge library, large player view,
 GB/GBA Inspector, speaker audio and Command-key shortcuts. Open the downloaded
 `Matchaboy.app` to launch Matchaboy (`MatchaAutopsy.app` in local build folders);
-no ROM argument is needed for its bundled arcade. The [shared design](DESIGN.md) follows the established Windows player while
+no ROM argument is needed for its bundled library. The [shared design](DESIGN.md) follows the established Windows player while
 keeping platform window controls and menus. See [Windows](WINDOWS.md) and
 [Linux](LINUX.md) for their launch and dependency instructions.
 
@@ -27,9 +27,10 @@ the platform guides for rebinding and emulator shortcuts. Mac uses
 Command-Comma; Windows and Linux use Ctrl-Comma. Mappings remain local to each
 player and do not change the console inputs exchanged during friend play.
 
-The Windows settings/netplay and Linux desktop changes in this revision still
-need their native CI results; Mac runtime evidence and cross-compilation alone
-do not establish Windows/Linux runtime or mixed-platform network compatibility.
+The desktop controls and friend-play baseline passed native Windows, Linux and
+Mac CI. The current homebrew library revision is being verified separately;
+see [downloads and build evidence](DOWNLOADS.md). Mixed-platform commercial-game
+network compatibility still requires a real session on the target machines.
 
 Run commands from the cloned repository root. Downloaded test ROMs and build
 products are generated locally; [ARTIFACTS.md](ARTIFACTS.md) describes the

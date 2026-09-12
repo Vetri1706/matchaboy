@@ -35,7 +35,11 @@ def verify_tamper_detection(app):
         copied = Path(temporary) / app.name
         shutil.copytree(app, copied)
         verify_bundle(copied)
-        for relative in ("Contents/Resources/Arcade/matcha-garden.gb", "Contents/Info.plist"):
+        roms = sorted((copied / "Contents/Resources/Arcade").glob("*.gb"))
+        if not roms:
+            raise RuntimeError("Signed bundle is missing its licensed games")
+        for relative in (roms[0].relative_to(copied).as_posix(),
+                         "Contents/Resources/CREDITS.txt", "Contents/Info.plist"):
             target = copied / relative
             original = target.read_bytes()
             target.write_bytes(original + b"\n")
@@ -44,7 +48,7 @@ def verify_tamper_detection(app):
             target.write_bytes(original)
             verify_bundle(copied)
     return {"integrity_verified": True, "modified_resource_rejected": True,
-            "modified_info_plist_rejected": True}
+            "modified_credits_rejected": True, "modified_info_plist_rejected": True}
 
 
 def main():

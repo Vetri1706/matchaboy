@@ -127,7 +127,7 @@ must be assessed from those measurements.
 
 On Windows use `build\Matchaboy.exe`; on Mac open `build/MatchaAutopsy.app`;
 on Linux run `./build/Matchaboy` inside an X11/XWayland desktop.
-Without arguments, the players open the original ten-game arcade. Opening a cartridge
+Without arguments, the players open the licensed homebrew library. Opening a cartridge
 shows the large player view, with Inspector available through Tab. F12 captures
 the current display; Windows/Mac use the live OpenGL viewport. The window scales the same 1280 by 920 canvas with its
 aspect ratio intact. Native CMake builds place the app in the chosen build

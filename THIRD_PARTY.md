@@ -37,12 +37,16 @@ library code. Do not omit it or the license notices from redistributed packages.
 
 Matchaboy-owned code and original artwork are under GNU GPL version 3 (root `LICENSE`). The notices above remain applicable to their respective library source files. Gearboy was consulted as a debugger organization reference; no Gearboy code or artwork is included.
 
-## Original arcade
+## Bundled homebrew
 
-The five GB and five GBA ROMs under `games/` are original Matchaboy homebrew,
-licensed GPL-3.0-only with corresponding source in the same directory and in
-portable `source.zip` packages. They are embedded in the Windows executable and
-the Mac app's `Contents/Resources/Arcade` directory; the Linux player uses the
-same original cartridge catalog. No commercial games are bundled. See `games/PROVENANCE.md` for assistant
-authorship, human direction, development-tool credits and validation limits.
-Python and LLVM are development tools, not player runtime requirements.
+The player includes Tobu Tobu Girl and Tobu Tobu Girl Deluxe by Tangram Games,
+with original music by potato-tan. Their code is MIT-licensed and their assets
+are CC BY 4.0. They are independent games, not Matchaboy originals. Full notices
+are in `games/homebrew/CREDITS.txt` and the app's Game/File credits menu. Both
+ROMs are unchanged official releases; hashes and pinned asset-license grants
+are in `games/homebrew/manifest.json`. See [HOMEBREW.md](HOMEBREW.md).
+
+The previous five GB and five GBA originals remain GPL-3.0-only test fixtures
+under `games/gb` and `games/gba`, with corresponding source in `source.zip`.
+They are no longer installed as player library games. See `games/PROVENANCE.md`
+for their authorship, development-tool credits and validation limits.

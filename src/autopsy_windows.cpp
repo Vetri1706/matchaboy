@@ -166,6 +166,20 @@ void text(Gdiplus::Graphics *context, double x, double y, const std::string &val
     context->DrawString(string.c_str(), static_cast<INT>(string.size()), font.get(),
         Gdiplus::PointF(static_cast<float>(x), static_cast<float>(y)), Gdiplus::StringFormat::GenericTypographic(), &brush);
 }
+void fitted_text(Gdiplus::Graphics *context,double x,double y,const std::string &value,double width,
+                 double size,Color color=foreground) {
+    const auto string=wide(value);
+    while(size>11){
+        auto &font=fonts[size];
+        if(!font)font=std::make_unique<Gdiplus::Font>(L"Consolas",static_cast<float>(size),Gdiplus::FontStyleRegular,Gdiplus::UnitPixel);
+        Gdiplus::RectF measured;
+        context->MeasureString(string.c_str(),static_cast<INT>(string.size()),font.get(),Gdiplus::PointF(0,0),
+            Gdiplus::StringFormat::GenericTypographic(),&measured);
+        if(measured.Width<=width)break;
+        --size;
+    }
+    text(context,x,y,value,size,color);
+}
 template<typename... Args> std::string format(const char *pattern, Args... args) {
     std::array<char, 2048> buffer{};
     std::snprintf(buffer.data(), buffer.size(), pattern, args...);
@@ -235,6 +249,7 @@ class Runtime {
     std::string title;
     bool library_view = true;
     unsigned library_selection = 0;
+    unsigned library_first_row() const {return library_selection/2>=5?library_selection/2-4:0;}
     bool library_was_paused = false;
     int library_game = -1;
     bool has_game() const { return bus || gba; }
@@ -347,7 +362,7 @@ class Runtime {
         fill(context,0,0,1280,920,{0.035,0.06,0.08});
         fill(context,0,0,1280,88,{0.065,0.105,0.13});
         draw_logo(context,24,22,40); text(context,78,25,"MATCHABOY",26,cyan);
-        text(context,282,34,"ORIGINAL ARCADE",13,muted);
+        text(context,282,34,"HOMEBREW LIBRARY",13,muted);
         if (has_game()) {
             fill(context,834,20,190,48,{0.10,0.17,0.20});
             text(context,851,35,"Return to game",16,foreground);
@@ -355,16 +370,16 @@ class Runtime {
         fill(context,1040,20,208,48,{0.16,0.34,0.32});
         text(context,1061,35,"Open your game...",16,foreground);
         text(context,32,114,"Small games. Big discoveries.",27,foreground);
-        text(context,32,153,"Pick a game, then see the machine behind it.",16,muted);
-        text(context,32,196,"01 / GAME BOY",14,green);
-        text(context,426,196,"02 / GAME BOY ADVANCE",14,cyan);
+        text(context,32,153,"Independent games, included with their creators' credits.",16,muted);
+        text(context,32,196,"INCLUDED GAMES",14,green);
         const auto games = arcade_games();
         constexpr std::array<Color,10> accents{{{0.53,0.89,0.65},{0.83,0.73,0.99},{0.65,0.89,0.45},{0.97,0.73,0.39},{0.51,0.81,0.99},
             {0.99,0.67,0.42},{0.52,0.81,0.99},{0.90,0.64,0.97},{0.87,0.84,0.48},{0.57,0.90,0.71}}};
-        for (unsigned i = 0; i < games.size() && i < 10; ++i) {
+        const unsigned first=library_first_row()*2;
+        for (unsigned i=first;i<games.size()&&i<first+10;++i) {
             const auto &game = games[i]; const bool selected = i == library_selection;
-            const double x = i < 5 ? 32 : 426, y = 230 + (i%5)*122;
-            const auto accent = accents[i];
+            const double x=32+(i%2)*394,y=230+((i-first)/2)*122;
+            const auto accent=accents[i%accents.size()];
             fill(context,x,y,370,110,selected ? Color{0.13,0.24,0.25} : Color{0.065,0.105,0.13});
             fill(context,x,y,selected ? 4 : 2,110,selected ? accent : Color{0.13,0.23,0.25});
             // Small geometric cartridge marks are UI decoration, never gameplay previews.
@@ -373,28 +388,33 @@ class Runtime {
             fill(context,x+32+(i%3)*4,y+36,8,9,{0.035,0.075,0.09});
             fill(context,x+25,y+64,20,3,accent);
             fill(context,x+25,y+72,13,3,accent);
-            text(context,x+84,y+23,game.title,19,selected ? foreground : Color{0.72,0.81,0.85});
-            text(context,x+84,y+55,game.genre,13,muted);
-            text(context,x+84,y+80,selected ? "SELECTED  >" : "SELECT TO EXPLORE",11,selected ? accent : muted);
+            fitted_text(context,x+84,y+20,game.title,270,19,selected ? foreground : Color{0.72,0.81,0.85});
+            text(context,x+84,y+49,std::string(game.system)+" / "+game.genre,12,muted);
+            fitted_text(context,x+84,y+68,game.author,270,11,muted);
+            text(context,x+84,y+88,selected ? "SELECTED  >" : "SELECT TO EXPLORE",10,selected ? accent : muted);
         }
         fill(context,820,148,428,700,{0.065,0.105,0.13});
         if (!games.empty()) {
             const auto &game = games[std::min<std::size_t>(library_selection,games.size()-1)];
             text(context,844,169,std::string(game.system)+"  /  "+game.genre,13,green);
-            text(context,844,202,game.title,25,foreground);
+            fitted_text(context,844,202,game.title,380,25,foreground);
             wrapped_text(context,844,246,game.description,42,4,15,muted);
             fill(context,844,334,380,46,{0.28,0.63,0.49});
             text(context,866,347,"PLAY GAME",18,{0.02,0.08,0.07});
             text(context,1132,350,"ENTER",13,{0.02,0.08,0.07});
             text(context,844,407,"CONTROLS",13,cyan);
             wrapped_text(context,844,433,matcha::keyboard::arcade_help(game.controls,keyboard_mapping).c_str(),44,6,14,foreground);
-            text(context,844,554,"LEARN",13,cyan);
-            wrapped_text(context,844,580,game.learn,48,6,13,muted);
-            text(context,844,704,"INSPECT / PRESS TAB WHILE PLAYING",13,cyan);
-            wrapped_text(context,844,730,game.inspector_hint,48,6,13,muted);
+            text(context,844,554,"CREATED BY",13,cyan);
+            wrapped_text(context,844,580,game.author,44,2,14,foreground);
+            text(context,844,626,"LICENSE",13,cyan);
+            wrapped_text(context,844,650,game.license,48,2,12,muted);
+            fitted_text(context,844,695,std::string("PLAYERS / ")+game.players,380,14,foreground);
+            text(context,844,737,"OFFICIAL PROJECT",13,cyan);
+            wrapped_text(context,844,763,game.source,48,3,12,muted);
         }
         text(context,32,870,"ARROWS select   ENTER play   CTRL+O open a file   CTRL+L library   F12 screenshot",13,muted);
-        text(context,32,898,has_game() ? "Your current game is paused while you browse." : "Five GB games + five GBA games. Included and ready to play.",12,muted);
+        text(context,32,898,has_game()?"Your current game is paused while you browse.":
+            std::to_string(games.size())+" included homebrew games. Credits and license notices accompany the download.",12,muted);
         return bitmap;
     }
     std::unique_ptr<Gdiplus::Bitmap> render_player(bool include_lcd = true) {
@@ -692,6 +712,13 @@ class Runtime {
         output<<body<<",\"keyboard_mapping\":[";
         for(unsigned i=0;i<keyboard_mapping.size();++i){if(i)output<<',';output<<keyboard_mapping[i];}
         output<<"],\"controls_visible\":"<<(controls_visible?"true":"false")<<",\"opening_friend\":"<<(opening_friend?"true":"false");
+        const auto games=arcade_games();output<<",\"library_count\":"<<games.size();
+        if(library_selection<games.size()){
+            const auto &game=games[library_selection];
+            output<<",\"library_id\":"<<std::quoted(game.id)<<",\"library_title\":"<<std::quoted(game.title)
+                <<",\"library_author\":"<<std::quoted(game.author)<<",\"library_license\":"<<std::quoted(game.license)
+                <<",\"library_players\":"<<std::quoted(game.players)<<",\"library_source\":"<<std::quoted(game.source);
+        }
         if(friend_session)output<<",\"netplay\":{\"connected\":"<<(friend_session->connected()?"true":"false")
             <<",\"finished\":"<<(friend_session->finished()?"true":"false")<<",\"host\":"<<(friend_host?"true":"false")
             <<",\"frames\":"<<friend_session->frames()<<",\"verified_frames\":"<<friend_session->verified_frames()
@@ -874,7 +901,11 @@ class Window {
         InvalidateRect(handle, nullptr, FALSE);
     }
     void update_title() {
-        SetWindowTextW(handle, runtime.library_view ? L"Matchaboy - Original arcade" : (L"Matchaboy - " + wide(runtime.title)).c_str());
+        auto caption=L"Matchaboy - "+(runtime.library_view?std::wstring(L"Homebrew library"):wide(runtime.title));
+        const auto games=arcade_games();
+        if(runtime.library_view&&runtime.library_selection<games.size())
+            caption+=L" - "+wide(games[runtime.library_selection].title)+L" ("+std::to_wstring(runtime.library_selection+1)+L" of "+std::to_wstring(games.size())+L")";
+        SetWindowTextW(handle,caption.c_str());
     }
     void show_library() {
         if (runtime.library_view || linked()) return;
@@ -924,6 +955,16 @@ class Window {
         }
         sync_audio(); InvalidateRect(handle,nullptr,FALSE);
     }
+    void open_game_credits() {
+        try {
+            const auto file=arcade_credits_path();
+            const auto result=ShellExecuteW(handle,L"open",file.c_str(),nullptr,nullptr,SW_SHOWNORMAL);
+            if(reinterpret_cast<INT_PTR>(result)<=32)
+                throw std::runtime_error("Windows could not open the game credits and licenses in a text viewer.");
+        } catch(const std::exception &error) {
+            MessageBoxW(handle,wide(error.what()).c_str(),L"Game credits and licenses",MB_OK|MB_ICONINFORMATION);
+        }
+    }
     void open_game() {
         if(linked())return;
         const bool was_paused = runtime.paused;
@@ -962,11 +1003,12 @@ class Window {
             else if (cy >= 230 && cy < 828) {
                 const unsigned row = static_cast<unsigned>((cy-230)/122);
                 if (cy-230-row*122 <= 110) {
-                    int choice = cx >= 32 && cx <= 402 ? static_cast<int>(row) : cx >= 426 && cx <= 796 ? static_cast<int>(row+5) : -1;
+                    const auto base=(runtime.library_first_row()+row)*2;
+                    int choice=cx>=32&&cx<=402?static_cast<int>(base):cx>=426&&cx<=796?static_cast<int>(base+1):-1;
                     if (choice >= 0 && static_cast<std::size_t>(choice) < arcade_games().size()) runtime.library_selection = static_cast<unsigned>(choice);
                 }
             }
-            chrome_valid = false; InvalidateRect(handle,nullptr,FALSE); return;
+            update_title();chrome_valid = false; InvalidateRect(handle,nullptr,FALSE); return;
         }
         if (runtime.inspector_view && cy >= 92 && cy <= 140) {
             if (cx >= 48 && cx < 968) runtime.inspector_tab = static_cast<unsigned>((cx - 48) / 230);
@@ -1026,11 +1068,13 @@ class Window {
             if(key==VK_ESCAPE)return_to_game();else if(key==VK_RETURN)play_library_game();else if(key==VK_F12)capture_requested=true;
             else if(!arcade_games().empty()){
                 unsigned choice=runtime.library_selection;
-                if(key==VK_UP&&choice%5>0)--choice;else if(key==VK_DOWN&&choice%5<4)++choice;
-                else if(key==VK_LEFT&&choice>=5)choice-=5;else if(key==VK_RIGHT&&choice<5)choice+=5;
+                if(key==VK_UP&&choice>=2)choice-=2;else if(key==VK_DOWN&&choice+2<arcade_games().size())choice+=2;
+                else if(key==VK_LEFT&&choice%2) --choice;
+                else if(key==VK_RIGHT&&choice%2==0&&choice+1<arcade_games().size()) ++choice;
+                else if(key==VK_HOME)choice=0;else if(key==VK_END)choice=static_cast<unsigned>(arcade_games().size()-1);
                 if(choice<arcade_games().size())runtime.library_selection=choice;
             }
-            changed();return;
+            update_title();changed();return;
         }
         // Gameplay assignments take precedence over every unmodified app letter.
         if(bit<(runtime.gba?10U:8U)){
@@ -1186,6 +1230,8 @@ class Window {
                     }
                     for(unsigned id:{1001U,1050U,1051U,1052U,1500U,1501U})
                         EnableMenuItem(GetMenu(hwnd),id,MF_BYCOMMAND|((self->linked()||((id==1500U||id==1501U)&&(!self->runtime.has_game()||self->opening.valid())))?MF_GRAYED:MF_ENABLED));
+                    for(unsigned i=0;i<arcade_games().size();++i)
+                        EnableMenuItem(GetMenu(hwnd),2000+i,MF_BYCOMMAND|(self->linked()?MF_GRAYED:MF_ENABLED));
                     EnableMenuItem(GetMenu(hwnd),1502,MF_BYCOMMAND|(self->runtime.friend_session?MF_ENABLED:MF_GRAYED));
                     EnableMenuItem(GetMenu(hwnd),1503,MF_BYCOMMAND|(self->linked()?MF_ENABLED:MF_GRAYED));
                     EnableMenuItem(GetMenu(hwnd),1060,MF_BYCOMMAND|(self->runtime.opening_friend?MF_GRAYED:MF_ENABLED));
@@ -1194,6 +1240,10 @@ class Window {
                 }
                 case WM_COMMAND: {
                     const auto id=LOWORD(wp);
+                    if(id>=2000&&static_cast<std::size_t>(id-2000)<arcade_games().size()){
+                        if(!self->linked()){self->runtime.library_selection=id-2000;self->play_library_game();}
+                        return 0;
+                    }
                     if(self->linked()&&(id==1001||id==1050||id==1051||id==1052||(id>=1011&&id<=1014)||id==1500||id==1501))return 0;
                     if(id==1060){self->settings();return 0;}
                     if(id==1500||id==1501){self->friend_dialog(id==1500);return 0;}
@@ -1202,6 +1252,7 @@ class Window {
                     if(id==1050){self->show_library();return 0;}
                     if(id==1051){self->return_to_game();return 0;}
                     if(id==1052){if(self->runtime.library_view)self->play_library_game();return 0;}
+                    if(id==1053){self->open_game_credits();return 0;}
                     if((self->runtime.library_view||!self->runtime.has_game())&&
                         (id==1002||(id>=1011&&id<=1014)||(id>=1020&&id<=1023)))return 0;
                     if(id>=1030&&id<=1032){
@@ -1269,6 +1320,11 @@ class Window {
         HMENU audio_menu = CreatePopupMenu(), tools_menu = CreatePopupMenu(), panels_menu = CreatePopupMenu();
         AppendMenuW(file_menu, MF_STRING, 1001, L"&Open game...\tCtrl+O");
         AppendMenuW(file_menu, MF_STRING, 1050, L"Game &library\tCtrl+L");
+        HMENU included_menu=CreatePopupMenu();
+        for(unsigned i=0;i<arcade_games().size();++i)
+            AppendMenuW(included_menu,MF_STRING,2000+i,wide(arcade_games()[i].title).c_str());
+        AppendMenuW(file_menu,MF_POPUP,reinterpret_cast<UINT_PTR>(included_menu),L"Play included &homebrew");
+        AppendMenuW(file_menu,MF_STRING,1053,L"Game &credits and licenses");
         AppendMenuW(file_menu, MF_SEPARATOR, 0, nullptr);
         AppendMenuW(file_menu, MF_STRING, 1010, L"E&xit");
         AppendMenuW(emulation_menu, MF_STRING, 1011, L"&Pause / resume\tEsc");
@@ -1309,11 +1365,12 @@ class Window {
         AppendMenuW(friend_menu,MF_SEPARATOR,0,nullptr);
         AppendMenuW(friend_menu,MF_STRING,1502,L"Connection &Details...");AppendMenuW(friend_menu,MF_STRING,1503,L"&Disconnect");
         AppendMenuW(menu,MF_POPUP,reinterpret_cast<UINT_PTR>(friend_menu),L"&Netplay");
-        const auto title = runtime.library_view ? L"Matchaboy - Original arcade" : L"Matchaboy - " + wide(runtime.title);
+        const auto title = runtime.library_view ? L"Matchaboy - Homebrew library" : L"Matchaboy - " + wide(runtime.title);
         handle = CreateWindowW(wc.lpszClassName, title.c_str(), WS_OVERLAPPEDWINDOW,
             work.left+20, work.top+20, bounds.right-bounds.left, bounds.bottom-bounds.top,
             nullptr, menu, instance, this);
         if (!handle) throw std::runtime_error("cannot create native window");
+        update_title();
         dc = GetDC(handle);
         PIXELFORMATDESCRIPTOR descriptor{};
         descriptor.nSize = sizeof(descriptor); descriptor.nVersion = 1;
@@ -1409,7 +1466,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
         auto *raw = CommandLineToArgvW(GetCommandLineW(), &argc);
         if (!raw) throw std::runtime_error("cannot read command line");
         std::vector<std::wstring> args(raw, raw+argc); LocalFree(raw);
-        // An empty invocation is the original arcade. A file argument still opens
+        // An empty invocation opens the homebrew library. A file argument still opens
         // directly, and all existing ROM capture/test command lines keep working.
         std::filesystem::path rom_path,capture,net_stop_file;
         std::string game_id,net_join,net_code;unsigned net_port=0;

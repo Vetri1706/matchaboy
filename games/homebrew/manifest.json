@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "games": [
+    {
+      "id": "tobu-tobu-girl",
+      "title": "Tobu Tobu Girl",
+      "system": "GB",
+      "genre": "Arcade platformer",
+      "description": "Bounce, dash and boost through the sky to rescue your floating cat.",
+      "controls": "Enter (Start): skip intro / menu. Arrows: steer. Z (A): dash. X (B): boost.",
+      "learn": "The original climbing adventure, with three dashes before you must bounce again.",
+      "inspector_hint": "Watch tile scrolling, sprite priority and pulse-channel music while you play.",
+      "source": "https://tangramgames.itch.io/tobutobugirl",
+      "author": "Tangram Games; music by potato-tan",
+      "license": "Code MIT; assets CC BY 4.0",
+      "players": "Single-player",
+      "rom_filename": "tobu-tobu-girl.gb",
+      "rom": "games/homebrew/roms/tobu-tobu-girl.gb",
+      "sha256": "5d3871cae77db2287807e8914fd21f76203e73aa3fec20955489d45cb4571d8f",
+      "bytes": 262144,
+      "upstream_filename": "tobu.gb",
+      "upstream_repository": "https://github.com/SimonLarsen/tobutobugirl",
+      "license_commit": "048a22c2d7ebbe25811322e8692803fa86bb643a",
+      "downloaded": "2026-09-12",
+      "modifications": "ROM bytes unchanged; filename normalized for the library.",
+      "cgb_flag": 0,
+      "cartridge_type": 3,
+      "test": {
+        "boot_frames": 1200,
+        "input_mask": 128,
+        "input_frames": 120
+      }
+    },
+    {
+      "id": "tobu-tobu-girl-deluxe",
+      "title": "Tobu Tobu Girl Deluxe",
+      "system": "GB",
+      "genre": "Arcade platformer",
+      "description": "Bounce, dash and boost through the sky to rescue your floating cat.",
+      "controls": "Enter (Start): skip intro / menu. Arrows: steer. Z (A): dash. X (B): boost.",
+      "learn": "The expanded edition, running in its original Game Boy compatibility mode.",
+      "inspector_hint": "Watch tile scrolling, sprite priority and pulse-channel music while you play.",
+      "source": "https://tangramgames.itch.io/tobu-tobu-girl-deluxe",
+      "author": "Tangram Games; music by potato-tan",
+      "license": "Code MIT; assets CC BY 4.0",
+      "players": "Single-player",
+      "rom_filename": "tobu-tobu-girl-deluxe.gb",
+      "rom": "games/homebrew/roms/tobu-tobu-girl-deluxe.gb",
+      "sha256": "0a0e8018dbbc8d7f8cd99f05e7cdc7b4cc9e358ecfe9377ebfb2291a84c6e310",
+      "bytes": 262144,
+      "upstream_filename": "tobudx.gb",
+      "upstream_repository": "https://github.com/SimonLarsen/tobutobugirl-dx",
+      "license_commit": "4985d4d282aa43229f250ffa3b0d86998ebd55d3",
+      "downloaded": "2026-09-12",
+      "modifications": "ROM bytes unchanged; filename normalized for the library.",
+      "cgb_flag": 128,
+      "cartridge_type": 3,
+      "test": {
+        "boot_frames": 1200,
+        "input_mask": 128,
+        "input_frames": 120
+      }
+    }
+  ]
+}

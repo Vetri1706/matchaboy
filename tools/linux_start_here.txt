@@ -3,7 +3,7 @@ MATCHABOY — START HERE (LINUX)
 Extract the ZIP, keeping Matchaboy and the assets folder together. Open a
 terminal in this folder and run:
     ./Matchaboy
-The player opens the ten-game library. Open game loads your own .gb or .gba ROM.
+The player opens the homebrew library. Open game loads your own .gb or .gba ROM.
 No separate BIOS, emulator, Python, SDL or Qt installation is required.
 
 This package targets Ubuntu 24.04 x64 or a compatible Linux desktop. It uses
@@ -36,3 +36,9 @@ Bundled games are prepared in your XDG data directory. No commercial ROMs or
 saves are supplied. Game Boy Color-only games and GBA wireless adapters are not
 supported. Extras contains optional tools, full guides, source and licenses.
 Keep Extras with the ZIP when sharing; nothing inside it needs to run to play.
+
+INCLUDED GAMES
+Tobu Tobu Girl and Deluxe by Tangram Games, music by potato-tan.
+Both are single-player. Deluxe runs in Game Boy compatibility mode.
+Full credits/licenses: Game (Mac/Linux) or File (Windows) > Game credits and
+licenses; also Extras/licenses/homebrew/CREDITS.txt. See Extras/HOMEBREW.md.

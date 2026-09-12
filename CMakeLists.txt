@@ -182,23 +182,22 @@ if((APPLE OR WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Linux") AND MATCHA_BUILD_AUTOP
     endif()
 endif()
 
+include(cmake/Homebrew.cmake)
+
 if(APPLE AND MATCHA_BUILD_AUTOPSY)
     enable_language(OBJCXX)
     set(CMAKE_OBJCXX_STANDARD 20)
     set(CMAKE_OBJCXX_STANDARD_REQUIRED ON)
     set(CMAKE_OBJCXX_EXTENSIONS OFF)
-    set(MATCHA_MAC_ARCADE_ROMS
-        games/gb/roms/pocket-racer.gb games/gb/roms/moon-courier.gb
-        games/gb/roms/matcha-garden.gb games/gb/roms/signal-lost.gb
-        games/gb/roms/orbit-guard.gb games/gba/roms/drift-circuit.gba
-        games/gba/roms/cloud-pilot.gba games/gba/roms/prism-break.gba
-        games/gba/roms/tiny-tactics.gba games/gba/roms/parcel-dash.gba)
+    set(MATCHA_MAC_ARCADE_ROMS ${MATCHA_ARCADE_ROMS})
     set_source_files_properties(${MATCHA_MAC_ARCADE_ROMS} PROPERTIES
         MACOSX_PACKAGE_LOCATION Resources/Arcade HEADER_FILE_ONLY TRUE)
     set_source_files_properties(assets/matchaboy.icns PROPERTIES
         MACOSX_PACKAGE_LOCATION Resources HEADER_FILE_ONLY TRUE)
+    set_source_files_properties(games/homebrew/CREDITS.txt PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources HEADER_FILE_ONLY TRUE)
     matcha_executable(autopsy src/autopsy_main.mm src/arcade_macos.mm src/macos_audio.cpp src/macos_keyboard_settings.mm
-        ${MATCHA_MAC_ARCADE_ROMS} assets/matchaboy.icns)
+        ${MATCHA_MAC_ARCADE_ROMS} assets/matchaboy.icns games/homebrew/CREDITS.txt)
     target_link_libraries(autopsy PRIVATE matcha_autopsy_core matcha_gba matcha_friend_session
         "-framework AppKit" "-framework OpenGL" "-framework CoreGraphics"
         "-framework CoreText" "-framework ImageIO" "-framework AudioToolbox")
@@ -217,8 +216,8 @@ endif()
 if(WIN32 AND MATCHA_BUILD_AUTOPSY)
     enable_language(RC)
     configure_file(assets/arcade.rc.in "${CMAKE_CURRENT_BINARY_DIR}/arcade.rc" @ONLY)
-    file(GLOB MATCHA_ARCADE_ROMS "${PROJECT_SOURCE_DIR}/games/gb/roms/*.gb" "${PROJECT_SOURCE_DIR}/games/gba/roms/*.gba")
-    set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/arcade.rc" PROPERTIES OBJECT_DEPENDS "${MATCHA_ARCADE_ROMS}")
+    set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/arcade.rc" PROPERTIES
+        OBJECT_DEPENDS "${MATCHA_ARCADE_ROMS};${PROJECT_SOURCE_DIR}/games/homebrew/CREDITS.txt")
     matcha_executable(autopsy src/autopsy_windows.cpp src/windows_audio.cpp src/arcade_library.cpp src/windows_keyboard_settings.cpp
         assets/matchaboy.rc "${CMAKE_CURRENT_BINARY_DIR}/arcade.rc")
     target_compile_definitions(autopsy PRIVATE UNICODE _UNICODE)
@@ -243,16 +242,20 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND MATCHA_BUILD_AUTOPSY)
         target_compile_definitions(autopsy PRIVATE MATCHA_LINUX_ALSA)
     endif()
     set_target_properties(autopsy PROPERTIES OUTPUT_NAME Matchaboy)
+    set_property(TARGET autopsy APPEND PROPERTY LINK_DEPENDS
+        ${MATCHA_ARCADE_ROMS} "${PROJECT_SOURCE_DIR}/games/homebrew/CREDITS.txt")
     add_custom_command(TARGET autopsy POST_BUILD
-        COMMAND "${CMAKE_COMMAND}" -E copy_directory "${PROJECT_SOURCE_DIR}/games/gb/roms" "$<TARGET_FILE_DIR:autopsy>/assets/roms"
-        COMMAND "${CMAKE_COMMAND}" -E copy_directory "${PROJECT_SOURCE_DIR}/games/gba/roms" "$<TARGET_FILE_DIR:autopsy>/assets/roms")
+        COMMAND "${CMAKE_COMMAND}" -E rm -rf "$<TARGET_FILE_DIR:autopsy>/assets/roms"
+        COMMAND "${CMAKE_COMMAND}" -E copy_directory "${PROJECT_SOURCE_DIR}/games/homebrew/roms" "$<TARGET_FILE_DIR:autopsy>/assets/roms"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "$<TARGET_FILE_DIR:autopsy>/assets/licenses"
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${PROJECT_SOURCE_DIR}/games/homebrew/CREDITS.txt" "$<TARGET_FILE_DIR:autopsy>/assets/licenses/CREDITS.txt")
     install(TARGETS autopsy RUNTIME DESTINATION .)
-    install(DIRECTORY games/gb/roms/ games/gba/roms/ DESTINATION assets/roms
-        FILES_MATCHING PATTERN "*.gb" PATTERN "*.gba")
+    install(FILES ${MATCHA_ARCADE_ROMS} DESTINATION assets/roms)
+    install(FILES games/homebrew/CREDITS.txt DESTINATION assets/licenses)
 endif()
 
 install(TARGETS dmg netplay gym_benchmark matcha
     RUNTIME DESTINATION . LIBRARY DESTINATION . ARCHIVE DESTINATION lib)
-install(FILES LICENSE THIRD_PARTY.md matcha_gym.py README.md DOWNLOADS.md MACOS.md WINDOWS.md LINUX.md NETPLAY.md DESIGN.md PLATFORM.md PLATFORM_VERIFICATION.md
+install(FILES LICENSE THIRD_PARTY.md matcha_gym.py README.md DOWNLOADS.md MACOS.md WINDOWS.md LINUX.md NETPLAY.md HOMEBREW.md DESIGN.md PLATFORM.md PLATFORM_VERIFICATION.md
     VERIFICATION.md MOONEYE.md MEALYBUG.md ARTIFACTS.md DESTINATION .)
 install(FILES include/dmg/gym.h DESTINATION include/dmg)

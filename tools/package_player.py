@@ -12,6 +12,8 @@ def add_sources(destination):
     shutil.copytree(ROOT/'assets', destination/'assets', dirs_exist_ok=True)
     shutil.copy2(ROOT/'THIRD_PARTY.md', destination/'THIRD_PARTY.md')
     licenses = destination/'licenses'; licenses.mkdir(exist_ok=True)
+    shutil.copytree(ROOT/'games/homebrew/licenses', licenses/'homebrew', dirs_exist_ok=True)
+    shutil.copy2(ROOT/'games/homebrew/CREDITS.txt', licenses/'homebrew/CREDITS.txt')
     for source, name in [('LICENSE','mGBA-MPL-2.0.txt'),
                          ('src/third-party/blip_buf/license.txt','blip_buf-LGPL-2.1.txt'),
                          ('src/third-party/inih/LICENSE.txt','inih-BSD.txt')]:
@@ -22,7 +24,7 @@ def add_sources(destination):
                 relative=path.relative_to(ROOT)
                 if path.is_file() and not any(part in {'.git','__pycache__','cinema','build'} for part in relative.parts):
                     archive.write(path, relative.as_posix())
-        for name in ['LICENSE','CMakeLists.txt','Makefile','DESIGN.md','MACOS.md','WINDOWS.md','LINUX.md','NETPLAY.md','README.md','DOWNLOADS.md','PLATFORM.md','PLATFORM_VERIFICATION.md',
+        for name in ['LICENSE','CMakeLists.txt','Makefile','DESIGN.md','MACOS.md','WINDOWS.md','LINUX.md','NETPLAY.md','HOMEBREW.md','README.md','DOWNLOADS.md','PLATFORM.md','PLATFORM_VERIFICATION.md',
                      'VERIFICATION.md','MOONEYE.md','MEALYBUG.md','ARTIFACTS.md','THIRD_PARTY.md','matcha_gym.py']:
             archive.write(ROOT/name, name)
 
@@ -35,7 +37,7 @@ def main():
     shutil.copy2(args.binary,args.output/'Matchaboy.exe')
     extras = args.output/'Extras'
     add_sources(extras)
-    for name in ('WINDOWS.md','LINUX.md','MACOS.md','NETPLAY.md','DOWNLOADS.md','README.md'):
+    for name in ('WINDOWS.md','LINUX.md','MACOS.md','NETPLAY.md','HOMEBREW.md','DOWNLOADS.md','README.md'):
         shutil.copy2(ROOT/name,extras/name)
     shutil.copy2(ROOT/'tools/windows_start_here.txt',args.output/'Start Here.txt')
     print(args.output.resolve())
