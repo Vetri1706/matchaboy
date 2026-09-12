@@ -68,8 +68,14 @@ def main():
                 def key(k, down=True): send(0x100 if down else 0x101,k)
                 def snapshot():
                     old = metadata.stat().st_mtime_ns
-                    key(0x7B); wait(lambda: metadata.stat().st_mtime_ns != old)
-                    return json.loads(metadata.read_text())
+                    key(0x7B)
+                    def ready():
+                        try:
+                            if metadata.stat().st_mtime_ns == old: return None
+                            state=json.loads(metadata.read_text())
+                            return state if 'keyboard_mapping' in state else None
+                        except (OSError,json.JSONDecodeError): return None
+                    return wait(ready)
                 def pixel():
                     w,h,rgb = png_rgb(capture)
                     x,y = int(450*w/1280),int(450*h/920)
@@ -80,8 +86,8 @@ def main():
                     assert pixel()==(255,0,0), pixel()
                     if boot==0:
                         checks.append('Standalone EXE boots authored GBA ROM with Unicode path and no external BIOS')
-                        for code, expected in [(ord('Z'),(0,255,0)),(ord('Q'),(0,0,255)),(ord('W'),(255,255,255))]:
-                            key(code); key(0x20); time.sleep(.15); key(0x20)
+                        for code, expected in [(ord('L'),(0,255,0)),(ord('Q'),(0,0,255)),(ord('I'),(255,255,255))]:
+                            key(code); key(0x1B); time.sleep(.15); key(0x1B)
                             snapshot(); assert pixel()==expected,(code,pixel())
                             key(code,False)
                         checks.append('A, L and R reach GBA hardware and change rendered pixels')
@@ -102,10 +108,10 @@ def main():
                         for _ in range(10): send(0x111,1013)
                         advanced2=snapshot(); assert advanced2['frames']==advanced['frames']+10 and advanced2['paused']
                         advanced=advanced2
-                        before_dot=advanced['pc']; key(ord('D')); assert snapshot()['pc']==before_dot
+                        before_dot=advanced['pc']; send(0x111,1014); assert snapshot()['pc']==before_dot
                         key(0x09); state=snapshot(); assert not state['inspector_view']
-                        key(ord('C')); assert snapshot()['frames']==state['frames']
-                        key(ord('C')); snapshot()
+                        send(0x111,1005); assert snapshot()['frames']==state['frames']
+                        send(0x111,1005); snapshot()
                         checks.append('GBA Inspector opens; four panels and memory paging preserve paused state; real display/CPU registers and instruction/frame stepping; unsupported dot step ignored')
                     send(0x10); assert proc.wait(timeout=5)==0
                     save=rom.with_suffix('.matchaboy.sav')

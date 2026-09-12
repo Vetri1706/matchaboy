@@ -1,0 +1,37 @@
+MATCHABOY — START HERE (WINDOWS)
+
+Double-click Matchaboy.exe. Choose one of the ten bundled games, or Open game
+for your own Game Boy (.gb) or Game Boy Advance (.gba) ROM. No separate BIOS,
+emulator, Python or Visual C++ runtime installation is required.
+
+CONTROLS
+Movement: W/A/S/D. A button: L. B button: K. L/R shoulders: Q/I.
+Start: Enter. Select: Space. Pause: Escape.
+Tools > Keyboard Settings (Ctrl+,) changes keys. Choose Balanced, Classic,
+or Set all keys, then Apply. Settings persist for your Windows account.
+The on-screen guide always shows your current keys. Space is Select.
+Ctrl+O opens a game; Ctrl+L opens the library; Ctrl+Shift+C toggles the guide;
+Ctrl+Shift+M toggles sound; Tab opens Inspector; F12 saves a screenshot.
+Ctrl+S/F/D step instruction/frame/GB dot. Ctrl+1–4 choose Inspector panels.
+
+FRIEND PLAY
+Both players need this build and the same ROM version. Netplay > Host Game on
+one computer, Join Game on the other. Share the host's IP, UDP port and room
+code. Use the game's multiplayer menu after connecting. Same-Wi-Fi connections
+use the host's LAN IP. Internet connections need a reachable VPN address or
+UDP port forwarding. There is no automatic relay or encrypted transport.
+If a session drops, use Netplay > Connection Details > Copy diagnostics before
+Disconnect. The ten-second timeout is unchanged. Details: Extras/NETPLAY.md.
+
+YOUR SAVES
+Keep ROMs in a writable folder. Progress is saved beside the ROM when you close
+normally or switch games. Do not close by terminating the process.
+Bundled games are extracted automatically into Matchaboy Data/Library beside
+the app when writable, otherwise your LocalAppData/Matchaboy/Library folder.
+
+EXTRAS
+Optional developer tools, Python integration, full guides, corresponding source
+and license notices. Nothing in Extras needs to be run to play. Keep these
+notices/source with the ZIP when sharing. Read Extras/WINDOWS.md for more help.
+Commercial ROMs and saves are not included. Game Boy Color-only games and GBA
+wireless-adapter multiplayer are not supported.

@@ -50,6 +50,11 @@ jobs:
           if errorlevel 1 exit /b 1
           cmake --build build --parallel 4
           if errorlevel 1 exit /b 1
+      - name: Install Linux desktop build and test libraries
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-dev libasound2-dev xvfb xdotool
       - name: Configure and build POSIX with Clang
         if: runner.os != 'Windows'
         run: |
@@ -64,8 +69,12 @@ jobs:
           python tools/fetch_ppu_tests.py
           python tools/fetch_mooneye.py
           python tools/fetch_mealybug.py
-      - name: Verify original ROMs, Gymnasium and real UDP replay
+      - name: Verify desktop players, original ROMs, Gymnasium and real UDP replay
+        if: runner.os != 'Linux'
         run: python .github/scripts/verify_build.py --binary-dir build --output artifacts/ci
+      - name: Verify Linux desktop on a real X11 server
+        if: runner.os == 'Linux'
+        run: xvfb-run -a -s "-screen 0 1600x1200x24" python .github/scripts/verify_build.py --binary-dir build --output artifacts/ci
       - name: Install download contents
         run: cmake --install build --prefix stage --config Release
       - name: Package and test the extracted download
@@ -86,6 +95,8 @@ jobs:
           path: |
             artifacts/ci/**/summary.json
             artifacts/ci/*.log
+            artifacts/ci/linux-player/*.png
+            artifacts/ci/windows-friend-ui/*.png
             build/Testing/Temporary/LastTest.log
           if-no-files-found: warn
           retention-days: 14

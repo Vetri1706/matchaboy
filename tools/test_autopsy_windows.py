@@ -85,32 +85,38 @@ def main():
             def snapshot():
                 old = metadata.stat().st_mtime_ns
                 key(0x7B)
-                wait(lambda: metadata.stat().st_mtime_ns != old)
-                state = json.loads(metadata.read_text())
+                def ready():
+                    try:
+                        if metadata.stat().st_mtime_ns == old: return None
+                        state = json.loads(metadata.read_text())
+                        return state if 'keyboard_mapping' in state else None
+                    except (OSError, json.JSONDecodeError): return None
+                state = wait(ready)
                 assert state['gpu_readback']
                 return state
 
             start = snapshot()
             assert start['inspector_view']
+            assert start['keyboard_mapping'] == [2, 0, 13, 1, 37, 40, 49, 36, 12, 34]
             user.GetMenu.argtypes = [W.HWND]; user.GetMenu.restype = W.HMENU
             user.GetMenuStringW.argtypes = [W.HMENU, W.UINT, W.LPWSTR, C.c_int, W.UINT]
             names = []
-            for index in range(4):
+            for index in range(5):
                 label = C.create_unicode_buffer(100)
                 user.GetMenuStringW(user.GetMenu(hwnd), index, label, len(label), 0x400)
                 names.append(label.value.replace('&', ''))
-            assert names == ['File', 'Emulation', 'Audio/Video', 'Tools'], names
+            assert names == ['File', 'Emulation', 'Audio/Video', 'Tools', 'Netplay'], names
             for tab in range(4):
                 send(0x111, 1020 + tab)
                 state = snapshot()
                 assert state['inspector_tab'] == tab and state['cycles'] == start['cycles']
-            checks.append('native menus expose Emulation, Audio/Video, Tools and working Inspector panel commands')
+            checks.append('native menus expose Emulation, Audio/Video, Tools, Netplay and working Inspector panel commands')
             title = C.create_unicode_buffer(512)
             user.GetWindowTextW.argtypes = [W.HWND, W.LPWSTR, C.c_int]
             user.GetWindowTextW(hwnd, title, len(title))
             assert title.value.startswith('Matchaboy - ')
             for tab in range(4):
-                key(ord('1') + tab)
+                send(0x111, 1020 + tab)
                 state = snapshot()
                 assert state['inspector_tab'] == tab and state['cycles'] == start['cycles']
                 shutil.copy2(capture, output / f'inspector-{tab}.png')
@@ -124,8 +130,8 @@ def main():
                 send(0x201, 1, x | (y << 16)); send(0x202, 0, x | (y << 16))
                 state = snapshot()
                 assert state['inspector_tab'] == tab and state['cycles'] == start['cycles']
-            key(ord('1'))
-            checks.append('Matchaboy title; four Inspector tabs switch by keyboard and click without advancing emulation')
+            send(0x111, 1020)
+            checks.append('Matchaboy title; four Inspector tabs switch by native command and click without advancing emulation')
             key(0x09)
             player = snapshot()
             assert not player['inspector_view'] and player['cycles'] == start['cycles']
@@ -143,38 +149,43 @@ def main():
             assert snapshot()['cycles'] == player['cycles'] and lcd_pixel() == gray
             checks.append('default grayscale and optional green change display without advancing game')
             key(ord('S'))
-            assert snapshot()['cycles'] == start['cycles']
+            held = snapshot()
+            assert held['cycles'] == start['cycles'] and held['buttons'] == 1 << 3
+            key(ord('S'), False)
             key(0x09)
             assert snapshot()['inspector_view']
-            checks.append('player/Inspector toggle preserves state; player ignores debug step keys')
+            checks.append('player/Inspector toggle preserves state; WASD remains gameplay input in player and Inspector')
             time.sleep(.1)
             assert snapshot()['cycles'] == start['cycles']
             checks.append('paused state does not advance')
-            key(ord('S')); step = snapshot()
+            key(ord('S')); held = snapshot()
+            assert held['cycles'] == start['cycles'] and held['buttons'] == 1 << 3
+            key(ord('S'), False)
+            send(0x111, 1012); step = snapshot()
             assert step['instructions'] == start['instructions'] + 1 and step['cycles'] > start['cycles']
-            key(ord('F')); frame = snapshot()
+            send(0x111, 1013); frame = snapshot()
             assert frame['frames'] == step['frames'] + 1 and frame['paused']
-            key(ord('D')); dot = snapshot()
+            send(0x111, 1014); dot = snapshot()
             assert dot['cycles'] == frame['cycles'] + 1 and dot['instructions'] == frame['instructions']
             checks.append('instruction, frame and peripheral-dot stepping')
-            for bit, code in enumerate([0x27, 0x25, 0x26, 0x28, ord('Z'), ord('X'), 0x10, 0x0D]):
+            for bit, code in enumerate([ord('D'), ord('A'), ord('W'), ord('S'), ord('L'), ord('K'), 0x20, 0x0D]):
                 key(code)
                 assert snapshot()['buttons'] == 1 << bit
                 key(code, False)
                 assert snapshot()['buttons'] == 0
-            key(ord('Z')); send(0x8)
+            key(ord('L')); send(0x8)
             assert snapshot()['buttons'] == 0
             checks.append('all eight joypad buttons, release and focus loss')
             send(0x20A, 120 << 16)
             assert snapshot()['trace_scroll'] == 3
             checks.append('instruction trace scrolling')
-            key(0x20); key(0x20, repeat=True)
+            key(0x1B); key(0x1B, repeat=True)
             time.sleep(.15)
             running = snapshot()
             assert not running['paused'] and running['cycles'] > dot['cycles']
-            key(0x20)
+            key(0x1B)
             assert snapshot()['paused']
-            checks.append('resume, pause and held-space repeat protection')
+            checks.append('resume, pause and held-Escape repeat protection; Space is Select')
             assert user.MoveWindow(hwnd, 30, 30, 900, 700, True)
             resized = snapshot()
             assert resized['width'] < 1280 and abs(resized['width']/resized['height'] - 1280/920) < .005

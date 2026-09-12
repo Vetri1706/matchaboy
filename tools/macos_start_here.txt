@@ -1,0 +1,57 @@
+MATCHABOY — START HERE
+
+TO PLAY
+1. Drag Matchaboy.app into your Applications folder.
+2. Double-click Matchaboy to open the game library.
+3. Choose a bundled game and Play game, or choose Open game to load your own
+   Game Boy (.gb) or Game Boy Advance (.gba) game.
+
+Matchaboy.app is the only application you need to open. It contains the games,
+sound and multiplayer controls. You do not need Python or any developer tools.
+
+FIRST OPEN
+This download is for Apple Silicon Macs (M1 or newer), targeting macOS 13+.
+The app has an integrity signature but is not Apple-notarized. If macOS blocks
+the first launch, open System Settings > Privacy & Security > Open Anyway, if
+offered, after trying to open this trusted copy. See Extras/MACOS.md for help.
+
+CONTROLS
+Balanced is the default. The guide reads GAME BUTTON -> PRESS KEY:
+D-pad -> WASD      A -> L      B -> K      Start -> Return/Enter
+Select -> Space      GBA L shoulder -> Q      GBA R shoulder -> I
+When the game says A, press L. A/B actions depend on the game's own controls.
+Space is Select, not fast-forward. Escape pauses local play.
+Command-Shift-C shows/hides the guide; * marks a key held on your keyboard.
+Tab: Inspector      Command-Shift-M: sound      F12: screenshot
+Command-P: GB palette      Command-S/F/D: instruction/frame/GB dot
+
+CHANGE KEYS
+Choose Matchaboy > Keyboard Settings... or press Command-Comma. Click a game
+button's binding, then press one key; Set all keys... captures every binding in turn.
+Choose Balanced or Classic, then Apply to save for future launches. Cancel keeps
+your previous mapping. Classic uses arrows for directions, Z for A, X for B,
+Shift for Select and Q/W for shoulders; Escape still pauses. Bindings name
+physical ANSI key positions.
+
+PLAY WITH A FRIEND
+Both Macs need this build and the same game version. Open the game, then choose
+Netplay > Host Game on one Mac and Netplay > Join Game on the other. Join using
+the host's IP address, port and room code, then use the game's multiplayer menu.
+Same Wi-Fi uses the host's local IP. Internet play needs a reachable VPN address
+or a forwarded UDP port. Full instructions and compatibility: Extras/NETPLAY.md.
+
+If a connection drops, choose Netplay > Connection Details > Copy diagnostics
+BEFORE Disconnect, and keep the copied text with your report. It contains frame
+and network counters, not the room code, address, ROM path or saved game.
+Ten seconds without peer traffic ends a session; reconnect using Host/Join.
+The app now suppresses App Nap during friend play, but the reported intermittent
+disconnect has not yet been diagnosed. Normal Mac sleep is still allowed.
+
+WHAT IS EXTRAS?
+Optional command-line and research tools, the Python integration, detailed
+guides, build verification, source.zip, and licenses. Nothing in Extras needs
+to be launched or installed to play. Keep it with the ZIP when sharing so the
+source and notices accompany the app. License details: Extras/THIRD_PARTY.md.
+
+Commercial game ROMs and saves are not included. Keep your own ROMs in a
+writable folder; Matchaboy saves progress beside them when closing normally.

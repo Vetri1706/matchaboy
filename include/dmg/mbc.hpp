@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <optional>
 #include <vector>
+#include <span>
 namespace dmg {
 class Cartridge {
   public:
@@ -16,6 +17,7 @@ class Cartridge {
     [[nodiscard]] std::uint8_t type() const { return type_; }
     [[nodiscard]] bool rumble_active() const { return rumble_active_; }
     [[nodiscard]] const std::vector<std::uint8_t> &ram() const { return ram_; }
+    void restore_ram(std::span<const std::uint8_t> bytes);
 
   private:
     friend struct SnapshotAccess;

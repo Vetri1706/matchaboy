@@ -4,6 +4,10 @@
 #include <string>
 #include <utility>
 namespace dmg {
+void Cartridge::restore_ram(std::span<const std::uint8_t> bytes) {
+    if (bytes.size() != ram_.size()) throw std::invalid_argument("Game Boy save size does not match cartridge RAM.");
+    std::copy(bytes.begin(), bytes.end(), ram_.begin());
+}
 Cartridge::Cartridge(std::vector<std::uint8_t> rom, std::optional<std::size_t> ram_override)
     : rom_(std::move(rom)) {
     if (rom_.size() < 0x150)

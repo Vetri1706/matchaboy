@@ -75,7 +75,7 @@ def main():
             try:
                 hwnd=wait(find); start=snap()
                 if args.require_device: assert start['device_open'],'No Windows audio output device'
-                key(0x20); time.sleep(args.seconds)
+                key(0x1B); time.sleep(args.seconds)
                 running=snap()
                 if args.require_device: assert running['device_open'], running
                 assert running['generated_frames']>24000 and running['generated_peak']>100
@@ -84,14 +84,14 @@ def main():
                     if args.require_continuity:
                         assert running['underruns'] == 0, running
                         assert running['dropped_frames'] == 0, running
-                key(ord('M')); muted=snap()
+                send(0x111,1006); muted=snap()
                 time.sleep(.2); silent=snap()
                 assert silent['muted'] and silent['queued_buffers']==0
                 assert silent['submitted_frames']==muted['submitted_frames']
                 assert silent['generated_frames']>muted['generated_frames']
-                key(ord('M')); time.sleep(.2); resumed=snap()
+                send(0x111,1006); time.sleep(.2); resumed=snap()
                 if resumed['device_open']: assert resumed['submitted_frames']>silent['submitted_frames']
-                key(0x20); paused=snap(); time.sleep(.2); still=snap()
+                key(0x1B); paused=snap(); time.sleep(.2); still=snap()
                 assert still['paused'] and still['queued_buffers']==0
                 assert still['generated_frames']==paused['generated_frames']
                 send(0x10); assert proc.wait(timeout=5)==0

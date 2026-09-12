@@ -55,6 +55,9 @@ class Bus {
     [[nodiscard]] std::uint8_t serial_data() const { return serial_data_; }
     [[nodiscard]] std::uint8_t serial_control() const { return serial_control_; }
     [[nodiscard]] unsigned serial_bits() const { return serial_bits_; }
+    [[nodiscard]] std::uint64_t next_serial_clock() const {
+        return (serial_control_ & 0x81U) == 0x81U ? cycles_ + 512U - serial_phase_ : UINT64_MAX;
+    }
     [[nodiscard]] std::uint8_t *wram_data() { return wram_.data(); }
     [[nodiscard]] const std::uint8_t *wram_data() const { return wram_.data(); }
     static constexpr std::size_t WramSize = 8192;

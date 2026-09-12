@@ -5,7 +5,8 @@ snapshots, serial rollback over real UDP, native hardware instrumentation, and
 independent threaded learning environments. Core and network code use C++20,
 the standard library and operating-system sockets. The optional macOS player
 uses system AppKit/OpenGL and AudioToolbox frameworks; the Windows player uses
-Win32/GDI+/OpenGL and WinMM.
+Win32/GDI+/OpenGL and WinMM. The Linux desktop uses X11 and optional ALSA.
+These platform libraries do not change the independent headless DMG core.
 The optional Python adapter uses ctypes,
 NumPy, and Gymnasium; none is linked into the emulator.
 
@@ -22,12 +23,14 @@ python3 tools/verify_all.py --output artifacts/my-rom-regression
 ```
 
 Every C++ target uses strict warnings. Release targets use `-O3`; the optional
-`build/gym_benchmark_lto` adds link-time optimization. The native HUD supports
-macOS and Windows; the headless core, telemetry tests, UDP peers and Gym also
-support Windows through CMake. See [DOWNLOADS.md](DOWNLOADS.md) for native
-Windows commands and [MACOS.md](MACOS.md) for the native Mac app. Both players
-statically bundle mGBA for GBA games; the original DMG core remains independent.
-No external GUI toolkit or runtime installation is required. See THIRD_PARTY.md.
+`build/gym_benchmark_lto` adds link-time optimization. The desktop player supports
+macOS, Windows and Linux through CMake; the headless core, telemetry tests, UDP
+peers and Gym remain available separately. See [DOWNLOADS.md](DOWNLOADS.md) and
+the [Mac](MACOS.md), [Windows](WINDOWS.md) and [Linux](LINUX.md) guides. Each
+player statically bundles mGBA for GBA games; the original DMG core remains
+independent. Linux requires X11, with optional ALSA for sound. See THIRD_PARTY.md.
+The Windows keyboard/netplay and Linux desktop changes await native CI evidence
+for this revision; cross-compilation is not a runtime pass.
 
 ## Snapshots
 
@@ -72,7 +75,11 @@ checks those transfers. Each console's final full snapshot, every confirmed
 frame hash, video bytes and PCM samples must match its corresponding clean
 run. The two consoles themselves need not have identical states.
 
-`build/netplay` can run on separate POSIX hosts with explicit `--bind`,
+The desktop players' interactive friend sessions are documented in [NETPLAY.md](NETPLAY.md).
+They use replicated two-console emulation with confirmed inputs and six frames
+of input delay; the legacy rollback harness below remains a distinct runner.
+
+`build/netplay` can run on separate hosts with explicit `--bind`,
 `--peer`, `--port`, `--peer-port`, `--side`, `--session`, `--rom`, `--peer-rom`,
 `--frames`, `--seed`, `--pace-ms`, `--timeout` and `--output` values. The peer
 ROM is read only to validate its identity; each process executes one machine.
@@ -117,10 +124,11 @@ must be assessed from those measurements.
 
 ## Matchaboy Inspector
 
-On Windows use `build\Matchaboy.exe`; on Mac open `build/MatchaAutopsy.app`.
-Without arguments, both open the original ten-game arcade. Opening a cartridge
+On Windows use `build\Matchaboy.exe`; on Mac open `build/MatchaAutopsy.app`;
+on Linux run `./build/Matchaboy` inside an X11/XWayland desktop.
+Without arguments, the players open the original ten-game arcade. Opening a cartridge
 shows the large player view, with Inspector available through Tab. F12 captures
-the live OpenGL viewport. The window scales the same 1280 by 920 canvas with its
+the current display; Windows/Mac use the live OpenGL viewport. The window scales the same 1280 by 920 canvas with its
 aspect ratio intact. Native CMake builds place the app in the chosen build
 directory; the Makefile retains `build/autopsy` as a compatibility entry point.
 
@@ -138,13 +146,23 @@ are atomic and decay once per emulated frame. The heatmap counts CPU bus
 accesses; it excludes DMA and PPU internal fetches. The displayed locks and
 FIFOs come from the live machine.
 
-Space pauses/resumes. In Inspector, S retires an instruction, F advances a
-frame, D advances one Game Boy peripheral dot while paused, and scrolling moves
-through the instruction history. Keys 1–4 select Video, CPU, Memory and Audio.
-Arrow keys and Z/X/Enter/Shift provide joypad input; Q/W add GBA L/R. A requested
+Escape pauses local play. Tab toggles Inspector. Balanced game controls are
+WASD, L/K for A/B, Q/I for GBA shoulders, Enter for Start and Space for Select;
+Space does not fast-forward. **Keyboard Settings…** (Command-Comma on Mac,
+Ctrl-Comma on Windows/Linux) provides editable bindings and Balanced/Classic
+presets. Apply persists the layout and updates the visible guide. Bindings are
+host preferences, outside deterministic snapshots and network payloads.
+
+Use Command on Mac or Ctrl on Windows/Linux with S/F to step an instruction or
+frame. Windows/Mac additionally expose modifier-D for a Game Boy peripheral
+dot and modifier-1–4 for Inspector views. Linux currently has a combined
+CPU/FIFO/memory inspector. Dot stepping
+is deliberately a peripheral-only inspection action, not normal CPU execution;
+it is unavailable for GBA and all stepping is disabled while linked. On Windows/Mac, a requested
 line/dot capture stops at the next CPU instruction boundary at or beyond the
-requested dot; the dashboard prints the actual position. D advances only
-peripherals for inspection and deliberately changes CPU/peripheral alignment.
+requested dot; the dashboard reports the actual position. Linux's headless
+capture exports actual LCD pixels and metadata; its window capture is a separate
+X11 test and should not be described as the Mac/Windows composite renderer.
 
 The four scopes sample real digital APU channel outputs every 32 T-cycles.
 They are pulse 1 with sweep, pulse 2, wave RAM and noise LFSR, before stereo
@@ -164,10 +182,11 @@ the resulting hardware samples. `python3 tools/verify_autopsy.py --output
 artifacts/my-hud-test` also captures the real native OpenGL back buffer and
 compares it with the headless renderer at the same live FIFO position.
 
-Both native players output 48 kHz stereo through their operating system. Mac
-uses Audio Queue callbacks and Windows uses WinMM buffer completion. Library,
+The desktop players output 48 kHz stereo through their operating system when
+a device is available. Mac uses Audio Queue callbacks, Windows uses WinMM buffer
+completion, and Linux optionally uses nonblocking ALSA output. Library,
 pause and mute transitions clear playback; the scopes continue to represent
-actual hardware or PCM state. The GBA Inspector shows display registers,
+actual hardware or PCM state. The Windows/Mac GBA Inspector shows display registers,
 palette, ARM/Thumb registers, memory pages and final stereo samples. The GB
 dot-step and retired-instruction history do not apply to GBA. See
 [MACOS.md](MACOS.md) for Mac capture, relocated-bundle and audio checks.

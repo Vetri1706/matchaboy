@@ -1,0 +1,38 @@
+MATCHABOY — START HERE (LINUX)
+
+Extract the ZIP, keeping Matchaboy and the assets folder together. Open a
+terminal in this folder and run:
+    ./Matchaboy
+The player opens the ten-game library. Open game loads your own .gb or .gba ROM.
+No separate BIOS, emulator, Python, SDL or Qt installation is required.
+
+This package targets Ubuntu 24.04 x64 or a compatible Linux desktop. It uses
+system X11 (including XWayland on a Wayland desktop), and ALSA for speaker audio.
+On Debian/Ubuntu, install missing desktop libraries with:
+    sudo apt install libx11-6 libasound2t64
+If an extractor dropped the executable permission, run: chmod +x Matchaboy
+For a server without a display, use --headless; the original CLI tools are in
+Extras. Build from source for other distributions/architectures: Extras/LINUX.md.
+
+CONTROLS
+Movement: W/A/S/D. A button: L. B button: K. L/R shoulders: Q/I.
+Start: Enter. Select: Space. Pause: Escape.
+Keyboard settings (Ctrl+,) changes individual keys or all keys in turn.
+Balanced/Classic presets and Apply/Cancel work without resetting a game.
+Apply persists settings in your XDG config folder. The guide shows current keys.
+Ctrl+O opens a game; Ctrl+L opens the library; Ctrl+Shift+C toggles the guide;
+Ctrl+Shift+M toggles sound; Tab opens Inspector; F12 saves a screenshot.
+
+FRIEND PLAY
+Use Netplay > Host Game / Join Game with the same ROM version on both machines.
+Share the host's IP address, UDP port and room code. Then open the game's own
+multiplayer mode. Same Wi-Fi uses a LAN IP; internet play needs a reachable VPN
+address or forwarded UDP port. There is no automatic relay or encryption.
+Connection Details provides Copy diagnostics if a session drops. The peer
+silence timeout remains ten seconds. Details: Extras/NETPLAY.md.
+
+Keep your ROMs in a writable folder; normal close writes progress beside them.
+Bundled games are prepared in your XDG data directory. No commercial ROMs or
+saves are supplied. Game Boy Color-only games and GBA wireless adapters are not
+supported. Extras contains optional tools, full guides, source and licenses.
+Keep Extras with the ZIP when sharing; nothing inside it needs to run to play.

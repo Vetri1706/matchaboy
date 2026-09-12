@@ -11,6 +11,13 @@
 #include "arcade_library.hpp"
 #include "macos_audio.hpp"
 #include "player_theme.hpp"
+#include "friend_session.hpp"
+#include "gameboy_save.hpp"
+#include "macos_keyboard.hpp"
+#include "macos_keyboard_settings.hpp"
+#include <iomanip>
+#include <future>
+#include <thread>
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -171,12 +178,54 @@ void draw_logo(MacGraphics::Graphics *context, double x, double y, double size) 
     fill(context, x+size*.36, y+size*.57, size*.06, size*.20, {0.035,0.09,0.10});
     fill(context, x+size*.61, y+size*.62, size*.08, size*.08, {0.035,0.09,0.10});
 }
+// Host preferences are deliberately outside deterministic machine state.
+matcha::keyboard::Mapping keyboard_mapping=matcha::keyboard::balanced();
+void load_keyboard_mapping(){
+    id stored=[[NSUserDefaults standardUserDefaults]objectForKey:@"KeyboardMappingV1"];
+    if(![stored isKindOfClass:[NSDictionary class]])return;
+    id version=[stored objectForKey:@"version"], keys=[stored objectForKey:@"keys"];
+    if(![version isKindOfClass:[NSNumber class]]||[version doubleValue]!=1.0||
+       ![keys isKindOfClass:[NSArray class]]||[keys count]!=matcha::keyboard::button_count)return;
+    auto candidate=matcha::keyboard::balanced();
+    for(unsigned i=0;i<candidate.size();++i){
+        id number=[keys objectAtIndex:i];if(![number isKindOfClass:[NSNumber class]])return;
+        const double value=[number doubleValue];
+        if(!std::isfinite(value)||value<0||value>126||std::floor(value)!=value)return;
+        candidate[i]=matcha::keyboard::canonical_key(static_cast<unsigned>(value));
+    }
+    if(matcha::keyboard::validate_mapping(candidate).empty())keyboard_mapping=candidate;
+}
+void persist_keyboard_mapping(){
+    NSMutableArray *keys=[NSMutableArray arrayWithCapacity:keyboard_mapping.size()];
+    for(const auto key:keyboard_mapping)[keys addObject:@(key)];
+    [[NSUserDefaults standardUserDefaults]setObject:@{@"version":@1,@"keys":keys} forKey:@"KeyboardMappingV1"];
+}
+unsigned joypad_bit(unsigned key){return matcha::keyboard::key_bit(keyboard_mapping,matcha::keyboard::from_macos_key(key));}
+std::string mapped_key(unsigned bit){return matcha::keyboard::key_name(keyboard_mapping[bit]);}
+std::string keyboard_help(bool gba){
+    std::string result="Keyboard controls. ";
+    for(const unsigned bit:std::array<unsigned,10>{2,1,3,0,4,5,8,9,7,6}){
+        if(bit>=8&&!gba)continue;
+        result+="For "+std::string(matcha::keyboard::button_names[bit])+", press "+mapped_key(bit)+". ";
+    }
+    return result+"Command comma opens Keyboard Settings. Command Shift C shows or hides the controls guide. Escape pauses local play. A and B actions depend on the game.";
+}
+std::string arcade_keyboard_help(std::string_view original){
+    return matcha::keyboard::arcade_help(original,keyboard_mapping);
+}
+
 class Runtime {
   public:
     std::unique_ptr<dmg::Autopsy> inspector = std::make_unique<dmg::Autopsy>();
     std::unique_ptr<dmg::Bus> bus;
     std::unique_ptr<dmg::Cpu> cpu;
     std::unique_ptr<GbaCore> gba;
+    // A session detaches its cable before either referenced console is destroyed.
+    std::unique_ptr<matcha::FriendSession> friend_session;
+    std::filesystem::path rom_path;
+    std::string room_code, friend_address;
+    bool friend_host = false, opening_friend = false;
+    std::uint16_t friend_port=0;
     std::string title;
     bool library_view = true;
     unsigned library_selection = 0;
@@ -196,8 +245,9 @@ class Runtime {
     unsigned lcd_left() const { return controls_visible ? 48 : 240; }
     bool sound_muted = false;
     bool paused = false;
-    void enable_audio() { if (gba) gba->enable_audio(); else if (bus) bus->apu.set_sample_rate(48000); }
+    void enable_audio() { if (friend_session) return; if (gba) gba->enable_audio(); else if (bus) bus->apu.set_sample_rate(48000); }
     std::size_t drain_audio(std::span<std::int16_t> samples) {
+        if (friend_session) return friend_session->drain_audio(samples);
         return gba ? gba->drain_audio(samples) : bus ? bus->apu.drain_samples(samples) : 0;
     }
     unsigned trace_scroll = 0;
@@ -212,17 +262,35 @@ class Runtime {
     }
     void set_buttons(std::uint16_t value) {
         buttons = value;
+        if (friend_session) return;
         if (!gba) { if (bus) bus->set_buttons(static_cast<std::uint8_t>(value)); return; }
         constexpr std::array<unsigned, 10> mapping{4,5,6,7,0,1,2,3,9,8};
         std::uint16_t mapped = 0;
         for (unsigned i=0; i<mapping.size(); ++i) if (value & (1U<<i)) mapped |= static_cast<std::uint16_t>(1U<<mapping[i]);
         gba->set_buttons(mapped);
     }
-    void flush_save() { if (gba) gba->flush_save(); }
+    void flush_save() { if (gba) gba->flush_save(); else if (bus) flush_gameboy_save(rom_path,*bus); }
+    void disconnect_friend() {
+        if (friend_session) { friend_session->close(); friend_session.reset(); }
+        room_code.clear(); friend_address.clear(); set_buttons(0);
+    }
+    std::string connection_label() const {
+        if (opening_friend) return "Starting friend play... resolving the host and preparing the link";
+        if (!friend_session) return {};
+        const auto state=friend_session->status();if(state.starts_with("Linked"))return state;
+        return std::string(friend_host ? "Player 1" : "Player 2") + " | Linked frame " +
+            std::to_string(friend_session->frames()) + " | " + friend_session->status();
+    }
     void toggle_inspector() { if (has_game() && !library_view) inspector_view = !inspector_view; }
 
     Runtime() = default;
-    explicit Runtime(const std::filesystem::path &path) : title(path.filename().string()), library_view(false) {
+    Runtime(Runtime &&) noexcept = default;
+    Runtime &operator=(Runtime &&other) noexcept {
+        if (this != &other) { std::destroy_at(this); std::construct_at(this,std::move(other)); }
+        return *this;
+    }
+    ~Runtime() = default;
+    explicit Runtime(const std::filesystem::path &path) : rom_path(path), title(path.filename().string()), library_view(false) {
         auto extension = path.extension().string();
         std::transform(extension.begin(), extension.end(), extension.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
         if (extension == ".gba") { gba = std::make_unique<GbaCore>(path); return; }
@@ -234,12 +302,14 @@ class Runtime {
         if (rom[0x143] == 0xC0) throw std::runtime_error("This game requires Game Boy Color hardware, which is not supported yet.");
         bus = std::make_unique<dmg::Bus>(std::move(rom));
         cpu = std::make_unique<dmg::Cpu>(*bus);
+        load_gameboy_save(path,*bus);
         bus->autopsy = inspector.get();
         bus->apu.set_sample_rate(0); // Headless warm-up does not queue old audio.
     }
-    void step() { if (!has_game() || library_view) return; if (gba) { gba->step(); return; } bus->autopsy = inspector.get(); cpu->step(); }
+    void step() { if (friend_session || !has_game() || library_view) return; if (gba) { gba->step(); return; } bus->autopsy = inspector.get(); cpu->step(); }
     void run_frame() {
         if (!has_game() || library_view) return;
+        if (friend_session) { friend_session->advance(buttons); return; }
         if (gba) { gba->run_frame(); return; }
         // Disassembly/heatmap/scopes are inspection work, not part of playing.
         // Keep the player fast enough to feed the audio device continuously.
@@ -311,7 +381,7 @@ class Runtime {
             text(context,866,347,"PLAY GAME",18,{0.02,0.08,0.07});
             text(context,1132,350,"ENTER",13,{0.02,0.08,0.07});
             text(context,844,407,"CONTROLS",13,cyan);
-            wrapped_text(context,844,433,game.controls,44,6,14,foreground);
+            wrapped_text(context,844,433,arcade_keyboard_help(game.controls).c_str(),44,6,14,foreground);
             text(context,844,554,"LEARN",13,cyan);
             wrapped_text(context,844,580,game.learn,48,6,13,muted);
             text(context,844,704,"INSPECT / PRESS TAB WHILE PLAYING",13,cyan);
@@ -332,11 +402,11 @@ class Runtime {
         text(context, 78, 25, "MATCHABOY", 26, cyan);
         text(context, 260, 34, gba ? "GAME BOY ADVANCE" : "GAME BOY PLAYER", 13, muted);
         fill(context, 578, 20, 116, 48, {0.10, 0.17, 0.20});
-        text(context, 598, 34, "Library", 17, foreground);
+        text(context, 591, 34, friend_session||opening_friend?"Linked game":"Library", friend_session||opening_friend?14:17,friend_session||opening_friend?muted:foreground);
         fill(context, 710, 20, 174, 48, {0.10, 0.17, 0.20});
         text(context, 726, 32, controls_visible ? "Hide controls" : "Show controls", 17, foreground);
         fill(context, 900, 20, 158, 48, {0.16, 0.34, 0.32});
-        text(context, 919, 32, "Open game...", 18, foreground);
+        text(context, 919, 32, friend_session||opening_friend?"ROM locked":"Open game...",18,friend_session||opening_friend?muted:foreground);
         fill(context, 1076, 20, 164, 48, {0.10, 0.17, 0.20});
         text(context, 1098, 32, "Inspector", 18, muted);
         const auto name = clipped_title(title,65);
@@ -354,32 +424,35 @@ class Runtime {
             context->DrawImage(&lcd, MacGraphics::Rect(static_cast<INT>(lcd_left()), static_cast<INT>(lcd_top()), 800, static_cast<INT>(display_height())), 0, 0, lcd_width(), lcd_height(), MacGraphics::UnitPixel);
         }
         if (controls_visible) {
-        text(context, 900, 145, "CONTROLS", 20, cyan);
-        text(context, 900, 184, gba ? "Keyboard  >  GBA" : "Keyboard  >  Game Boy", 14, muted);
-        constexpr std::array<const char *, 6> keys{"ARROWS", "Z", "X", "ENTER", "SHIFT", "SPACE"};
-        constexpr std::array<const char *, 6> labels{"D-pad", "A button", "B button", "Start", "Select", "Pause / resume"};
-        for (unsigned i = 0; i < keys.size(); ++i) {
-            const auto y = 230 + i*66;
-            fill(context, 900, y, 92, 40, {0.10, 0.17, 0.20});
-            text(context, 912, y+10, keys[i], 15, foreground);
-            text(context, 1014, y+10, labels[i], 16, foreground);
+        text(context,900,145,"KEYBOARD CONTROLS",20,cyan);
+        wrapped_text(context,900,180,("When the game says A, press "+mapped_key(4)+".").c_str(),36,2,14,foreground);
+        text(context,900,222,"GAME BUTTON",13,muted);
+        text(context,1080,222,"PRESS KEY",13,muted);
+        unsigned index=0;
+        for(const unsigned bit:std::array<unsigned,10>{2,1,3,0,4,5,8,9,7,6}){
+            if(bit>=8&&!gba)continue;
+            const double y=248+index++*36;const bool held=(buttons&(1U<<bit))!=0;
+            text(context,900,y+7,std::string(matcha::keyboard::button_names[bit]),15,held?green:foreground);
+            text(context,1040,y+7,">",15,muted);
+            fill(context,1072,y,150,30,held?Color{0.15,0.32,0.31}:Color{0.10,0.17,0.20});
+            text(context,1082,y+6,mapped_key(bit),14,held?green:foreground);
+            if(held)text(context,1206,y+7,"*",14,green);
         }
-        if (gba) text(context, 900, 635, "Q: L shoulder   W: R shoulder", 14, foreground);
-        const auto games = arcade_games();
-        if (library_game >= 0 && static_cast<std::size_t>(library_game) < games.size())
-            wrapped_text(context,900,662,games[library_game].controls,37,4,13,foreground);
-        else {
-            text(context, 900, 664, "These keys work for every game.", 14, muted);
-            text(context, 900, 691, "A/B actions depend on the game.", 14, muted);
-        }
-        text(context, 900, 757, "Cmd+O  Choose another game", 14, muted);
-        text(context, 900, 786, "Tab     Toggle Inspector", 14, muted);
-        text(context, 900, 815, "F12     Save screenshot", 14, ::muted);
-        text(context, 900, 844, "M       Toggle sound", 14, ::muted);
+        text(context,900,612,"* Key held on this keyboard",13,muted);
+        const auto games=arcade_games();
+        if(library_game>=0&&static_cast<std::size_t>(library_game)<games.size())
+            wrapped_text(context,900,639,arcade_keyboard_help(games[library_game].controls).c_str(),40,4,13,foreground);
+        else wrapped_text(context,900,639,"A/B actions depend on the game. Check its own help or manual.",37,4,14,foreground);
+        fill(context,900,716,322,36,{0.16,0.34,0.32});
+        text(context,918,725,"Keyboard Settings...",15,foreground);
+        text(context,900,768,friend_session?"Linked play continues in settings.":"Esc        Pause / resume",13,muted);
+        text(context,900,790,"Cmd+Shift+C  Show / hide guide",13,muted);
+        text(context,900,812,"Tab Inspector   F12 Screenshot",13,muted);
+        text(context,900,834,"Cmd+Shift+M  Toggle sound",13,muted);
         }
         fill(context, 48, 872, 160, 36, {0.16, 0.34, 0.32});
         text(context, 75, 880, paused ? "Resume" : "Pause", 17, foreground);
-        text(context, 232, 882, paused ? "Paused - press Space to resume" : "Playing", 15, paused ? orange : muted);
+        text(context, 232, 882, paused ? "Paused - press Esc to resume" : "Playing", 15, paused ? orange : muted);
         return bitmap;
     }
     std::unique_ptr<MacGraphics::Bitmap> render_gba(bool include_lcd) {
@@ -459,10 +532,24 @@ class Runtime {
             if (!state.audio_frames) text(context,220,368,"Play the game to collect output samples.",16,muted);
             text(context,48,768,format("SOUNDCNT L %04X   H %04X   X %04X   BIAS %04X",state.sound_low,state.sound_high,state.sound_enable,state.sound_bias),17);
         }
-        text(context,48,888,"TAB game   1-4 panels   SPACE pause   S instruction   F frame   CMD+O open   F12 capture",12,muted);
+        text(context,48,888,"TAB game   CMD+1-4 panels   ESC pause   CMD+S instruction   CMD+F frame   F12 capture",12,muted);
         return bitmap;
     }
     std::unique_ptr<MacGraphics::Bitmap> render(bool include_lcd = true) {
+        auto bitmap=render_screen(include_lcd);
+        if(friend_session || opening_friend){
+            MacGraphics::Graphics graphics(bitmap.get());
+            fill(&graphics,0,868,1280,52,{0.065,0.105,0.13});
+            if(!inspector_view){
+                fill(&graphics,48,872,160,36,{0.16,0.34,0.32});
+                text(&graphics,60,880,opening_friend?"Cancel":"Disconnect",16,foreground);
+            }
+            text(&graphics,inspector_view?48:232,882,clipped_title(connection_label(),inspector_view?146:120),12,
+                 friend_session && friend_session->finished()?orange:cyan);
+        }
+        return bitmap;
+    }
+    std::unique_ptr<MacGraphics::Bitmap> render_screen(bool include_lcd) {
         if (library_view) return render_library();
         if (!inspector_view) return render_player(include_lcd);
         if (gba) return render_gba(include_lcd);
@@ -596,7 +683,7 @@ class Runtime {
             if (points.size() > 1) context->DrawLines(&pen, points.data(), static_cast<INT>(points.size()));
         }
         }
-        text(context, 48, 888, "TAB game   1-4 panels   CMD+O open   SPACE pause   S instruction   F frame   D dot   F12 capture", 12, muted);
+        text(context, 48, 888, "TAB game   CMD+1-4 panels   ESC pause   CMD+S instruction   CMD+F frame   CMD+D dot   F12 capture", 12, muted);
         return rendered;
     }
     void save(const std::filesystem::path &path, MacGraphics::Bitmap &bitmap, bool gpu) {
@@ -610,6 +697,10 @@ class Runtime {
             << ",\"library_view\":" << (library_view ? "true" : "false") << ",\"library_selection\":" << library_selection
             << ",\"library_game\":" << library_game << ",\"inspector_view\":" << (inspector_view ? "true" : "false")
             << ",\"inspector_tab\":" << inspector_tab << ",\"paused\":" << (paused ? "true" : "false") << ",\"buttons\":" << buttons;
+        if (friend_session) out << ",\"netplay\":{\"connected\":" << (friend_session->connected()?"true":"false")
+            << ",\"finished\":" << (friend_session->finished()?"true":"false") << ",\"host\":" << (friend_host?"true":"false")
+            << ",\"frames\":" << friend_session->frames() << ",\"verified_frames\":" << friend_session->verified_frames() << ",\"port\":" << friend_session->port()
+            << ",\"status\":" << std::quoted(friend_session->status()) << '}';
         if (gba) {
             const auto debug=gba->inspect(memory_bases[memory_region]+memory_offset);
             out << ",\"frames\":" << gba->frames() << ",\"pc\":" << debug.registers[15] << ",\"cpsr\":" << debug.cpsr
@@ -645,7 +736,18 @@ public:
     unsigned generated_peak=0;
     std::chrono::steady_clock::time_point next_frame=std::chrono::steady_clock::now(), refresh{};
     std::string renderer;
+    std::future<Runtime> opening;
+    id<NSObject> network_activity=nil;
+    bool before_connect_paused=false, opening_cancelled=false, keyboard_settings_open=false;
     explicit Presentation(Runtime &r):runtime(r){}
+    ~Presentation(){if(network_activity){[[NSProcessInfo processInfo]endActivity:network_activity];[network_activity release];}}
+    void sync_network_activity(){
+        const bool active=runtime.friend_session&&!runtime.friend_session->finished();
+        if(active&&!network_activity)
+            network_activity=[[[NSProcessInfo processInfo]beginActivityWithOptions:NSActivityUserInitiatedAllowingIdleSystemSleep
+                reason:@"Keep the active Matchaboy link responsive while switching windows"]retain];
+        else if(!active&&network_activity){[[NSProcessInfo processInfo]endActivity:network_activity];[network_activity release];network_activity=nil;}
+    }
     void sync_audio(){
         const bool suspended=runtime.library_view || !runtime.has_game() || runtime.paused || runtime.sound_muted;
         if(suspended==audio_suspended)return;
@@ -660,8 +762,46 @@ public:
             if(!audio_suspended)audio.submit(std::span(samples).first(count));
         }
     }
-    void changed(){dirty=true;controls_dirty=true;sync_audio();}
+    void changed(){dirty=true;controls_dirty=true;sync_audio();sync_network_activity();}
+    void start_friend(matcha::FriendTransportOptions options){
+        if(!runtime.has_game() || runtime.friend_session || opening.valid())throw std::runtime_error("Open a game before starting a new friend session.");
+        runtime.flush_save();
+        Runtime replacement(runtime.rom_path);
+        replacement.sound_muted=runtime.sound_muted;replacement.green_palette=runtime.green_palette;
+        replacement.controls_visible=runtime.controls_visible;replacement.library_selection=runtime.library_selection;
+        replacement.library_game=runtime.library_game;replacement.title=runtime.title;
+        replacement.room_code=options.code;replacement.friend_address=options.address;replacement.friend_host=options.host;replacement.friend_port=options.port;
+        // DNS lookup and initial snapshot preparation must not block AppKit.
+        std::packaged_task<Runtime()> task([options,prepared=std::move(replacement)]() mutable {
+            prepared.friend_session=std::make_unique<matcha::FriendSession>(options,prepared.rom_path,
+                prepared.bus.get(),prepared.cpu.get(),prepared.gba.get());
+            return std::move(prepared);
+        });
+        opening=task.get_future();opening_cancelled=false;
+        // A packaged-task future does not block its destructor after cancellation/quit.
+        std::thread(std::move(task)).detach();
+        runtime.room_code=options.code;runtime.friend_address=options.address;runtime.friend_host=options.host;runtime.friend_port=options.port;
+        before_connect_paused=runtime.paused;runtime.paused=true;runtime.opening_friend=true;changed();
+    }
+    void cancel_preparation(){
+        if(!runtime.opening_friend)return;
+        opening_cancelled=true;runtime.opening_friend=false;runtime.paused=before_connect_paused;runtime.set_buttons(0);changed();
+    }
+    void poll_opening(){
+        if(!opening.valid() || opening.wait_for(std::chrono::seconds(0))!=std::future_status::ready)return;
+        if(opening_cancelled){
+            try{auto discarded=opening.get();(void)discarded;}catch(const std::exception &){}
+            opening_cancelled=false;changed();return;
+        }
+        try{runtime=opening.get();audio.reset();audio_suspended=true;next_frame=std::chrono::steady_clock::now()+frame_period;changed();}
+        catch(...){runtime.opening_friend=false;runtime.paused=before_connect_paused;changed();throw;}
+    }
+    void disconnect_friend(){
+        runtime.disconnect_friend();runtime.flush_save();runtime.paused=false;
+        runtime.enable_audio();audio.reset();audio_suspended=true;changed();
+    }
     void load_game(const std::filesystem::path &path,int game=-1){
+        if(runtime.friend_session || runtime.opening_friend)throw std::runtime_error("Disconnect friend play before opening another game.");
         runtime.flush_save();
         Runtime replacement(path); // Keep the old game alive if validation/open fails.
         replacement.sound_muted=runtime.sound_muted;replacement.green_palette=runtime.green_palette;
@@ -671,7 +811,7 @@ public:
         if(!window_test)runtime.enable_audio();next_frame=std::chrono::steady_clock::now()+frame_period;changed();
     }
     void library(){
-        if(runtime.library_view)return;
+        if(runtime.library_view || runtime.friend_session || runtime.opening_friend)return;
         runtime.library_was_paused=runtime.paused;runtime.library_view=true;runtime.paused=true;runtime.set_buttons(0);changed();
     }
     void return_game(){
@@ -694,10 +834,6 @@ NSString *native(const std::string &s){return [NSString stringWithUTF8String:s.c
 void show_error(const std::string &message,const std::string &title="Unable to open game"){
     NSAlert *alert=[[NSAlert alloc]init];[alert setMessageText:native(title)];
     [alert setInformativeText:native(message)];[alert addButtonWithTitle:@"OK"];[alert runModal];[alert release];
-}
-unsigned joypad_bit(unsigned key){
-    switch(key){case 124:return 0;case 123:return 1;case 126:return 2;case 125:return 3;case 6:return 4;case 7:return 5;
-        case 56:case 60:return 6;case 36:case 76:return 7;case 12:return 8;case 13:return 9;default:return 10;}
 }
 }
 
@@ -746,6 +882,8 @@ unsigned joypad_bit(unsigned key){
 - (void)focusLost;
 - (void)openGame;
 - (void)openPath:(NSString *)path;
+- (void)friendDialog:(BOOL)hosting;
+- (void)connectionDetails;
 @end
 @implementation AutopsyView
 - (BOOL)acceptsFirstResponder{return YES;}
@@ -757,7 +895,7 @@ unsigned joypad_bit(unsigned key){
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
     const auto *renderer=glGetString(GL_RENDERER);if(renderer)presentation->renderer=reinterpret_cast<const char *>(renderer);
     [self setAccessibilityLabel:@"Matchaboy game display"];
-    [self setAccessibilityHelp:@"Use the native Game and View menus for all controls. Arrow keys move, Z is A, X is B, Return is Start."];
+    [self setAccessibilityHelp:native(keyboard_help(presentation->runtime.gba!=nullptr))];
     [self registerForDraggedTypes:@[NSPasteboardTypeFileURL]];
 }
 - (void)dealloc{
@@ -770,7 +908,8 @@ unsigned joypad_bit(unsigned key){
     try{
         auto &host=*presentation;auto &r=host.runtime;[[self openGLContext]makeCurrentContext];
         const auto now=std::chrono::steady_clock::now();
-        if(host.dirty || host.capture_requested || host.window_test || (r.inspector_view && !r.library_view && now>=host.refresh)){
+        if(host.dirty || host.capture_requested || host.window_test || ((r.inspector_view || r.friend_session) && !r.library_view && now>=host.refresh)){
+            [self setAccessibilityHelp:native(keyboard_help(r.gba!=nullptr)+((r.friend_session||r.opening_friend)?" "+r.connection_label()+". Use Netplay > Connection Details or Disconnect.":""))];
             auto bitmap=r.render(false);glBindTexture(GL_TEXTURE_2D,texture_);
             glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
@@ -829,12 +968,17 @@ unsigned joypad_bit(unsigned key){
 }
 - (void)advance:(NSTimer *)timer{
     (void)timer;auto &host=*presentation;auto &r=host.runtime;
+    try{host.poll_opening();}catch(const std::exception &e){host.changed();show_error(e.what(),"Unable to start friend play");return;}
     try{
-        if(!r.library_view && r.has_game() && !r.paused){
+        // Network liveness must not depend on a video frame being due. Continue
+        // servicing the real transport during rendering stalls and modal UI.
+        if(r.friend_session)r.friend_session->service();
+        host.sync_network_activity();
+        if(!r.library_view && r.has_game() && (!r.paused || r.friend_session)){
             auto now=std::chrono::steady_clock::now();unsigned ran=0;
             while(now>=host.next_frame && ran<2){
                 r.run_frame();host.pump_audio();++ran;
-                host.next_frame+=frame_period+std::chrono::microseconds(host.audio.pacing_adjustment_us());
+                host.next_frame+=frame_period+std::chrono::microseconds((r.friend_session?0:host.audio.pacing_adjustment_us()));
                 now=std::chrono::steady_clock::now();
             }
             if(now-host.next_frame>frame_period*3)host.next_frame=now+frame_period;
@@ -845,7 +989,7 @@ unsigned joypad_bit(unsigned key){
 }
 - (void)focusLost{
     auto &r=presentation->runtime;r.set_buttons(0);
-    if(r.has_game() && !r.library_view)r.paused=true;
+    if(r.has_game() && !r.library_view && !r.friend_session)r.paused=true;
     presentation->changed();[self setNeedsDisplay:YES];
 }
 - (void)openPath:(NSString *)path{
@@ -857,7 +1001,7 @@ unsigned joypad_bit(unsigned key){
     [self setNeedsDisplay:YES];
 }
 - (void)openGame{
-    auto &host=*presentation;const bool paused=host.runtime.paused;
+    auto &host=*presentation;if(host.runtime.friend_session || host.runtime.opening_friend)return;const bool paused=host.runtime.paused;
     host.runtime.paused=true;host.runtime.set_buttons(0);host.sync_audio();
     NSOpenPanel *panel=[NSOpenPanel openPanel];[panel setTitle:@"Open a game in Matchaboy"];
     [panel setCanChooseDirectories:NO];[panel setAllowsMultipleSelection:NO];[panel setAllowedFileTypes:@[@"gb",@"gba"]];
@@ -866,8 +1010,89 @@ unsigned joypad_bit(unsigned key){
     if(response==NSModalResponseOK)[self openPath:[[panel URL]path]];
     host.next_frame=std::chrono::steady_clock::now()+frame_period;host.changed();[self setNeedsDisplay:YES];
 }
+- (void)keyboardSettings{
+    auto &host=*presentation;auto &r=host.runtime;
+    if(host.keyboard_settings_open||r.opening_friend)return;
+    const bool paused=r.paused;
+    host.keyboard_settings_open=true;r.set_buttons(0);
+    if(!r.friend_session)r.paused=true;
+    host.changed();[self setNeedsDisplay:YES];
+    try{
+        auto draft=keyboard_mapping;
+        if(matcha::keyboard::show_settings([self window],draft)){
+            keyboard_mapping=draft;persist_keyboard_mapping();
+        }
+    }catch(...){
+        host.keyboard_settings_open=false;r.set_buttons(0);r.paused=paused;host.changed();throw;
+    }
+    host.keyboard_settings_open=false;r.set_buttons(0);r.paused=paused;
+    host.next_frame=std::chrono::steady_clock::now()+frame_period;host.changed();
+    [[self window]makeFirstResponder:self];[self setNeedsDisplay:YES];
+}
+- (void)friendDialog:(BOOL)hosting{
+    auto &host=*presentation;auto &r=host.runtime;
+    if(!r.has_game() || r.friend_session || host.opening.valid())return;
+    const bool old_paused=r.paused;r.paused=true;r.set_buttons(0);host.sync_audio();
+    NSAlert *alert=[[[NSAlert alloc]init]autorelease];
+    [alert setMessageText:hosting?@"Host a game with a friend":@"Join a friend's game"];
+    [alert setInformativeText:@"The game restarts from saved progress. Both players need the exact same ROM. On the same Wi-Fi, share the host's LAN IP. Over the internet, use a VPN address or forward the host's UDP port. Room codes and game data are unencrypted; use a trusted VPN for a private connection."];
+    [alert addButtonWithTitle:hosting?@"Host game":@"Join game"];[alert addButtonWithTitle:@"Cancel"];
+    if(hosting)[alert addButtonWithTitle:@"Copy room code"];
+    NSView *form=[[[NSView alloc]initWithFrame:NSMakeRect(0,0,490,232)]autorelease];
+    auto field=[&](NSString *label,NSString *value,double y,bool secret)->NSTextField *{
+        NSTextField *caption=[NSTextField labelWithString:label];[caption setFrame:NSMakeRect(0,y+27,490,20)];[form addSubview:caption];
+        NSTextField *entry=secret?[[[NSSecureTextField alloc]initWithFrame:NSMakeRect(0,y,490,24)]autorelease]:[[[NSTextField alloc]initWithFrame:NSMakeRect(0,y,490,24)]autorelease];
+        [entry setStringValue:value];[entry setAccessibilityLabel:label];[form addSubview:entry];return entry;
+    };
+    NSTextField *address=field(hosting?@"Listen address (all local interfaces)":@"Host IP or name",hosting?@"0.0.0.0":native(r.friend_address),172,false);
+    if(hosting)[address setEditable:NO];
+    NSTextField *port=field(@"UDP port",@"27888",114,false);
+    const auto generated=hosting?matcha::FriendSession::make_room_code():r.room_code;
+    NSTextField *code=field(@"Room code (32 hexadecimal characters)",native(generated),56,true);
+    if(hosting)[code setEditable:NO];
+    NSTextField *error=[NSTextField wrappingLabelWithString:@""];[error setFrame:NSMakeRect(0,0,490,44)];
+    [error setTextColor:[NSColor systemRedColor]];[error setAccessibilityLabel:@"Connection error"];[form addSubview:error];
+    [alert setAccessoryView:form];[[alert window]setInitialFirstResponder:hosting?port:address];
+    for(;;){
+        const auto result=[alert runModal];
+        if(hosting && result==NSAlertThirdButtonReturn){
+            NSPasteboard *paste=[NSPasteboard generalPasteboard];[paste clearContents];[paste setString:[code stringValue] forType:NSPasteboardTypeString];continue;
+        }
+        if(result!=NSAlertFirstButtonReturn){r.paused=old_paused;break;}
+        try{
+            matcha::FriendTransportOptions options;options.host=hosting;
+            options.address=[[address stringValue]UTF8String];options.code=[[code stringValue]UTF8String];
+            const auto value=numeric_option([[port stringValue]UTF8String],65535,"UDP port");
+            if(!value)throw std::runtime_error("UDP port must be between 1 and 65535.");options.port=static_cast<std::uint16_t>(value);
+            if(options.address.empty())throw std::runtime_error("Enter the host's IP address or name.");
+            if(options.code.size()!=32 || !std::all_of(options.code.begin(),options.code.end(),[](unsigned char c){return std::isxdigit(c)!=0;}))
+                throw std::runtime_error("Enter all 32 hexadecimal characters from your friend's room code.");
+            r.paused=old_paused;host.start_friend(options);break;
+        }catch(const std::exception &e){r.paused=true;[error setStringValue:native(e.what())];}
+    }
+    host.next_frame=std::chrono::steady_clock::now()+frame_period;host.changed();[self setNeedsDisplay:YES];
+}
+- (void)connectionDetails{
+    auto &r=presentation->runtime;if(!r.friend_session)return;r.set_buttons(0);
+    NSAlert *alert=[[[NSAlert alloc]init]autorelease];[alert setMessageText:@"Friend play connection"];
+    const std::string details=r.connection_label()+"\n\n"+(r.friend_host?std::string("Hosting on UDP port "):std::string("Host: ")+r.friend_address+":"+std::to_string(r.friend_port)+" | Local UDP port ")+
+        std::to_string(r.friend_session->port())+"\nOn the same Wi-Fi, your friend joins using the host's LAN IP. Internet play needs a VPN address or host UDP forwarding. There is no automatic relay or router setup. Room codes and game data travel unencrypted.";
+    [alert setInformativeText:native(details+"\n\nIf the link drops, copy diagnostics before disconnecting to keep the exact reason.")];
+    [alert addButtonWithTitle:@"Close"];[alert addButtonWithTitle:@"Copy room code"];[alert addButtonWithTitle:@"Copy diagnostics"];
+    const std::string code=r.room_code;
+    [alert beginSheetModalForWindow:[self window] completionHandler:^(NSModalResponse result){
+        if(result==NSAlertSecondButtonReturn){NSPasteboard *paste=[NSPasteboard generalPasteboard];[paste clearContents];[paste setString:native(code) forType:NSPasteboardTypeString];}
+        if(result==NSAlertThirdButtonReturn){
+            const auto &host=*presentation;
+            const std::string diagnostics=(host.runtime.friend_session?host.runtime.friend_session->diagnostics():"Session ended.")+std::string("\nApp Nap prevention: ")+(host.network_activity?"active":"inactive");
+            NSPasteboard *paste=[NSPasteboard generalPasteboard];[paste clearContents];[paste setString:native(diagnostics) forType:NSPasteboardTypeString];
+        }
+    }];
+}
 - (void)performCommand:(id)sender{
     auto &host=*presentation;auto &r=host.runtime;const NSInteger command=[sender tag];
+    if((r.friend_session || r.opening_friend) && (command==1 || command==2 || command==3 || command==4 || command==7 || (command>=11 && command<=13) || command==500 || command==501))return;
+    if(host.keyboard_settings_open)return;
     try{
         if(command>=200 && command<210){r.library_selection=static_cast<unsigned>(command-200);}
         else if(command>=300 && command<304 && r.has_game() && !r.library_view){r.inspector_view=true;r.inspector_tab=static_cast<unsigned>(command-300);}
@@ -883,7 +1108,7 @@ unsigned joypad_bit(unsigned key){
             case 8:
                 if(!host.audio.available()){
                     if(host.audio.open()){r.sound_muted=false;r.enable_audio();}
-                    else{r.sound_muted=true;show_error("No output device is available. Connect or select an audio output in System Settings, then press M to retry.","Audio output unavailable");}
+                    else{r.sound_muted=true;show_error("No output device is available. Connect or select an audio output in System Settings, then choose Game > Sound to retry.","Audio output unavailable");}
                 }else r.sound_muted=!r.sound_muted;
                 break;
             case 9:r.green_palette=!r.green_palette;break;
@@ -891,6 +1116,11 @@ unsigned joypad_bit(unsigned key){
             case 11:if(r.has_game()&&!r.library_view){r.paused=true;r.step();}break;
             case 12:if(r.has_game()&&!r.library_view){r.paused=true;r.run_frame();}break;
             case 13:if(r.bus&&!r.library_view){r.paused=true;r.bus->tick(1);}break;
+            case 14:[self keyboardSettings];break;
+            case 500:[self friendDialog:YES];break;
+            case 501:[self friendDialog:NO];break;
+            case 502:[self connectionDetails];break;
+            case 503:if(r.opening_friend)host.cancel_preparation();else host.disconnect_friend();break;
             default:break;
         }
     }catch(const std::exception &e){show_error(e.what());}
@@ -900,6 +1130,12 @@ unsigned joypad_bit(unsigned key){
 }
 - (BOOL)validateMenuItem:(NSMenuItem *)item{
     const auto &r=presentation->runtime;const NSInteger tag=[item tag];
+    if(presentation->keyboard_settings_open)return NO;
+    if(tag==14)return !r.opening_friend;
+    if((r.friend_session || r.opening_friend) && (tag==1 || tag==2 || tag==3 || tag==4 || tag==7 || (tag>=11 && tag<=13) || tag==500 || tag==501))return NO;
+    if(tag==500 || tag==501){[item setToolTip:presentation->opening.valid()?@"Wait for the previous address lookup to finish before starting another session.":nil];return r.has_game()&&!r.library_view&&!presentation->opening.valid();}
+    if(tag==502)return r.friend_session!=nullptr;
+    if(tag==503){[item setTitle:r.opening_friend?@"Cancel Preparation":@"Disconnect"];return r.friend_session || r.opening_friend;}
     if(tag==6)[item setState:r.controls_visible?NSControlStateValueOn:NSControlStateValueOff];
     if(tag==8){
         [item setTitle:presentation->audio.available()?@"Sound":@"Sound — No Output Device (Retry)"];
@@ -920,6 +1156,7 @@ unsigned joypad_bit(unsigned key){
     const double ox=(bounds.size.width-canvas_width*scale)/2,oy=(bounds.size.height-canvas_height*scale)/2;
     NSButton *button=[[MatchaButton alloc]initWithFrame:NSMakeRect(ox+x*scale,oy+(canvas_height-y-height)*scale,width*scale,height*scale)];
     [button setTitle:label];[button setAccessibilityLabel:label];[button setTransparent:NO];[button setBordered:NO];[button setFocusRingType:NSFocusRingTypeNone];
+    [button setEnabled:!((presentation->runtime.friend_session||presentation->runtime.opening_friend)&&(tag==1||tag==2||tag==7))];
     [button setTag:tag];[button setTarget:self];[button setAction:@selector(performCommand:)];[button setToolTip:label];
     [self addSubview:button];[controls_ addObject:button];[button release];
 }
@@ -948,51 +1185,60 @@ unsigned joypad_bit(unsigned key){
         [self addControl:r.controls_visible?@"Hide controls":@"Show controls" tag:6 x:710 y:20 width:174 height:48];
         [self addControl:@"Open game…" tag:1 x:900 y:20 width:158 height:48];
         [self addControl:@"Inspector" tag:5 x:1076 y:20 width:164 height:48];
-        [self addControl:r.paused?@"Resume":@"Pause" tag:7 x:48 y:872 width:160 height:36];
+        if(r.controls_visible)[self addControl:@"Keyboard Settings…" tag:14 x:900 y:716 width:322 height:36];
+        [self addControl:r.opening_friend?@"Cancel preparation":r.friend_session?@"Disconnect":r.paused?@"Resume":@"Pause" tag:(r.friend_session||r.opening_friend)?503:7 x:48 y:872 width:160 height:36];
     }
     presentation->controls_dirty=false;
 }
 - (void)keyDown:(NSEvent *)event{
-    auto &r=presentation->runtime;const auto key=[event keyCode];const auto character=[[event charactersIgnoringModifiers]lowercaseString];
-    if([event modifierFlags]&NSEventModifierFlagCommand){[super keyDown:event];return;}
-    if(![event isARepeat]){
-        NSInteger command=0;
-        if(key==111)command=10;
-        else if([character isEqualToString:@"m"])command=8;
-        else if(r.library_view){
-            if(key==36||key==76)command=4;
-            else if(key==53)command=3;
-            else if(key>=123&&key<=126){
-                unsigned selection=r.library_selection;
-                if(key==126&&selection%5>0)--selection;else if(key==125&&selection%5<4)++selection;
-                else if(key==123&&selection>=5)selection-=5;else if(key==124&&selection<5)selection+=5;
-                if(selection<arcade_games().size())r.library_selection=selection;
-                presentation->changed();[self setNeedsDisplay:YES];return;
-            }
-        }else{
-            if(key==48)command=5;
-            else if(key==49)command=7;
-            else if([character isEqualToString:@"c"])command=6;
-            else if([character isEqualToString:@"p"])command=9;
-            else if(r.inspector_view){
-                if([character isEqualToString:@"s"])command=11;else if([character isEqualToString:@"f"])command=12;
-                else if([character isEqualToString:@"d"]&&!r.gba)command=13;
-                else if([character length]==1&&[character characterAtIndex:0]>='1'&&[character characterAtIndex:0]<='4')command=300+[character characterAtIndex:0]-'1';
-                else if(r.gba&&r.inspector_tab==2&&(key==116||key==121)){r.memory_page(key==121?1:-1);presentation->dirty=true;[self setNeedsDisplay:YES];return;}
-            }
-        }
-        if(command){NSMenuItem *item=[[[NSMenuItem alloc]init]autorelease];[item setTag:command];[self performCommand:item];return;}
+    auto &r=presentation->runtime;const auto key=[event keyCode];
+    if([event modifierFlags]&(NSEventModifierFlagCommand|NSEventModifierFlagControl|NSEventModifierFlagOption)){
+        [super keyDown:event];return;
     }
-    if(r.library_view)return;
-    const unsigned bit=joypad_bit(key);if(bit<(r.gba?10U:8U))r.set_buttons(r.buttons|static_cast<std::uint16_t>(1U<<bit));
+    // Controller input wins over inspector navigation. App shortcuts use
+    // Command chords or reserved keys and cannot steal custom game bindings.
+    const unsigned bit=joypad_bit(key);
+    if(!r.library_view&&bit<(r.gba?10U:8U)){
+        r.set_buttons(r.buttons|static_cast<std::uint16_t>(1U<<bit));
+        if(r.controls_visible){presentation->dirty=true;[self setNeedsDisplay:YES];}return;
+    }
+    if([event isARepeat])return;
+    NSInteger command=0;
+    if(key==111)command=10;
+    else if(r.library_view){
+        if(key==36||key==76)command=4;
+        else if(key==53)command=3;
+        else if(key>=123&&key<=126){
+            unsigned selection=r.library_selection;
+            if(key==126&&selection%5>0)--selection;else if(key==125&&selection%5<4)++selection;
+            else if(key==123&&selection>=5)selection-=5;else if(key==124&&selection<5)selection+=5;
+            if(selection<arcade_games().size())r.library_selection=selection;
+            presentation->changed();[self setNeedsDisplay:YES];return;
+        }
+    }else{
+        if(key==48)command=5;
+        else if(key==53)command=7;
+        else if(r.inspector_view&&r.gba&&r.inspector_tab==2&&(key==116||key==121)){
+            r.memory_page(key==121?1:-1);presentation->dirty=true;[self setNeedsDisplay:YES];return;
+        }
+    }
+    if(command){NSMenuItem *item=[[[NSMenuItem alloc]init]autorelease];[item setTag:command];[self performCommand:item];}
 }
 - (void)keyUp:(NSEvent *)event{
     auto &r=presentation->runtime;const unsigned bit=joypad_bit([event keyCode]);
     if(bit<10)r.set_buttons(r.buttons&static_cast<std::uint16_t>(~(1U<<bit)));
+    if(bit<10&&r.controls_visible){presentation->dirty=true;[self setNeedsDisplay:YES];}
 }
 - (void)flagsChanged:(NSEvent *)event{
     auto &r=presentation->runtime;if(r.library_view)return;
-    r.set_buttons(([event modifierFlags]&NSEventModifierFlagShift)?r.buttons|0x40:r.buttons&0xFFBF);
+    if([event modifierFlags]&(NSEventModifierFlagCommand|NSEventModifierFlagControl|NSEventModifierFlagOption)){
+        r.set_buttons(0);presentation->dirty=true;[self setNeedsDisplay:YES];return;
+    }
+    if(matcha::keyboard::canonical_key([event keyCode])!=56)return;
+    const auto bit=joypad_bit(56);if(bit>=(r.gba?10U:8U))return;
+    const auto mask=static_cast<std::uint16_t>(1U<<bit);
+    r.set_buttons(([event modifierFlags]&NSEventModifierFlagShift)?r.buttons|mask:r.buttons&static_cast<std::uint16_t>(~mask));
+    if(r.controls_visible){presentation->dirty=true;[self setNeedsDisplay:YES];}
 }
 - (void)scrollWheel:(NSEvent *)event{
     auto &r=presentation->runtime;if(!r.inspector_view||r.library_view)return;
@@ -1001,11 +1247,12 @@ unsigned joypad_bit(unsigned key){
     presentation->dirty=true;[self setNeedsDisplay:YES];
 }
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender{
+    if(presentation->runtime.friend_session || presentation->runtime.opening_friend)return NSDragOperationNone;
     return [[[sender draggingPasteboard]readObjectsForClasses:@[[NSURL class]] options:@{NSPasteboardURLReadingFileURLsOnlyKey:@YES}]count]?NSDragOperationCopy:NSDragOperationNone;
 }
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender{
     NSArray<NSURL *> *urls=[[sender draggingPasteboard]readObjectsForClasses:@[[NSURL class]] options:@{NSPasteboardURLReadingFileURLsOnlyKey:@YES}];
-    if(![urls count])return NO;[self openPath:[urls[0]path]];return YES;
+    if(presentation->runtime.friend_session||presentation->runtime.opening_friend||![urls count])return NO;[self openPath:[urls[0]path]];return YES;
 }
 @end
 
@@ -1019,7 +1266,7 @@ unsigned joypad_bit(unsigned key){
 - (BOOL)application:(NSApplication *)app openFile:(NSString *)filename{(void)app;[self.view openPath:filename];return YES;}
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender{
     (void)sender;
-    try{presentation->runtime.flush_save();return NSTerminateNow;}
+    try{presentation->runtime.disconnect_friend();presentation->runtime.flush_save();return NSTerminateNow;}
     catch(const std::exception &e){
         if(presentation->window_test){std::cerr<<e.what()<<'\n';presentation->failed=true;return NSTerminateNow;}
         NSAlert *alert=[[[NSAlert alloc]init]autorelease];[alert setMessageText:@"Unable to save progress"];
@@ -1040,17 +1287,20 @@ void create_menus(AutopsyView *view){
         NSMenu *submenu=[[[NSMenu alloc]initWithTitle:title]autorelease];[item setSubmenu:submenu];[bar addItem:item];return submenu;};
     auto app=add(@"Matchaboy");
     [app addItemWithTitle:@"About Matchaboy" action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@""];
+    [app addItem:[NSMenuItem separatorItem]];menu_command(app,@"Keyboard Settings…",@",",14,view);
     [app addItem:[NSMenuItem separatorItem]];[app addItemWithTitle:@"Hide Matchaboy" action:@selector(hide:) keyEquivalent:@"h"];
     [app addItemWithTitle:@"Quit Matchaboy" action:@selector(terminate:) keyEquivalent:@"q"];
     auto game=add(@"Game");menu_command(game,@"Open Game…",@"o",1,view);menu_command(game,@"Library",@"l",2,view);
     menu_command(game,@"Return to Game",@"",3,view);menu_command(game,@"Play Selected Game",@"",4,view);
-    [game addItem:[NSMenuItem separatorItem]];menu_command(game,@"Pause",@" ",7,view,0);
-    menu_command(game,@"Sound",@"m",8,view,0);menu_command(game,@"Save Screenshot",@"s",10,view,NSEventModifierFlagCommand|NSEventModifierFlagShift);
-    auto screen=add(@"View");menu_command(screen,@"Inspector",@"\t",5,view,0);menu_command(screen,@"Show Controls",@"c",6,view,0);
-    menu_command(screen,@"Game Boy Green Palette",@"p",9,view,0);[screen addItem:[NSMenuItem separatorItem]];
+    [game addItem:[NSMenuItem separatorItem]];menu_command(game,@"Pause",@"\x1b",7,view,0);
+    menu_command(game,@"Sound",@"m",8,view,NSEventModifierFlagCommand|NSEventModifierFlagShift);menu_command(game,@"Save Screenshot",@"s",10,view,NSEventModifierFlagCommand|NSEventModifierFlagShift);
+    auto net=add(@"Netplay");menu_command(net,@"Host Game…",@"",500,view);menu_command(net,@"Join Game…",@"",501,view);
+    menu_command(net,@"Connection Details…",@"",502,view);menu_command(net,@"Disconnect",@"",503,view);
+    auto screen=add(@"View");menu_command(screen,@"Inspector",@"\t",5,view,0);menu_command(screen,@"Show Controls",@"c",6,view,NSEventModifierFlagCommand|NSEventModifierFlagShift);
+    menu_command(screen,@"Game Boy Green Palette",@"p",9,view);[screen addItem:[NSMenuItem separatorItem]];
     const std::array<NSString *,4> titles{@"Video",@"CPU",@"Memory",@"Audio"};
     for(unsigned i=0;i<4;++i)menu_command(screen,titles[i],[NSString stringWithFormat:@"%u",i+1],300+i,view,NSEventModifierFlagCommand);
-    auto debug=add(@"Debug");menu_command(debug,@"Step Instruction",@"",11,view);menu_command(debug,@"Advance Frame",@"",12,view);menu_command(debug,@"Advance Dot",@"",13,view);
+    auto debug=add(@"Debug");menu_command(debug,@"Step Instruction",@"s",11,view);menu_command(debug,@"Advance Frame",@"f",12,view);menu_command(debug,@"Advance Dot",@"d",13,view);
     auto window=add(@"Window");[window addItemWithTitle:@"Close Window" action:@selector(performClose:) keyEquivalent:@"w"];
     [window addItemWithTitle:@"Minimize" action:@selector(performMiniaturize:) keyEquivalent:@"m"];
     [window addItemWithTitle:@"Zoom" action:@selector(performZoom:) keyEquivalent:@""];[NSApp setWindowsMenu:window];[NSApp setMainMenu:bar];
@@ -1060,7 +1310,7 @@ void create_menus(AutopsyView *view){
 int main(int argc,char **argv){
     @autoreleasepool{
         try{
-            std::string rom,capture,game_id;unsigned frames=120,line=0,dot=0,tab=0,buttons=0,input_frames=0,memory_region=0;
+            std::string rom,capture,game_id,net_join,net_code,net_stop_file;unsigned net_port=0;bool net_host=false;unsigned frames=120,line=0,dot=0,tab=0,buttons=0,input_frames=0,memory_region=0;
             bool headless=false,window_test=false,paused=false,position=false,inspector=false,library=false,green=false,hide_controls=false;
             for(int i=1;i<argc;++i){
                 const std::string option=argv[i];
@@ -1070,11 +1320,15 @@ int main(int argc,char **argv){
                 else if(option=="--help"){
                     std::cout<<"Matchaboy [ROM.gb|ROM.gba] [--game ID] [--library] [--inspector --tab 0..3]\n"
                         "  --frames N --buttons MASK --input-frames N --green --hide-controls --paused\n"
-                        "  --headless|--window-test --capture FILE.png [--line LY --dot DOT]\n";return 0;
+                        "  --headless|--window-test --capture FILE.png [--line LY --dot DOT]\n"
+                        "  --net-host PORT | --net-join HOST:PORT --net-code 32_HEX_CHARACTERS\n"
+                        "  --net-stop-file PATH (headless coordination, waits up to 10 seconds)\n";return 0;
                 }else if(option.rfind("-psn_",0)==0)continue;
                 else if(option.rfind("--",0)==0){
                     if(i+1==argc)throw std::runtime_error("Missing value for "+option);const std::string value=argv[++i];
-                    if(option=="--capture")capture=value;else if(option=="--game")game_id=value;
+                    if(option=="--net-host"){net_host=true;net_port=numeric_option(value,65535,option);}
+                    else if(option=="--net-join")net_join=value;else if(option=="--net-code")net_code=value;else if(option=="--net-stop-file")net_stop_file=value;
+                    else if(option=="--capture")capture=value;else if(option=="--game")game_id=value;
                     else if(option=="--frames")frames=numeric_option(value,1000000,option);
                     else if(option=="--input-frames")input_frames=numeric_option(value,1000000,option);
                     else if(option=="--buttons")buttons=numeric_option(value,1023,option,true);
@@ -1088,6 +1342,12 @@ int main(int argc,char **argv){
             if(!rom.empty()&&!game_id.empty())throw std::runtime_error("Choose either a ROM path or --game, not both.");
             if((headless||window_test)&&capture.empty())throw std::runtime_error("Capture mode requires --capture FILE.png.");
             if(headless&&window_test)throw std::runtime_error("Choose --headless or --window-test.");
+            const bool networking=net_host || !net_join.empty();
+            if(!net_stop_file.empty() && (!networking || !headless))throw std::runtime_error("--net-stop-file requires headless friend play.");
+            if(net_host && !net_join.empty())throw std::runtime_error("Choose --net-host or --net-join.");
+            if(!networking && !net_code.empty())throw std::runtime_error("--net-code requires --net-host or --net-join.");
+            if(networking && (paused || library || position || input_frames))throw std::runtime_error("Friend play cannot pause, browse the library, position the PPU, or use --input-frames.");
+            load_keyboard_mapping();
             Runtime runtime;
             if(!game_id.empty()){
                 const auto games=arcade_games();auto found=std::find_if(games.begin(),games.end(),[&](const ArcadeGame &g){return game_id==g.id;});
@@ -1097,15 +1357,47 @@ int main(int argc,char **argv){
             }else if(!rom.empty())runtime=Runtime(rom);
             runtime.inspector_view=inspector||position;runtime.inspector_tab=tab;runtime.memory_region=memory_region;
             runtime.green_palette=green;runtime.controls_visible=!hide_controls;
-            if(input_frames==0)runtime.set_buttons(static_cast<std::uint16_t>(buttons));
-            if(runtime.has_game())for(unsigned i=0;i<frames;++i)runtime.run_frame();
-            if(input_frames){runtime.set_buttons(static_cast<std::uint16_t>(buttons));for(unsigned i=0;i<input_frames;++i)runtime.run_frame();}
+            if(networking){
+                if(!runtime.has_game())throw std::runtime_error("Open a ROM before starting friend play.");
+                matcha::FriendTransportOptions options;options.host=net_host;options.code=net_code;
+                if(net_host){if(!net_port)throw std::runtime_error("Host UDP port must be between 1 and 65535.");options.port=static_cast<std::uint16_t>(net_port);}
+                else{
+                    const auto separator=net_join.rfind(':');
+                    if(separator==std::string::npos)throw std::runtime_error("Use --net-join HOST:PORT.");
+                    options.address=net_join.substr(0,separator);
+                    const auto value=numeric_option(net_join.substr(separator+1),65535,"friend UDP port");
+                    if(!value)throw std::runtime_error("Friend UDP port must be between 1 and 65535.");options.port=static_cast<std::uint16_t>(value);
+                }
+                runtime.room_code=options.code;runtime.friend_address=options.address;runtime.friend_host=net_host;
+                runtime.friend_session=std::make_unique<matcha::FriendSession>(options,runtime.rom_path,runtime.bus.get(),runtime.cpu.get(),runtime.gba.get());
+                runtime.set_buttons(static_cast<std::uint16_t>(buttons));
+                if(headless || window_test){
+                    const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(60);
+                    while(runtime.friend_session->frames()<frames && !runtime.friend_session->finished() && std::chrono::steady_clock::now()<deadline){
+                        runtime.run_frame();std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    }
+                    if(runtime.friend_session->frames()<frames)throw std::runtime_error("Friend capture did not complete: "+runtime.friend_session->status());
+                    std::cout << "Friend capture ready: frame " << runtime.friend_session->frames() << std::endl;
+                    // Service final state hashes/ACKs without running past the requested frame.
+                    // A coordinating harness can release both peers with a shared stop file.
+                    const auto grace=std::chrono::steady_clock::now()+(net_stop_file.empty()?std::chrono::milliseconds(200):std::chrono::milliseconds(10000));
+                    do{
+                        runtime.friend_session->service();
+                        if(!net_stop_file.empty() && std::filesystem::exists(net_stop_file))break;
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    }while(std::chrono::steady_clock::now()<grace);
+                }
+            }else{
+                if(input_frames==0)runtime.set_buttons(static_cast<std::uint16_t>(buttons));
+                if(runtime.has_game())for(unsigned i=0;i<frames;++i)runtime.run_frame();
+                if(input_frames){runtime.set_buttons(static_cast<std::uint16_t>(buttons));for(unsigned i=0;i<input_frames;++i)runtime.run_frame();}
+            }
             if(position)runtime.position(line,dot);
-            runtime.paused=paused||headless||window_test;
+            runtime.paused=!networking&&(paused||headless||window_test);
             if(library){runtime.library_was_paused=paused;runtime.library_view=true;runtime.paused=true;runtime.set_buttons(0);}
             if(!runtime.has_game())runtime.paused=true;
             active_runtime=&runtime;Presentation host(runtime);presentation=&host;host.window_test=window_test;host.capture=capture;
-            if(headless){auto bitmap=runtime.render();runtime.save(capture,*bitmap,false);runtime.flush_save();return 0;}
+            if(headless){auto bitmap=runtime.render();runtime.save(capture,*bitmap,false);runtime.disconnect_friend();runtime.flush_save();return 0;}
             if(!capture.empty()&&!window_test){auto bitmap=runtime.render();runtime.save(capture,*bitmap,false);host.capture.clear();}
             [NSApplication sharedApplication];[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
             auto *delegate=[[AutopsyDelegate alloc]init];[NSApp setDelegate:delegate];
@@ -1123,8 +1415,9 @@ int main(int argc,char **argv){
             if(!window_test){host.audio.open();runtime.enable_audio();host.sync_audio();}
             [NSApp activateIgnoringOtherApps:YES];
             NSTimer *timer=[NSTimer timerWithTimeInterval:1.0/240 target:view selector:@selector(advance:) userInfo:nil repeats:YES];
-            [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSRunLoopCommonModes];[NSApp run];
-            [timer invalidate];runtime.flush_save();return host.failed?1:0;
+            [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSRunLoopCommonModes];
+            [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSModalPanelRunLoopMode];[NSApp run];
+            [timer invalidate];runtime.disconnect_friend();runtime.flush_save();return host.failed?1:0;
         }catch(const std::exception &e){std::cerr<<"Matchaboy: "<<e.what()<<'\n';return 1;}
     }
 }

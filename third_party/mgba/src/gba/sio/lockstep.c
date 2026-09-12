@@ -252,6 +252,11 @@ static void _finishTransfer(struct GBASIOLockstepNode* node) {
 		if (node->id) {
 			sio->siocnt = GBASIONormalSetSi(sio->siocnt, GBASIONormalGetIdleSo(node->p->players[node->id - 1]->d.p->siocnt));
 			node->d.p->p->memory.io[REG_SIODATA8 >> 1] = node->p->normalRecv[node->id - 1] & 0xFF;
+		} else if (node->p->d.attached == 2 && node->p->players[1]->mode == node->mode) {
+			// Matchaboy: a two-console normal cable crosses SO and SI in
+			// both directions. The first console receives the second's
+			// actual shift-register payload, rather than an open-bus byte.
+			node->d.p->p->memory.io[REG_SIODATA8 >> 1] = node->p->normalRecv[1] & 0xFF;
 		} else {
 			node->d.p->p->memory.io[REG_SIODATA8 >> 1] = 0xFFFF;
 		}
@@ -266,6 +271,10 @@ static void _finishTransfer(struct GBASIOLockstepNode* node) {
 			sio->siocnt = GBASIONormalSetSi(sio->siocnt, GBASIONormalGetIdleSo(node->p->players[node->id - 1]->d.p->siocnt));
 			node->d.p->p->memory.io[REG_SIODATA32_LO >> 1] = node->p->normalRecv[node->id - 1];
 			node->d.p->p->memory.io[REG_SIODATA32_HI >> 1] = node->p->normalRecv[node->id - 1] >> 16;
+		} else if (node->p->d.attached == 2 && node->p->players[1]->mode == node->mode) {
+			// Matchaboy: same two-way normal cable as the 8-bit mode.
+			node->d.p->p->memory.io[REG_SIODATA32_LO >> 1] = node->p->normalRecv[1];
+			node->d.p->p->memory.io[REG_SIODATA32_HI >> 1] = node->p->normalRecv[1] >> 16;
 		} else {
 			node->d.p->p->memory.io[REG_SIODATA32_LO >> 1] = 0xFFFF;
 			node->d.p->p->memory.io[REG_SIODATA32_HI >> 1] = 0xFFFF;
@@ -286,6 +295,10 @@ static void _finishTransfer(struct GBASIOLockstepNode* node) {
 static int32_t _masterUpdate(struct GBASIOLockstepNode* node) {
 	bool needsToWait = false;
 	int i;
+	// Matchaboy: normal serial can finish in 64/256 cycles. Split its
+	// actual duration without scheduling a negative finishing interval.
+	int32_t slice = node->p->d.transferCycles < LOCKSTEP_TRANSFER * 2
+	    ? node->p->d.transferCycles / 2 : LOCKSTEP_TRANSFER;
 
 	enum mLockstepPhase transferActive;
 	int attachedMulti, attached;
@@ -325,7 +338,7 @@ static int32_t _masterUpdate(struct GBASIOLockstepNode* node) {
 			mLOG(GBA_SIO, DEBUG, "Lockstep %i: SIODATA32_LO <- %04X", node->id, node->d.p->p->memory.io[REG_SIODATA32_LO >> 1]);
 			mLOG(GBA_SIO, DEBUG, "Lockstep %i: SIODATA32_HI <- %04X", node->id, node->d.p->p->memory.io[REG_SIODATA32_HI >> 1]);
 			node->p->normalRecv[0] = node->d.p->p->memory.io[REG_SIODATA32_LO >> 1];
-			node->p->normalRecv[0] |= node->d.p->p->memory.io[REG_SIODATA32_HI >> 1] << 16;
+			node->p->normalRecv[0] |= (uint32_t) node->d.p->p->memory.io[REG_SIODATA32_HI >> 1] << 16;
 			break;
 		default:
 			node->p->multiRecv[0] = 0xFFFF;
@@ -333,17 +346,17 @@ static int32_t _masterUpdate(struct GBASIOLockstepNode* node) {
 		}
 		needsToWait = true;
 		ATOMIC_STORE(node->p->d.transferActive, TRANSFER_STARTED);
-		node->nextEvent += LOCKSTEP_TRANSFER;
+		node->nextEvent += slice;
 		break;
 	case TRANSFER_STARTED:
 		// All the other GBAs have caught up and are sleeping, we can all continue now
-		node->nextEvent += LOCKSTEP_TRANSFER;
+		node->nextEvent += slice;
 		ATOMIC_STORE(node->p->d.transferActive, TRANSFER_FINISHING);
 		break;
 	case TRANSFER_FINISHING:
 		// Finish the transfer
 		// We need to make sure the other GBAs catch up so they don't get behind
-		node->nextEvent += node->p->d.transferCycles - 1024; // Split the cycles to avoid waiting too long
+		node->nextEvent += node->p->d.transferCycles - 2 * slice;
 #ifndef NDEBUG
 		ATOMIC_ADD(node->p->d.transferId, 1);
 #endif
@@ -430,7 +443,7 @@ static uint32_t _slaveUpdate(struct GBASIOLockstepNode* node) {
 		case SIO_NORMAL_32:
 			node->p->multiRecv[node->id] = 0xFFFF;
 			node->p->normalRecv[node->id] = node->d.p->p->memory.io[REG_SIODATA32_LO >> 1];
-			node->p->normalRecv[node->id] |= node->d.p->p->memory.io[REG_SIODATA32_HI >> 1] << 16;
+			node->p->normalRecv[node->id] |= (uint32_t) node->d.p->p->memory.io[REG_SIODATA32_HI >> 1] << 16;
 			break;
 		default:
 			node->p->multiRecv[node->id] = 0xFFFF;

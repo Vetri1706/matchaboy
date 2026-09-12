@@ -2,9 +2,10 @@
 
 [Download builds or build with Clang on Windows, Linux, and macOS](DOWNLOADS.md).
 
-A C++20 Game Boy DMG engine built from scratch, with native Windows and Mac
-players and a bundled mGBA core for Game Boy Advance. The players need no
-installer or extra runtime-package setup. Their original arcade includes five
+A C++20 Game Boy DMG engine built from scratch, with Windows, Mac and Linux desktop
+players and a bundled mGBA core for Game Boy Advance. Windows and Mac players
+need no installer or extra runtime-package setup; the Linux player uses X11
+and optional ALSA system libraries. Their original arcade includes five
 GB and five GBA mini-games with goals, controls, source and Inspector reading
 guides: see [the collection](games/README.md) and [authorship/credits](games/PROVENANCE.md).
 The original headless DMG engine uses the C++ standard library; the native
@@ -13,10 +14,22 @@ The optional verification scripts use Python's standard library to fetch
 external test binaries and preserve evidence.
 
 The [Mac guide](MACOS.md) explains the cartridge library, large player view,
-GB/GBA Inspector, speaker audio and Command-key shortcuts. Open
-`MatchaAutopsy.app` to launch Matchaboy; no ROM argument is needed for its
-bundled arcade. The [shared design](DESIGN.md) follows the Windows player on
-both platforms while keeping native window controls and menus.
+GB/GBA Inspector, speaker audio and Command-key shortcuts. Open the downloaded
+`Matchaboy.app` to launch Matchaboy (`MatchaAutopsy.app` in local build folders);
+no ROM argument is needed for its bundled arcade. The [shared design](DESIGN.md) follows the established Windows player while
+keeping platform window controls and menus. See [Windows](WINDOWS.md) and
+[Linux](LINUX.md) for their launch and dependency instructions.
+
+**Keyboard Settings…** saves custom game keys and offers
+Balanced and Classic presets. Balanced uses WASD for directions, L for A, K for B,
+Q/I for shoulders, Enter for Start and Space for Select; Escape pauses. Space does not fast-forward. See
+the platform guides for rebinding and emulator shortcuts. Mac uses
+Command-Comma; Windows and Linux use Ctrl-Comma. Mappings remain local to each
+player and do not change the console inputs exchanged during friend play.
+
+The Windows settings/netplay and Linux desktop changes in this revision still
+need their native CI results; Mac runtime evidence and cross-compilation alone
+do not establish Windows/Linux runtime or mixed-platform network compatibility.
 
 Run commands from the cloned repository root. Downloaded test ROMs and build
 products are generated locally; [ARTIFACTS.md](ARTIFACTS.md) describes the
@@ -148,10 +161,10 @@ unexercised hardware behavior; the report identifies the remaining scope limits.
 
 Matchaboy code and original artwork are licensed under GNU GPL version 3. See [LICENSE](LICENSE). Bundled third-party components retain their own licenses; see [THIRD_PARTY.md](THIRD_PARTY.md).
 
-The Windows and Mac Inspectors have separate Video, CPU, Memory and Audio tabs (keys 1-4). Netplay currently provides an automated Game Boy serial rollback test harness, not an interactive Host/Join player or GBA netplay.
+The Windows and Mac Inspectors have separate Video, CPU, Memory and Audio views (Ctrl-1–4 on Windows, Command-1–4 on Mac). Linux currently has one combined CPU/FIFO/memory view. The players expose two-player GB/GBA cable sessions over reachable IPv4 UDP using the same FriendSession implementation. FIFA 07 completed the documented Mac network tests; Windows/Linux and mixed-platform results must be reported separately. See [NETPLAY.md](NETPLAY.md) for Host/Join instructions, internet setup, save handling and game compatibility limits. The original automated Game Boy rollback harness remains a separate tool.
 
 The Windows menus group controls under File, Emulation, Audio/Video and Tools. Inspector telemetry refreshes about 15 times per second while its game display remains at the hardware frame rate. Instruction text is decoded from recorded bytes only when capturing the bounded history. Windows audio uses continuous 10 ms packets and an 100 ms startup buffer; pause/mute still clear playback immediately.
 
 Audio/Video > Graphics processor detects adapters through Windows DXGI and displays the active OpenGL renderer. Automatic mode exports the NVIDIA/AMD high-performance hints. Manual power-saving/high-performance choices update only this executable's Windows graphics preference and require a restart; other settings on the same entry are preserved. Windows/driver policy may override preferences. See [NVIDIA hybrid graphics guidance](https://developer.nvidia.com/optimus) and [Windows preference precedence](https://www.nvidia.com/content/Control-Panel-Help/vLatest/en-us/mergedProjects/3D%20Settings/Setting_the_Preferred_Graphics_Processor.htm). No extra GPU SDK or runtime package is required.
 
-The GBA Inspector now supports Video (display registers and background palette), CPU (ARM/Thumb registers and raw opcode memory near R15), Memory (read-only EWRAM/IWRAM/VRAM/palette/OAM/ROM pages), and Audio (the last 512 stereo PCM output samples). Tab toggles it, 1-4 select panels, S steps an instruction and F steps a frame. GBA dot stepping and a retired-instruction trace are not provided. Memory views use side-effect-free core reads; waveforms observe existing playback samples without draining extra audio.
+The GBA Inspector now supports Video (display registers and background palette), CPU (ARM/Thumb registers and raw opcode memory near R15), Memory (read-only EWRAM/IWRAM/VRAM/palette/OAM/ROM pages), and Audio (the last 512 stereo PCM output samples). On Windows/Mac, Tab toggles it; Ctrl on Windows or Command on Mac plus 1–4 selects panels, S steps an instruction and F steps a frame. Linux currently exposes a combined inspector with Ctrl+S/F stepping, without separate panel shortcuts or peripheral-dot stepping. GBA dot stepping and a retired-instruction trace are not provided. Memory views use side-effect-free core reads; waveforms observe existing playback samples without draining extra audio.

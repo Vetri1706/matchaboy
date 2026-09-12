@@ -27,6 +27,8 @@ def main():
     paths = [emulator, netplay, library]
     if sys.platform == "win32":
         paths.append(binaries / "Matchaboy.exe")
+    if sys.platform.startswith("linux"):
+        paths.append(binaries / "Matchaboy")
     if sys.platform == "darwin":
         paths.append(binaries / "MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy")
     before = {path.relative_to(binaries).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
@@ -55,6 +57,8 @@ def main():
         if sys.platform == "darwin":
             run("macos-player", ["tools/test_player_macos.py", "--binary", str(binaries / "MatchaAutopsy.app"),
                                  "--dmg", str(emulator), "--output", str(output / "macos-player")])
+            run("macos-friend-player", ["tools/test_friend_player.py", "--binary", str(binaries / "MatchaAutopsy.app"),
+                                        "--output", str(output / "macos-friend-player")])
         if sys.platform == "win32":
             run("windows-dashboard", ["tools/verify_autopsy.py", "--binary", str(binaries / "Matchaboy.exe"),
                                       "--output", str(output / "windows-dashboard")])
@@ -66,6 +70,16 @@ def main():
                                 "--output", str(output / "windows-gba")])
             run("windows-controls", ["tools/test_autopsy_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
                                      "--output", str(output / "windows-controls")])
+        if sys.platform == "win32":
+            run("windows-friend-player", ["tools/test_friend_player.py", "--binary", str(binaries / "Matchaboy.exe"),
+                                          "--output", str(output / "windows-friend-player")])
+            run("windows-friend-ui", ["tools/test_friend_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
+                                      "--output", str(output / "windows-friend-ui")])
+        if sys.platform.startswith("linux"):
+            run("linux-player", ["tools/test_player_linux.py", "--binary", str(binaries / "Matchaboy"),
+                                 "--output", str(output / "linux-player")])
+            run("linux-friend-player", ["tools/test_friend_player.py", "--binary", str(binaries / "Matchaboy"),
+                                        "--output", str(output / "linux-friend-player")])
         for name, script, options in (
             ("blargg", "verify.py", ["--extra"]),
             ("sound", "verify.py", ["--sound"]),

@@ -241,6 +241,8 @@ enum mRTCGenericType {
 	RTC_FIXED,
 	RTC_FAKE_EPOCH,
 	RTC_WALLCLOCK_OFFSET,
+	// Matchaboy linked sessions: emulated-frame clock, explicitly UTC.
+	RTC_FAKE_EPOCH_UTC,
 	RTC_CUSTOM_START = 0x1000
 };
 
@@ -259,6 +261,7 @@ struct mRTCGenericState {
 };
 
 void mRTCGenericSourceInit(struct mRTCGenericSource* rtc, struct mCore* core);
+bool mRTCGenericSourceIsUTC(const struct mRTCSource* rtc);
 
 struct mRumble {
 	void (*setRumble)(struct mRumble*, int enable);

@@ -128,6 +128,7 @@ void Apu::write(std::uint16_t address, std::uint8_t value) {
 }
 
 void Apu::trigger(unsigned channel) {
+    if (channel >= control_register.size()) return;
     auto &length = channel < 2 ? state_.pulse[channel].length :
         channel == 2 ? state_.wave.length : state_.noise.length;
     if (length == 0) {

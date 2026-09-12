@@ -21,6 +21,7 @@ static void _rtcGenericSample(struct mRTCSource* source) {
 	case RTC_NO_OVERRIDE:
 	case RTC_FIXED:
 	case RTC_FAKE_EPOCH:
+	case RTC_FAKE_EPOCH_UTC:
 	case RTC_WALLCLOCK_OFFSET:
 		break;
 	}
@@ -39,10 +40,18 @@ static time_t _rtcGenericCallback(struct mRTCSource* source) {
 	case RTC_FIXED:
 		return rtc->value / 1000LL;
 	case RTC_FAKE_EPOCH:
+	case RTC_FAKE_EPOCH_UTC:
 		return (rtc->value + rtc->p->frameCounter(rtc->p) * (rtc->p->frameCycles(rtc->p) * 1000LL) / rtc->p->frequency(rtc->p)) / 1000LL;
 	case RTC_WALLCLOCK_OFFSET:
 		return time(0) + rtc->value / 1000LL;
 	}
+}
+
+bool mRTCGenericSourceIsUTC(const struct mRTCSource* rtc) {
+	// Only cast our own generic source; external RTC implementations retain
+	// their original local-time behavior and need not share our struct layout.
+	return rtc && rtc->sample == _rtcGenericSample
+	    && ((const struct mRTCGenericSource*) rtc)->override == RTC_FAKE_EPOCH_UTC;
 }
 
 static void _rtcGenericSerialize(struct mRTCSource* source, struct mStateExtdataItem* item) {

@@ -1,0 +1,374 @@
+#!/usr/bin/env python3
+"""Verify the real Linux X11 player, persistent keyboard editor and live UDP link."""
+import argparse
+import json
+import os
+from pathlib import Path
+import selectors
+import shutil
+import socket
+import subprocess
+import sys
+import tempfile
+import time
+
+from test_gba_windows import fixture
+from verify_autopsy import png_rgb
+
+BALANCED = [2, 0, 13, 1, 37, 40, 49, 36, 12, 34]
+CLASSIC = [124, 123, 126, 125, 6, 7, 56, 36, 12, 13]
+ORDER = [2, 1, 3, 0, 4, 5, 8, 9, 7, 6]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--binary', type=Path, required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args()
+    if not sys.platform.startswith('linux'):
+        parser.error('requires Linux with Xvfb and xdotool')
+    binary, output = args.binary.resolve(), args.output.resolve()
+    output.mkdir(parents=True, exist_ok=False)
+    checks, logs, processes = [], [], []
+    xvfb, active, display_read = None, None, None
+    env = dict(os.environ)
+    report = dict(passed=False, checks=checks)
+
+    def wait(predicate, timeout=12, process=None):
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            value = predicate()
+            if value:
+                return value
+            if process is not None and process.poll() is not None:
+                raise RuntimeError(f'player exited early with {process.returncode}')
+            if xvfb is not None and xvfb.poll() is not None:
+                raise RuntimeError('isolated Xvfb exited early')
+            time.sleep(.03)
+        raise TimeoutError('Linux player did not reach the requested state')
+
+    def xd(*command, checked=True):
+        return subprocess.run(['xdotool', *map(str, command)], env=env, capture_output=True,
+                              text=True, check=checked, timeout=8)
+
+    try:
+        if not shutil.which('Xvfb') or not shutil.which('xdotool'):
+            raise RuntimeError('Install Xvfb and xdotool before running this desktop test')
+        with tempfile.TemporaryDirectory(prefix='matchaboy linux player ') as temporary:
+            root = Path(temporary)
+            env.update(XDG_CONFIG_HOME=str(root / 'config'), XDG_DATA_HOME=str(root / 'data'))
+            # -displayfd reserves an unused display atomically. The test never
+            # changes focus, keys, clipboard or preferences on the user's desktop.
+            display_read, display_write = os.pipe()
+            xvfb_log = (output / 'xvfb.log').open('w')
+            logs.append(xvfb_log)
+            try:
+                xvfb = subprocess.Popen(['Xvfb', '-displayfd', str(display_write), '-screen',
+                                         '0', '1440x1000x24', '-nolisten', 'tcp'],
+                                        env=env, pass_fds=(display_write,),
+                                        stdout=xvfb_log, stderr=xvfb_log)
+            finally:
+                os.close(display_write)
+            with selectors.DefaultSelector() as selector:
+                selector.register(display_read, selectors.EVENT_READ)
+                if not selector.select(12):
+                    raise TimeoutError('Xvfb did not allocate an isolated display')
+                display = os.read(display_read, 128).decode().strip()
+            os.close(display_read)
+            display_read = None
+            if not display.isdecimal():
+                raise RuntimeError('Xvfb returned an invalid display number')
+            env['DISPLAY'] = ':' + display
+            rom = root / 'keyboard fixture.gba'
+            rom.write_bytes(fixture())
+            capture = output / 'player.png'
+            metadata = Path(str(capture) + '.json')
+            window, width, height = None, 1280, 900
+
+            def launch(label, *options):
+                nonlocal active, window
+                log = (output / (label + '.log')).open('w')
+                logs.append(log)
+                active = subprocess.Popen([str(binary), *map(str, options), '--capture',
+                                           str(capture)], cwd=root, env=env,
+                                          stdout=log, stderr=log)
+                processes.append(active)
+                def find_window():
+                    found = xd('search', '--onlyvisible', '--class', '^Matchaboy$', checked=False)
+                    choices = found.stdout.split()
+                    return choices[0] if len(choices) == 1 else None
+                window = wait(find_window, process=active)
+                xd('windowfocus', '--sync', window)
+                return active
+
+            def key(chord):
+                xd('key', '--delay', '30', chord)
+
+            def click(x, y):
+                xd('mousemove', '--window', window, round(x * width / 1280),
+                   round(y * height / 900), 'click', '1')
+                time.sleep(.05)
+
+            def snapshot(name=None):
+                nonlocal width, height
+                old = metadata.stat().st_mtime_ns if metadata.exists() else 0
+                key('F12')
+                def ready():
+                    try:
+                        if metadata.stat().st_mtime_ns == old:
+                            return None
+                        state = json.loads(metadata.read_text())
+                        return state if 'keyboard_mapping' in state else None
+                    except (OSError, json.JSONDecodeError):
+                        return None
+                state = wait(ready, process=active)
+                width, height = state['width'], state['height']
+                if name:
+                    shutil.copy2(capture, output / (name + '.png'))
+                    (output / (name + '.json')).write_text(json.dumps(state, indent=2) + '\n')
+                return state
+
+            def crop(path, box):
+                w, h, pixels = png_rgb(path)
+                x0, y0, x1, y1 = box
+                x0, x1 = round(x0 * w / 1280), round(x1 * w / 1280)
+                y0, y1 = round(y0 * h / 900), round(y1 * h / 900)
+                return b''.join(bytes(pixels[(y * w + x0) * 3:(y * w + x1) * 3])
+                                for y in range(y0, y1))
+
+            def pixel():
+                w, h, pixels = png_rgb(capture)
+                # Centre of the real LCD region, inside either native scale.
+                x, y = round(448 * w / 1280), round(482 * h / 900)
+                offset = (y * w + x) * 3
+                return tuple(pixels[offset:offset + 3])
+
+            def stop():
+                nonlocal active, window
+                key('ctrl+q')
+                assert active.wait(timeout=10) == 0
+                active, window = None, None
+
+            def settings():
+                key('ctrl+comma')
+                state = snapshot()
+                assert state['settings_open'] and state['buttons'] == 0
+                return state
+
+            def select_button(bit):
+                row = ORDER.index(bit)
+                click(216 + row // 5 * 428 + 250, 302 + row % 5 * 65 + 19)
+
+            # Test packaged native GB and GBA views against bundled real games.
+            for game, system in [('pocket-racer', 'GB'), ('drift-circuit', 'GBA')]:
+                target = output / (game + '.png')
+                result = subprocess.run([str(binary), '--game', game, '--window-test',
+                                         '--frames', '30', '--capture', str(target)], cwd=root,
+                                        env=env, capture_output=True, text=True, timeout=30)
+                (output / (game + '.log')).write_text(result.stdout + result.stderr)
+                assert result.returncode == 0, result.stderr
+                state = json.loads(Path(str(target) + '.json').read_text())
+                assert state['system'] == system and state['frames'] >= 30
+                assert state['keyboard_mapping'] == BALANCED
+                assert target.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+            checks.append('bundled GB and GBA games execute and render real native X11 captures')
+
+            launch('keyboard', rom, '--frames', '0', '--paused')
+            start = snapshot('balanced-guide')
+            assert start['system'] == 'GBA' and start['keyboard_mapping'] == BALANCED
+            assert start['paused'] and start['controls_visible']
+            codes = ['d', 'a', 'w', 's', 'l', 'k', 'space', 'Return', 'q', 'i']
+            for bit, code in enumerate(codes):
+                xd('keydown', code)
+                state = snapshot('held-a' if bit == 4 else None)
+                assert state['buttons'] == 1 << bit and state['paused'], (bit, state)
+                xd('keyup', code)
+                assert snapshot()['buttons'] == 0
+            assert crop(output / 'held-a.png', (1087, 417, 1224, 448)) != crop(output / 'balanced-guide.png', (1087, 417, 1224, 448))
+            checks.append('all ten Balanced keys reach the real controller mask; releases clear inputs; Space selects without pausing')
+
+            # Inspector must not steal WASD from the player.
+            key('Tab')
+            assert snapshot()['inspector_view']
+            xd('keydown', 's')
+            state = snapshot()
+            assert state['buttons'] == 8 and state['frames'] == start['frames']
+            xd('keyup', 's')
+            key('Tab')
+            assert not snapshot()['inspector_view']
+            key('ctrl+shift+c')
+            assert not snapshot()['controls_visible']
+            key('ctrl+shift+c')
+            assert snapshot()['controls_visible']
+            checks.append('Inspector preserves WASD gameplay input and the modified controls shortcut toggles the guide')
+
+            # Real ARM instructions read KEYINPUT and change the LCD colour.
+            for code, expected in [('l', (0, 255, 0)), ('q', (0, 0, 255)), ('i', (255, 255, 255))]:
+                key('Escape')
+                xd('keydown', code)
+                time.sleep(.25)
+                key('Escape')
+                xd('keyup', code)
+                state = snapshot()
+                assert state['paused'] and pixel() == expected, (code, pixel(), state)
+            checks.append('A/L/R mappings reach actual GBA KEYINPUT and produce the expected green/blue/white LCD pixels')
+            xd('keydown', 'Escape')
+            time.sleep(.7)
+            running = snapshot()
+            assert not running['paused']
+            xd('keyup', 'Escape')
+            assert not snapshot()['paused']
+            key('Escape')
+            assert snapshot()['paused']
+            checks.append('Escape toggles pause once when held; key repeat does not repeatedly pause the core')
+
+            settings()
+            select_button(9)
+            key('o')
+            custom = BALANCED.copy()
+            custom[9] = 31
+            edited = snapshot('custom-settings')
+            assert edited['settings_draft'] == custom and edited['keyboard_mapping'] == BALANCED
+            assert not edited['settings_error']
+            click(974, 760)
+            state = snapshot('custom-guide')
+            assert not state['settings_open'] and state['keyboard_mapping'] == custom and state['paused']
+            assert crop(output / 'custom-guide.png', (1087, 540, 1224, 571)) != crop(output / 'balanced-guide.png', (1087, 540, 1224, 571))
+            stop()
+            launch('restored', rom, '--frames', '0', '--paused')
+            assert snapshot()['keyboard_mapping'] == custom
+            xd('keydown', 'i')
+            assert snapshot()['buttons'] == 0
+            xd('keyup', 'i')
+            xd('keydown', 'o')
+            assert snapshot()['buttons'] == 512
+            xd('keyup', 'o')
+            assert snapshot()['buttons'] == 0
+            checks.append('R shoulder remaps I to O, Apply persists across process restart, and the old key stops controlling the game')
+
+            settings()
+            select_button(9)
+            key('l')
+            duplicate = snapshot('duplicate-protection')
+            assert duplicate['settings_draft'][9] == 37 and duplicate['settings_error']
+            click(974, 760)
+            assert snapshot()['settings_open']
+            click(290, 760)
+            assert snapshot()['keyboard_mapping'] == custom
+            checks.append('duplicate mappings disable Apply; Cancel preserves the previous saved mapping')
+
+            settings()
+            select_button(9)
+            key('Tab')
+            click(974, 760)
+            old = metadata.stat().st_mtime_ns
+            key('F12')  # Also reserved; an armed editor must not accept it or save.
+            time.sleep(.15)
+            assert metadata.stat().st_mtime_ns == old
+            key('Escape')  # Cancel only the armed key capture.
+            reserved = snapshot()
+            assert reserved['settings_open'] and reserved['settings_capture'] == -1
+            assert reserved['settings_draft'] == custom and reserved['keyboard_mapping'] == custom
+            key('Escape')
+            assert not snapshot()['settings_open']
+            checks.append('Tab/F12 remain reserved and Escape cancels key capture before closing Settings')
+
+            settings()
+            click(528, 255)
+            assert snapshot()['settings_draft'] == CLASSIC
+            click(290, 760)
+            assert snapshot()['keyboard_mapping'] == custom
+            settings()
+            click(760, 255)
+            for code in ['w', 'a', 's', 'd', 'l', 'k', 'q', 'i', 'Return', 'space']:
+                key(code)
+            state = snapshot()
+            assert state['settings_capture'] == -1 and state['settings_draft'] == BALANCED
+            click(974, 760)
+            assert snapshot()['keyboard_mapping'] == BALANCED
+            settings()
+            click(528, 255)
+            click(314, 255)
+            assert snapshot()['settings_draft'] == BALANCED
+            click(974, 760)
+            assert snapshot()['keyboard_mapping'] == BALANCED
+            checks.append('Classic and Balanced presets and all ten Set All captures work, including Enter and Space')
+            stop()
+
+            # Two complete real cores communicate over the actual UDP transport.
+            peer_rom = root / 'remote fixture.gba'
+            peer_rom.write_bytes(fixture())
+            stop_file = root / 'release-headless'
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as allocation:
+                allocation.bind(('127.0.0.1', 0))
+                port = allocation.getsockname()[1]
+            code = '13f948b06c742db29fa12a3ced0365a8'
+            peer_capture = output / 'headless-peer.png'
+            peer_log = output / 'headless-peer.log'
+            peer_stream = peer_log.open('w')
+            logs.append(peer_stream)
+            peer = subprocess.Popen([str(binary), str(peer_rom), '--headless', '--frames', '1200',
+                                     '--net-host', str(port), '--net-code', code,
+                                     '--net-stop-file', str(stop_file), '--capture', str(peer_capture)],
+                                    cwd=root, env=env, stdout=peer_stream, stderr=peer_stream)
+            processes.append(peer)
+            launch('linked-ui', rom, '--frames', '0', '--net-join', f'127.0.0.1:{port}', '--net-code', code)
+            def linked():
+                state = snapshot()
+                if peer.poll() is not None:
+                    raise RuntimeError('headless friend exited before the native session completed')
+                if state.get('netplay', {}).get('finished'):
+                    raise RuntimeError(state['netplay']['status'])
+                return state if state.get('netplay', {}).get('verified_frames', 0) >= 60 else None
+            before = wait(linked, timeout=30, process=active)
+            key('Escape')
+            assert not snapshot()['paused']
+            settings()
+            time.sleep(12)
+            after = snapshot('linked-settings')
+            assert after['settings_open'] and not after['paused'] and after['buttons'] == 0
+            network = after['netplay']
+            assert network['connected'] and not network['finished'], network
+            assert network['frames'] >= before['netplay']['frames'] + 120, network
+            assert network['verified_frames'] > before['netplay']['verified_frames'], network
+            key('Escape')
+            assert not snapshot()['settings_open']
+            wait(lambda: 'Friend capture ready: frame 1200' in peer_log.read_text(), timeout=45, process=peer)
+            completed = snapshot('linked-completed')
+            assert completed['netplay']['verified_frames'] >= 1140 and not completed['netplay']['finished']
+            stop_file.write_text('complete\n')
+            assert peer.wait(timeout=12) == 0
+            end = json.loads(Path(str(peer_capture) + '.json').read_text())
+            assert end['netplay']['frames'] == 1200 and end['netplay']['verified_frames'] >= 1140
+            stop()
+            checks.append('native GUI and headless peer complete 1,200 real linked frames; Settings stays open for 12 seconds without pause, timeout or lost hash verification')
+            report = dict(passed=True, checks=checks)
+    except Exception as error:
+        report = dict(passed=False, checks=checks, error=str(error))
+    finally:
+        if display_read is not None:
+            os.close(display_read)
+        for process in processes:
+            if process.poll() is None:
+                process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=5)
+        if xvfb is not None and xvfb.poll() is None:
+            xvfb.terminate()
+            try:
+                xvfb.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                xvfb.kill()
+                xvfb.wait(timeout=5)
+        for log in logs:
+            log.close()
+    (output / 'summary.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps(report, indent=2))
+    return 0 if report['passed'] else 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())
