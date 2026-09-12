@@ -27,10 +27,11 @@ the platform guides for rebinding and emulator shortcuts. Mac uses
 Command-Comma; Windows and Linux use Ctrl-Comma. Mappings remain local to each
 player and do not change the console inputs exchanged during friend play.
 
-The desktop controls and friend-play baseline passed native Windows, Linux and
-Mac CI. The current homebrew library revision is being verified separately;
-see [downloads and build evidence](DOWNLOADS.md). Mixed-platform commercial-game
-network compatibility still requires a real session on the target machines.
+The homebrew library and desktop controls passed native Windows, Linux and Mac
+build, player, real-UDP and extracted-download checks at `370bfee`; see the
+[verified run](https://github.com/Vetri1706/matchaboy/actions/runs/34683563203).
+Mixed-platform commercial-game network compatibility still requires a real
+session on the target machines.
 
 Run commands from the cloned repository root. Downloaded test ROMs and build
 products are generated locally; [ARTIFACTS.md](ARTIFACTS.md) describes the

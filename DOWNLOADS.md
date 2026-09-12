@@ -1,5 +1,12 @@
 # Download and build Matchaboy
 
+The licensed homebrew update (`370bfee`) passed all native Windows, Linux and Mac
+checks, including extracted-package tests, in
+[run 34683563203](https://github.com/Vetri1706/matchaboy/actions/runs/34683563203).
+Download that run's `matchaboy-windows-x64`, `matchaboy-linux-x64`, or
+`matchaboy-macos-arm64` artifact. The included games and notices are described in
+[HOMEBREW.md](HOMEBREW.md).
+
 The **Build and Package Binaries** workflow builds Windows x64 with native
 `clang++`, Linux x64 with Clang, and macOS Apple Silicon with Apple Clang.
 The workflow gates packages on native tests, original ROM checks, Gymnasium

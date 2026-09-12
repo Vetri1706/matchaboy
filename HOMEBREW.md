@@ -54,7 +54,10 @@ alone does not establish permission to redistribute every asset inside a ROM.
 - **GBADoom / Freedoom:** [GBADoom](https://github.com/doomhack/GBADoom) explicitly
   has no multiplayer. [Freedoom](https://github.com/freedoom/freedoom) provides
   separately licensed WAD assets, not a ready verified GBA ROM. A suitable build
-  and its corresponding source/notices would need separate integration.
+  and its corresponding source/notices would need separate integration. The
+  ready [GBAFreeDoom 0.7 fork](https://github.com/RetroGamer02/GBAFreeDoom/releases/tag/0.7)
+  retains a baked [Doom II HUD](https://github.com/RetroGamer02/GBAFreeDoom/blob/0.7/source/gfx/stbar.h)
+  outside its replaced WAD; it is not included either.
 - **Pokémon decompositions:** [pokeruby](https://github.com/pret/pokeruby) and
   [pokefirered](https://github.com/pret/pokefirered) reconstruct retail games;
   their availability does not establish a game-content redistribution license.
@@ -68,3 +71,18 @@ alone does not establish permission to redistribute every asset inside a ROM.
 To play with a friend, open your own compatible link-enabled game on both
 machines and follow [NETPLAY.md](NETPLAY.md). The two included Tobu titles do not
 provide multiplayer, so starting an emulator connection cannot add it to them.
+
+## Verified build
+
+[Native CI run 34683563203](https://github.com/Vetri1706/matchaboy/actions/runs/34683563203)
+passed on all three platforms for source commit `370bfee` on 2026-09-12.
+The player tests run the exact licensed ROMs, compare controller input against
+fresh equally long idle runs, check mapped controls and readable creator metadata,
+and retain separate GB/GBA hardware, save and real-UDP regression fixtures.
+Each downloadable ZIP is extracted and exercised outside the source checkout;
+its build manifest records the exact binary/file hashes. Mac packages also
+verify the completed app's resource signature, including the license notices.
+They use ad-hoc signing and are not Apple-notarized.
+
+These checks establish boot, controller response and integration, not completion
+of every level or multiplayer support for these two single-player games.
