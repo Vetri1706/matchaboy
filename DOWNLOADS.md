@@ -24,7 +24,7 @@ Each ZIP includes the headless emulator, UDP netplay runner, Gym benchmark,
 `libmatcha` shared library, Python wrapper, C header, and documentation; these
 are in `Extras` on Mac. Windows includes `Matchaboy.exe`; Linux includes the
 `Matchaboy` desktop executable. The players include the ten original games and
-optional GB/GBA Inspector. Linux needs its X11 system library and optionally
+optional GB/GBA Inspector. Linux needs its X11/Xft system libraries and optionally
 ALSA for sound; see [LINUX.md](LINUX.md).
 `BUILD_INFO.json` (`Extras/BUILD_INFO.json` on Mac) records the source commit,
 compiler, test results and file hashes; the adjacent `.sha256` file checks the
@@ -171,7 +171,7 @@ cmake --install build --prefix stage
 Clang is the compiler; Microsoft's headers and system libraries provide the
 native Windows SDK and C++ runtime. Release builds use the static MSVC runtime.
 The dashboard uses Win32, GDI+ and OpenGL from Windows; no external GUI library
-is required. `MATCHA_BUILD_AUTOPSY` enables the desktop player; Linux requires the X11
+is required. `MATCHA_BUILD_AUTOPSY` enables the desktop player; Linux requires the X11/Xft
 development package when it is enabled. For an
 existing build directory previously configured with it disabled, add
 `-DMATCHA_BUILD_AUTOPSY=ON` to the configure command.
@@ -180,7 +180,7 @@ measurement uses the Windows process API. GNU-driver Clang uses
 `-std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic`.
 
 The same CMake commands work with Clang on Linux/macOS after installing the
-platform development dependencies; see [LINUX.md](LINUX.md) for X11/ALSA. The original Makefile
+platform development dependencies; see [LINUX.md](LINUX.md) for X11/Xft/ALSA. The original Makefile
 remains available on POSIX systems; its Mac `platform` target delegates the
 complete native app's dependency graph to CMake. WSL uses the Linux build and produces Linux
 binaries; it does not produce a native Windows `.exe`.
@@ -234,7 +234,7 @@ and the [Windows runner toolchain](https://github.com/actions/runner-images/blob
 
 The Windows, Mac and Linux players accept `.gb` and `.gba` files. Game Boy games use the
 original Matchaboy engine; GBA games use the statically bundled mGBA 0.10.5 core.
-No separate emulator, external BIOS, Qt or SDL is needed. Linux uses X11 and
+No separate emulator, external BIOS, Qt or SDL is needed. Linux uses X11/Xft and
 optional ALSA system libraries; Windows and Mac use their platform frameworks.
 Balanced maps GBA L/R shoulders to Q/I. Tab opens Inspector; modifier-S/F steps
 instructions/frames. The players expose interactive GB/GBA cable Host/Join

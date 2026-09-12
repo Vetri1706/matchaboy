@@ -2,7 +2,7 @@
 
 The Linux desktop player opens the same ten original GB/GBA games, a cartridge
 player, Inspector, keyboard settings and Host/Join friend play. It uses native
-X11 drawing and the existing Matchaboy DMG and bundled mGBA cores; it does not
+X11 drawing, Xft/Fontconfig text and the existing Matchaboy DMG and bundled mGBA cores; it does not
 introduce Qt, SDL or another emulator framework. A normal X11 desktop or an
 XWayland session with evdev-style keycodes is required for windowed play.
 
@@ -13,11 +13,11 @@ the workflow runs; the previous Linux headless package did not include this UI.
 
 ## Build and open
 
-On Debian/Ubuntu, install a compiler and X11 development files; ALSA development
+On Debian/Ubuntu, install a compiler and X11/Xft development files; ALSA development
 files enable speaker output:
 
 ```sh
-sudo apt-get install clang cmake ninja-build libx11-dev libasound2-dev
+sudo apt-get install clang cmake ninja-build pkg-config libx11-dev libxft-dev libasound2-dev
 cmake -S . -B build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Release -DMATCHA_BUILD_AUTOPSY=ON
 cmake --build build --parallel 4
 ctest --test-dir build --output-on-failure
@@ -27,7 +27,7 @@ ctest --test-dir build --output-on-failure
 From an extracted Linux player package, run `./Matchaboy`. If the archive tool
 did not preserve executable permission, use `chmod +x Matchaboy`. Keep the
 packaged resources and license/source files together. The runtime needs the
-X11 library; ALSA is optional at build time. Without an available audio device,
+X11 and Xft libraries; ALSA is optional at build time. Without an available audio device,
 the game continues silently. No system volume setting is changed.
 
 Select a library game and choose **Play**, or use **File > Open game…** / Ctrl+O.

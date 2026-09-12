@@ -11,6 +11,7 @@
 #include "player_theme.hpp"
 #include <X11/XKBlib.h>
 #include <X11/Xatom.h>
+#include <X11/Xft/Xft.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
@@ -27,6 +28,7 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <map>
 #include <memory>
 #include <poll.h>
 #include <span>
@@ -286,6 +288,24 @@ struct Runtime {
             throw std::runtime_error("Cannot write screenshot report.");
     }
 };
+void advance_frames(Runtime &runtime, unsigned count) {
+    if (!runtime.loaded())
+        return;
+    const auto target = runtime.frames() + count;
+    auto progressed = Clock::now();
+    unsigned idle_calls = 0;
+    while (runtime.frames() < target) {
+        const auto before = runtime.frames();
+        runtime.frame();
+        if (runtime.frames() > before) {
+            progressed = Clock::now();
+            idle_calls = 0;
+        } else if (++idle_calls > 4096 || Clock::now() - progressed > std::chrono::seconds(5)) {
+            throw std::runtime_error(
+                "The ROM did not produce another LCD frame (LCD disabled or CPU stopped).");
+        }
+    }
+}
 struct Options {
     std::filesystem::path rom, capture, stop_file;
     std::string game, code, join;
@@ -418,9 +438,10 @@ enum Command {
     Connect,
     CopyCode,
     CopyDiagnostics,
-    Quit
+    Quit,
+    QuitWithoutSaving
 };
-enum class Pane { Closed, Keyboard, Files, Host, Join, Details, Error };
+enum class Pane { Closed, Keyboard, Files, Host, Join, Details, Error, SaveError };
 constexpr std::array<int, 15> settings_commands{Balanced, Classic,   SetAll,       3002, 3001, 3003,
                                                 3000,     3004,      3005,         3008, 3009, 3007,
                                                 3006,     ClosePane, ApplySettings};
@@ -429,10 +450,14 @@ class Player {
     Window window_{};
     GC gc_{};
     Atom delete_window_{}, clipboard_atom_{}, utf8_{}, targets_{}, paste_atom_{};
-    XFontStruct *font_{};
+    XftDraw *text_draw_{};
+    XftFont *font_{};
+    unsigned font_pixels_{};
+    std::map<RGB, XftColor> text_colors_;
     int width_ = 1280, height_ = 900;
     bool running_ = true, dirty_ = true, library_ = true, controls_ = true, muted_ = false,
-         prior_paused_{};
+         prior_paused_{}, library_prior_paused_{}, quit_prior_paused_{}, shutdown_saved_{},
+         quit_without_save_{}, noninteractive_{};
     unsigned selected_{}, file_scroll_{}, settings_focus_{};
     std::uint64_t displayed_frames_{};
     key::Mapping mapping_ = key::balanced(), draft_ = key::balanced();
@@ -476,16 +501,71 @@ class Player {
                        static_cast<unsigned>(std::max(1, sx(w))),
                        static_cast<unsigned>(std::max(1, sy(h))));
     }
-    void text(int x, int y, const std::string &value, RGB c = foreground) {
-        XSetForeground(display_, gc_, color(c));
-        XDrawString(display_, window_, gc_, sx(x), sy(y), value.data(),
-                    static_cast<int>(value.size()));
+    void update_font() {
+        const auto scale = std::min(static_cast<double>(width_) / canvas_width,
+                                    static_cast<double>(height_) / canvas_height);
+        const auto size = static_cast<unsigned>(std::clamp(16.0 * scale, 13.0, 32.0));
+        if (font_ && size == font_pixels_)
+            return;
+        const auto name = "monospace:pixelsize=" + std::to_string(size);
+        auto *replacement = XftFontOpenName(display_, DefaultScreen(display_), name.c_str());
+        if (!replacement)
+            throw std::runtime_error(
+                "Cannot load a readable system font. Install a Fontconfig monospace font.");
+        if (font_)
+            XftFontClose(display_, font_);
+        font_ = replacement;
+        font_pixels_ = size;
+    }
+    int text_width(const std::string &value) const {
+        XGlyphInfo extents{};
+        XftTextExtentsUtf8(display_, font_, reinterpret_cast<const FcChar8 *>(value.data()),
+                           static_cast<int>(value.size()), &extents);
+        return extents.xOff;
     }
     std::string clip(const std::string &value, std::size_t columns) const {
-        return value.size() > columns ? value.substr(0, columns - 3) + "..." : value;
+        if (value.size() <= columns || columns < 4)
+            return value;
+        auto end = columns - 3;
+        while (end && (static_cast<unsigned char>(value[end]) & 0xc0) == 0x80)
+            --end;
+        return value.substr(0, end) + "...";
+    }
+    std::string fit(const std::string &value, int logical_width) const {
+        if (text_width(value) <= sx(logical_width))
+            return value;
+        auto end = value.size();
+        while (end) {
+            --end;
+            while (end && (static_cast<unsigned char>(value[end]) & 0xc0) == 0x80)
+                --end;
+            auto result = value.substr(0, end) + "...";
+            if (text_width(result) <= sx(logical_width))
+                return result;
+        }
+        return "...";
+    }
+    void text(int x, int y, const std::string &value, RGB c = foreground) {
+        auto found = text_colors_.find(c);
+        if (found == text_colors_.end()) {
+            XRenderColor channels{static_cast<unsigned short>(((c >> 16) & 255) * 257),
+                                  static_cast<unsigned short>(((c >> 8) & 255) * 257),
+                                  static_cast<unsigned short>((c & 255) * 257), 65535};
+            XftColor allocated{};
+            if (!XftColorAllocValue(display_, DefaultVisual(display_, DefaultScreen(display_)),
+                                    DefaultColormap(display_, DefaultScreen(display_)), &channels,
+                                    &allocated))
+                throw std::runtime_error("Cannot allocate a display text color.");
+            found = text_colors_.emplace(c, allocated).first;
+        }
+        XftDrawStringUtf8(text_draw_, &found->second, font_, sx(x), sy(y),
+                          reinterpret_cast<const FcChar8 *>(value.data()),
+                          static_cast<int>(value.size()));
     }
     void lines(int x, int y, const std::string &value, unsigned columns, unsigned limit,
                RGB c = foreground) {
+        const auto glyph = std::max(1, text_width("M"));
+        columns = std::max(1U, static_cast<unsigned>(sx(static_cast<int>(columns) * 9) / glyph));
         std::istringstream input(value);
         std::string word, row;
         unsigned line = 0;
@@ -506,7 +586,7 @@ class Player {
     void button(int x, int y, int w, const std::string &label, int command, bool enabled = true,
                 int h = 38) {
         rect(x, y, w, h, enabled ? panel : 0x102027);
-        text(x + 12, y + h / 2 + 5, label, enabled ? foreground : muted);
+        text(x + 12, y + h / 2 + 5, fit(label, w - 24), enabled ? foreground : muted);
         if (pane_ == Pane::Keyboard && enabled && settings_commands[settings_focus_] == command) {
             XSetForeground(display_, gc_, color(cyan));
             XDrawRectangle(display_, window_, gc_, sx(x + 1), sy(y + 1),
@@ -518,9 +598,7 @@ class Player {
     void field(int x, int y, int w, const std::string &value, int index) {
         rect(x, y, w, 38, field_ == index ? 0x1d404c : 0x152c35);
         const bool secret = index == 2 && (pane_ == Pane::Host || pane_ == Pane::Join);
-        text(x + 10, y + 24,
-             clip(secret ? std::string(value.size(), '*') : value,
-                  static_cast<std::size_t>(w / 9 - 3)));
+        text(x + 10, y + 24, fit(secret ? std::string(value.size(), '*') : value, w - 24));
         hits_.push_back({x, y, w, 38, 2000 + index, true});
     }
     std::string key_label(unsigned bit) const { return key::key_name(mapping_[bit]); }
@@ -584,7 +662,7 @@ class Player {
             rect(x, y, 594, 108, i == selected_ ? 0x1c3c45 : panel);
             text(x + 18, y + 26, std::string(g.title) + "  /  " + g.system,
                  i == selected_ ? cyan : foreground);
-            text(x + 18, y + 53, clip(g.description, 64), muted);
+            text(x + 18, y + 53, fit(g.description, 558), muted);
             text(x + 18, y + 82, "PLAY  /  " + std::string(g.genre), green);
             hits_.push_back({x, y, 594, 108, 100 + static_cast<int>(i), !pending() && !linked()});
         }
@@ -808,6 +886,16 @@ class Player {
             button(216, 741, 155, "Close", ClosePane);
             button(406, 741, 228, "Copy room code", CopyCode);
             button(666, 741, 270, "Copy diagnostics", CopyDiagnostics);
+        } else if (pane_ == Pane::SaveError) {
+            text(216, 185, "UNABLE TO SAVE PROGRESS", orange);
+            lines(216, 247, message_, 91, 11, foreground);
+            lines(216, 566,
+                  "Your game is still in memory. Fix the save folder and retry, or keep playing. "
+                  "Quit without saving discards the progress since your last successful save.",
+                  91, 5, muted);
+            button(216, 741, 235, "Retry save and quit", Quit);
+            button(473, 741, 190, "Keep playing", ClosePane);
+            button(686, 741, 378, "Quit without saving", QuitWithoutSaving);
         } else {
             text(216, 185, "MATCHABOY", cyan);
             lines(216, 247, message_, 91, 18, orange);
@@ -1028,6 +1116,36 @@ class Player {
             std::async(std::launch::async, [path, config] { return start_link(path, config); });
         dirty_ = true;
     }
+    void request_quit() {
+        if (pane_ != Pane::SaveError)
+            quit_prior_paused_ = pane_ == Pane::Closed ? runtime_->paused : prior_paused_;
+        clear_input();
+        // Detach before writing the local cartridge, retaining both the CPU
+        // and its in-memory save if the filesystem rejects the write.
+        if (runtime_->link) {
+            runtime_->link->close();
+            runtime_->link.reset();
+            runtime_->enable_audio();
+        }
+        runtime_->paused = true;
+        audio_.clear();
+        try {
+            runtime_->flush();
+            shutdown_saved_ = true;
+            running_ = false;
+        } catch (const std::exception &e) {
+            if (noninteractive_)
+                throw;
+            message_ = e.what();
+            pane_ = Pane::SaveError;
+            prior_paused_ = quit_prior_paused_;
+            capture_ = -1;
+            capture_all_ = false;
+            menu_ = -1;
+            error_.clear();
+            dirty_ = true;
+        }
+    }
     void command(int command) {
         if (pane_ == Pane::Keyboard) {
             const auto found =
@@ -1077,6 +1195,8 @@ class Player {
         switch (command) {
         case Library:
             clear_input();
+            if (!library_)
+                library_prior_paused_ = runtime_->paused;
             library_ = true;
             runtime_->paused = true;
             audio_.clear();
@@ -1226,7 +1346,13 @@ class Player {
                               "\nLinux event-loop link service: active");
             break;
         case Quit:
-            running_ = false;
+            request_quit();
+            break;
+        case QuitWithoutSaving:
+            if (pane_ == Pane::SaveError) {
+                quit_without_save_ = true;
+                running_ = false;
+            }
             break;
         default:
             break;
@@ -1331,6 +1457,10 @@ class Player {
             return;
         }
         if (pane_ != Pane::Closed) {
+            if (pane_ == Pane::SaveError && (symbol == XK_Return || symbol == XK_KP_Enter)) {
+                command(Quit);
+                return;
+            }
             if (symbol == XK_Escape) {
                 close_pane();
                 return;
@@ -1417,7 +1547,7 @@ class Player {
                 dirty_ = true;
             } else if (library_ && runtime_->loaded()) {
                 library_ = false;
-                runtime_->paused = false;
+                runtime_->paused = library_prior_paused_;
                 dirty_ = true;
             } else
                 command(Pause);
@@ -1493,11 +1623,12 @@ class Player {
         case ConfigureNotify:
             width_ = std::max(1, event.xconfigure.width);
             height_ = std::max(1, event.xconfigure.height);
+            update_font();
             dirty_ = true;
             break;
         case ClientMessage:
             if (static_cast<Atom>(event.xclient.data.l[0]) == delete_window_)
-                running_ = false;
+                command(Quit);
             break;
         case FocusOut:
             keys_down_.fill(false);
@@ -1648,15 +1779,16 @@ class Player {
                << ",\"settings_error\":"
                << json(settings ? (error_.empty() ? key::validate_mapping(draft_) : error_) : "")
                << ",\"ui_mode\":"
-               << json(settings                 ? "keyboard-settings"
-                       : pane_ == Pane::Files   ? "file-picker"
-                       : pane_ == Pane::Details ? "connection-details"
-                       : pane_ == Pane::Host    ? "host-dialog"
-                       : pane_ == Pane::Join    ? "join-dialog"
-                       : pane_ == Pane::Error   ? "message"
-                       : library_               ? "library"
-                       : runtime_->inspector    ? "inspector"
-                                                : "player")
+               << json(settings                   ? "keyboard-settings"
+                       : pane_ == Pane::Files     ? "file-picker"
+                       : pane_ == Pane::Details   ? "connection-details"
+                       : pane_ == Pane::Host      ? "host-dialog"
+                       : pane_ == Pane::Join      ? "join-dialog"
+                       : pane_ == Pane::Error     ? "message"
+                       : pane_ == Pane::SaveError ? "save-error"
+                       : library_                 ? "library"
+                       : runtime_->inspector      ? "inspector"
+                                                  : "player")
                << ",\"keyboard_mapping\":[";
         for (unsigned i = 0; i < mapping_.size(); ++i) {
             if (i)
@@ -1687,6 +1819,10 @@ class Player {
         : library_(o.library || !runtime->loaded()), controls_(o.controls),
           runtime_(std::move(runtime)) {
         capture_path_ = o.capture;
+        noninteractive_ = o.window_test;
+        library_prior_paused_ = runtime_->paused;
+        if (library_)
+            runtime_->paused = true;
         try {
             mapping_ = key::load_linux_mapping(key::linux_preferences_path());
         } catch (const std::exception &e) {
@@ -1721,12 +1857,11 @@ class Player {
         Bool supported = False;
         XkbSetDetectableAutoRepeat(display_, True, &supported);
         gc_ = XCreateGC(display_, window_, 0, nullptr);
-        font_ =
-            XLoadQueryFont(display_, "-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso8859-1");
-        if (!font_)
-            font_ = XLoadQueryFont(display_, "fixed");
-        if (font_)
-            XSetFont(display_, gc_, font_->fid);
+        text_draw_ = XftDrawCreate(display_, window_, DefaultVisual(display_, screen),
+                                   DefaultColormap(display_, screen));
+        if (!text_draw_)
+            throw std::runtime_error("Cannot create the Linux text surface.");
+        update_font();
         XMapWindow(display_, window_);
         XFlush(display_);
         runtime_->enable_audio();
@@ -1738,7 +1873,14 @@ class Player {
             runtime_->link->close();
         if (display_) {
             if (font_)
-                XFreeFont(display_, font_);
+                XftFontClose(display_, font_);
+            if (text_draw_)
+                XftDrawDestroy(text_draw_);
+            for (auto &[value, color] : text_colors_) {
+                (void)value;
+                XftColorFree(display_, DefaultVisual(display_, DefaultScreen(display_)),
+                             DefaultColormap(display_, DefaultScreen(display_)), &color);
+            }
             if (gc_)
                 XFreeGC(display_, gc_);
             if (window_)
@@ -1751,7 +1893,7 @@ class Player {
         bool captured = false;
         while (running_) {
             unsigned dispatched = 0;
-            while (XPending(display_) && dispatched++ < 128) {
+            while (running_ && XPending(display_) && dispatched++ < 128) {
                 XEvent input{};
                 XNextEvent(display_, &input);
                 try {
@@ -1760,6 +1902,8 @@ class Player {
                     show_error(e.what());
                 }
             }
+            if (!running_)
+                break;
             try {
                 tick();
             } catch (const std::exception &e) {
@@ -1775,10 +1919,12 @@ class Player {
             pollfd descriptor{ConnectionNumber(display_), POLLIN, 0};
             poll(&descriptor, 1, 4);
         }
-        runtime_->set_buttons(0);
-        if (runtime_->link)
-            runtime_->link->close();
-        runtime_->flush();
+        if (!shutdown_saved_ && !quit_without_save_) {
+            runtime_->set_buttons(0);
+            if (runtime_->link)
+                runtime_->link->close();
+            runtime_->flush();
+        }
         return 0;
     }
 };
@@ -1823,12 +1969,10 @@ int main(int argc, char **argv) {
             } else {
                 if (!o.input_frames)
                     runtime->set_buttons(static_cast<std::uint16_t>(o.buttons));
-                for (unsigned i = 0; i < o.frames; ++i)
-                    runtime->frame();
+                advance_frames(*runtime, o.frames);
                 if (o.input_frames) {
                     runtime->set_buttons(static_cast<std::uint16_t>(o.buttons));
-                    for (unsigned i = 0; i < o.input_frames; ++i)
-                        runtime->frame();
+                    advance_frames(*runtime, o.input_frames);
                 }
             }
         }

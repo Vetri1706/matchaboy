@@ -5,7 +5,7 @@ The Windows, Mac and Linux players statically link mGBA 0.10.5, commit
 https://github.com/mgba-emu/mgba. The original Matchaboy DMG engine remains
 independent. No Qt, SDL, external BIOS, FFmpeg, compression library, or mGBA DLL
 is required to run the players. Windows uses Win32/GDI+/OpenGL and WinMM; Mac uses AppKit/OpenGL and
-AudioToolbox. The Linux desktop uses X11 and optional ALSA from the operating
+AudioToolbox. The Linux desktop uses X11/Xft and optional ALSA from the operating
 system. These desktop libraries are dependencies of the player, not a new
 emulation core. The headless DMG engine remains independent of them.
 

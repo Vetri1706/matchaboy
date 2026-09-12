@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import traceback
 
 from test_gba_windows import fixture
 from verify_autopsy import png_rgb
@@ -56,7 +57,8 @@ def main():
             raise RuntimeError('Install Xvfb and xdotool before running this desktop test')
         with tempfile.TemporaryDirectory(prefix='matchaboy linux player ') as temporary:
             root = Path(temporary)
-            env.update(XDG_CONFIG_HOME=str(root / 'config'), XDG_DATA_HOME=str(root / 'data'))
+            env.update(XDG_CONFIG_HOME=str(root / 'config'), XDG_DATA_HOME=str(root / 'data'),
+                       XAUTHORITY=str(root / 'isolated-xauthority'))
             # -displayfd reserves an unused display atomically. The test never
             # changes focus, keys, clipboard or preferences on the user's desktop.
             display_read, display_write = os.pipe()
@@ -186,6 +188,25 @@ def main():
                 assert snapshot()['buttons'] == 0
             assert crop(output / 'held-a.png', (1087, 417, 1224, 448)) != crop(output / 'balanced-guide.png', (1087, 417, 1224, 448))
             checks.append('all ten Balanced keys reach the real controller mask; releases clear inputs; Space selects without pausing')
+            xd('keydown', 'l')
+            assert snapshot()['buttons'] == 16
+            xd('keydown', 'Control_L')
+            assert snapshot()['buttons'] == 0
+            xd('keyup', 'Control_L')
+            xd('keyup', 'l')
+            assert snapshot()['buttons'] == 0
+            checks.append('pressing Control clears a held game button immediately without leaving a stuck input')
+
+            # Browsing the library must preserve an already-paused game.
+            key('ctrl+l')
+            library = snapshot()
+            assert library['library_view'] and library['paused'] and library['frames'] == start['frames']
+            key('ctrl+l')
+            assert snapshot()['library_view']
+            key('Escape')
+            returned = snapshot()
+            assert not returned['library_view'] and returned['paused'] and returned['frames'] == start['frames']
+            checks.append('Ctrl+L enters the library and Escape restores the original paused state, including repeated library commands')
 
             # Inspector must not steal WASD from the player.
             key('Tab')
@@ -206,7 +227,11 @@ def main():
             for code, expected in [('l', (0, 255, 0)), ('q', (0, 0, 255)), ('i', (255, 255, 255))]:
                 key('Escape')
                 xd('keydown', code)
-                time.sleep(.25)
+                def reached_colour():
+                    state = snapshot()
+                    assert not state['paused'], state
+                    return state if pixel() == expected else None
+                wait(reached_colour, timeout=12, process=active)
                 key('Escape')
                 xd('keyup', code)
                 state = snapshot()
@@ -221,6 +246,22 @@ def main():
             key('Escape')
             assert snapshot()['paused']
             checks.append('Escape toggles pause once when held; key repeat does not repeatedly pause the core')
+            paused_frame = snapshot()['frames']
+            key('Escape')
+            wait(lambda: snapshot()['frames'] > paused_frame, process=active)
+            key('ctrl+l')
+            library = snapshot()
+            assert library['library_view'] and library['paused']
+            key('ctrl+l')
+            repeated_library = snapshot()
+            assert repeated_library['library_view'] and repeated_library['frames'] == library['frames']
+            key('Escape')
+            restored = snapshot()
+            assert not restored['library_view'] and not restored['paused']
+            wait(lambda: snapshot()['frames'] > library['frames'], process=active)
+            key('Escape')
+            assert snapshot()['paused']
+            checks.append('returning from the library resumes a previously running game instead of overwriting its saved pause state')
 
             settings()
             select_button(9)
@@ -293,7 +334,60 @@ def main():
             click(974, 760)
             assert snapshot()['keyboard_mapping'] == BALANCED
             checks.append('Classic and Balanced presets and all ten Set All captures work, including Enter and Space')
+            settings()
+            key('Tab')
+            key('Return')
+            state = snapshot()
+            assert state['settings_focus'] == 1 and state['settings_draft'] == CLASSIC
+            key('shift+Tab')
+            key('space')
+            state = snapshot()
+            assert state['settings_focus'] == 0 and state['settings_draft'] == BALANCED
+            xd('key', '--delay', '30', *(['Tab'] * 14))
+            assert snapshot()['settings_focus'] == 14
+            key('Return')
+            state = snapshot()
+            assert not state['settings_open'] and state['keyboard_mapping'] == BALANCED and state['buttons'] == 0
+            checks.append('Settings is operable by Tab/Shift+Tab and Enter/Space, including keyboard-only Apply')
             stop()
+
+            # Force an actual save-write failure without permission assumptions:
+            # a directory cannot be opened as the save's temporary regular file.
+            save_rom = root / 'save retry fixture.gba'
+            save_rom.write_bytes(fixture())
+            save_file = save_rom.with_suffix('.matchaboy.sav')
+            seed = bytes([17]) + bytes(32767)
+            save_file.write_bytes(seed)
+            blocker = Path(str(save_file) + '.tmp')
+            launch('save-retry', save_rom, '--frames', '0', '--paused')
+            start_save = snapshot()
+            key('Escape')
+            wait(lambda: snapshot()['frames'] >= start_save['frames'] + 3, process=active)
+            blocker.mkdir()
+            key('ctrl+q')
+            failed_save = snapshot('save-error')
+            assert active.poll() is None and failed_save['ui_mode'] == 'save-error' and failed_save['paused']
+            assert save_file.read_bytes() == seed, 'failed save overwrote the existing cartridge save'
+            time.sleep(.1)
+            assert snapshot()['frames'] == failed_save['frames']
+            key('Return')  # Retry while the real filesystem error still exists.
+            retried = snapshot()
+            assert retried['ui_mode'] == 'save-error' and retried['frames'] == failed_save['frames']
+            assert save_file.read_bytes() == seed
+            click(567, 760)  # Keep playing restores the state before Quit.
+            kept = snapshot()
+            assert kept['ui_mode'] == 'player' and not kept['paused']
+            wait(lambda: snapshot()['frames'] > failed_save['frames'], process=active)
+            key('ctrl+q')
+            assert snapshot()['ui_mode'] == 'save-error'
+            blocker.rmdir()
+            click(333, 760)  # Retry save and quit after fixing the actual folder.
+            assert active.wait(timeout=10) == 0
+            active, window = None, None
+            saved = save_file.read_bytes()
+            assert len(saved) == len(seed) and saved[0] == 18 and saved[1:] == seed[1:], 'retry lost the in-memory SRAM update'
+            assert not blocker.exists()
+            checks.append('failed cartridge writes preserve the old save and live core; Keep playing resumes it and Retry saves the real SRAM update before quitting')
 
             # Two complete real cores communicate over the actual UDP transport.
             peer_rom = root / 'remote fixture.gba'
@@ -344,7 +438,7 @@ def main():
             checks.append('native GUI and headless peer complete 1,200 real linked frames; Settings stays open for 12 seconds without pause, timeout or lost hash verification')
             report = dict(passed=True, checks=checks)
     except Exception as error:
-        report = dict(passed=False, checks=checks, error=str(error))
+        report = dict(passed=False, checks=checks, error=str(error), traceback=traceback.format_exc())
     finally:
         if display_read is not None:
             os.close(display_read)

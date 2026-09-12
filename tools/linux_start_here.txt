@@ -7,9 +7,9 @@ The player opens the ten-game library. Open game loads your own .gb or .gba ROM.
 No separate BIOS, emulator, Python, SDL or Qt installation is required.
 
 This package targets Ubuntu 24.04 x64 or a compatible Linux desktop. It uses
-system X11 (including XWayland on a Wayland desktop), and ALSA for speaker audio.
+system X11/Xft (including XWayland on a Wayland desktop), and ALSA for speaker audio.
 On Debian/Ubuntu, install missing desktop libraries with:
-    sudo apt install libx11-6 libasound2t64
+    sudo apt install libx11-6 libxft2 libasound2t64 fonts-dejavu-core
 If an extractor dropped the executable permission, run: chmod +x Matchaboy
 For a server without a display, use --headless; the original CLI tools are in
 Extras. Build from source for other distributions/architectures: Extras/LINUX.md.

@@ -5,7 +5,7 @@ snapshots, serial rollback over real UDP, native hardware instrumentation, and
 independent threaded learning environments. Core and network code use C++20,
 the standard library and operating-system sockets. The optional macOS player
 uses system AppKit/OpenGL and AudioToolbox frameworks; the Windows player uses
-Win32/GDI+/OpenGL and WinMM. The Linux desktop uses X11 and optional ALSA.
+Win32/GDI+/OpenGL and WinMM. The Linux desktop uses X11/Xft and optional ALSA.
 These platform libraries do not change the independent headless DMG core.
 The optional Python adapter uses ctypes,
 NumPy, and Gymnasium; none is linked into the emulator.
@@ -28,7 +28,7 @@ macOS, Windows and Linux through CMake; the headless core, telemetry tests, UDP
 peers and Gym remain available separately. See [DOWNLOADS.md](DOWNLOADS.md) and
 the [Mac](MACOS.md), [Windows](WINDOWS.md) and [Linux](LINUX.md) guides. Each
 player statically bundles mGBA for GBA games; the original DMG core remains
-independent. Linux requires X11, with optional ALSA for sound. See THIRD_PARTY.md.
+independent. Linux requires X11/Xft, with optional ALSA for sound. See THIRD_PARTY.md.
 The Windows keyboard/netplay and Linux desktop changes await native CI evidence
 for this revision; cross-compilation is not a runtime pass.
 

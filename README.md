@@ -4,7 +4,7 @@
 
 A C++20 Game Boy DMG engine built from scratch, with Windows, Mac and Linux desktop
 players and a bundled mGBA core for Game Boy Advance. Windows and Mac players
-need no installer or extra runtime-package setup; the Linux player uses X11
+need no installer or extra runtime-package setup; the Linux player uses X11/Xft
 and optional ALSA system libraries. Their original arcade includes five
 GB and five GBA mini-games with goals, controls, source and Inspector reading
 guides: see [the collection](games/README.md) and [authorship/credits](games/PROVENANCE.md).

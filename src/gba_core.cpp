@@ -247,7 +247,7 @@ struct GbaLinkedPair::Impl {
             const unsigned target=id?static_cast<unsigned>(id):1;
             if(!id&&p.nodes[target].d.p->mode>SIO_MULTI)return;
             p.posted[target]+=cycles;
-            if(!id){if(!p.awake[target])p.nodes[target].nextEvent+=p.posted[target];p.awake[target]=true;}
+            if(!id){if(!p.awake[target])p.nodes[target].nextEvent=p.nodes[target].nextEvent+p.posted[target];p.awake[target]=true;}
         };
         cable.d.useCycles=[](mLockstep *c,int id,std::int32_t cycles) {
             auto &p=*static_cast<Impl *>(c->context);
@@ -264,7 +264,7 @@ struct GbaLinkedPair::Impl {
             if(id){p.posted[1]=0;p.awake[1]=true;p.wait_mask&=~2U;if(!p.wait_mask)p.awake[0]=true;}
             else {
                 p.posted[1]+=p.nodes[0].eventDiff;
-                if(!p.awake[1])p.nodes[1].nextEvent+=p.posted[1];
+                if(!p.awake[1])p.nodes[1].nextEvent=p.nodes[1].nextEvent+p.posted[1];
                 p.awake[1]=true;p.awake[0]=true;p.wait_mask=0;
             }
         };
