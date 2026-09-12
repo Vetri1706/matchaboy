@@ -732,7 +732,9 @@ class Window {
     HWND handle{};
     HDC dc{};
     HGLRC gl{};
-    GLuint texture{};
+    struct ChromeTile {GLuint texture{};unsigned x{},y{},width{},height{};};
+    std::vector<ChromeTile> chrome_tiles;
+    unsigned tile_size=0;
     GLuint lcd_texture{};
     unsigned texture_width = 0, texture_height = 0;
     bool chrome_valid = false, cached_paused = false, cached_controls = true, cached_inspector = false;
@@ -987,7 +989,7 @@ class Window {
     ~Window() {
         if (gl) {
             wglMakeCurrent(dc, gl);
-            if (texture) glDeleteTextures(1, &texture);
+            for(const auto &tile:chrome_tiles)if(tile.texture)glDeleteTextures(1,&tile.texture);
             if (lcd_texture) glDeleteTextures(1, &lcd_texture);
             wglMakeCurrent(nullptr, nullptr);
             wglDeleteContext(gl);
@@ -1066,12 +1068,24 @@ class Window {
             }
         }
         rendered->UnlockBits(&data);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, canvas_width, canvas_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba.data());
+        // The Windows inbox OpenGL 1.1 renderer requires power-of-two
+        // allocations and may allow only 1024x1024 textures. Tile the HUD,
+        // retaining one neighbouring texel on every edge for seamless filtering.
+        for(const auto &tile:chrome_tiles){
+            const unsigned pitch=tile.width+2,rows=tile.height+2;
+            std::vector<std::uint8_t> padded(static_cast<std::size_t>(pitch)*rows*4);
+            for(unsigned y=0;y<rows;++y){
+                const auto source_y=static_cast<unsigned>(std::clamp(static_cast<int>(tile.y+y)-1,0,static_cast<int>(canvas_height)-1));
+                for(unsigned x=0;x<pitch;++x){
+                    const auto source_x=static_cast<unsigned>(std::clamp(static_cast<int>(tile.x+x)-1,0,static_cast<int>(canvas_width)-1));
+                    const auto from=(static_cast<std::size_t>(source_y)*canvas_width+source_x)*4;
+                    const auto to=(static_cast<std::size_t>(y)*pitch+x)*4;
+                    std::copy_n(rgba.data()+from,4,padded.data()+to);
+                }
+            }
+            glBindTexture(GL_TEXTURE_2D,tile.texture);
+            glTexSubImage2D(GL_TEXTURE_2D,0,0,0,pitch,rows,GL_RGBA,GL_UNSIGNED_BYTE,padded.data());
+        }
         chrome_valid = true;
         cached_library = runtime.library_view; cached_library_selection = runtime.library_selection;
         cached_inspector = runtime.inspector_view; cached_tab = runtime.inspector_tab;
@@ -1089,11 +1103,19 @@ class Window {
         glClearColor(0.035F, 0.06F, 0.08F, 1); glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION); glLoadIdentity(); glOrtho(0, 1, 0, 1, -1, 1);
         glMatrixMode(GL_MODELVIEW); glLoadIdentity();
-        glEnable(GL_TEXTURE_2D); glBindTexture(GL_TEXTURE_2D, texture);
-        glColor3f(1,1,1); glBegin(GL_QUADS);
-        glTexCoord2f(0,1); glVertex2f(0,0); glTexCoord2f(1,1); glVertex2f(1,0);
-        glTexCoord2f(1,0); glVertex2f(1,1); glTexCoord2f(0,0); glVertex2f(0,1);
-        glEnd();
+        glEnable(GL_TEXTURE_2D);glColor3f(1,1,1);
+        for(const auto &tile:chrome_tiles){
+            glBindTexture(GL_TEXTURE_2D,tile.texture);
+            const auto u0=1.0F/static_cast<float>(tile_size),v0=u0;
+            const auto u1=static_cast<float>(tile.width+1)/static_cast<float>(tile_size);
+            const auto v1=static_cast<float>(tile.height+1)/static_cast<float>(tile_size);
+            const auto left=static_cast<float>(tile.x)/canvas_width,right=static_cast<float>(tile.x+tile.width)/canvas_width;
+            const auto top=1-static_cast<float>(tile.y)/canvas_height,bottom=1-static_cast<float>(tile.y+tile.height)/canvas_height;
+            glBegin(GL_QUADS);
+            glTexCoord2f(u0,v1);glVertex2f(left,bottom);glTexCoord2f(u1,v1);glVertex2f(right,bottom);
+            glTexCoord2f(u1,v0);glVertex2f(right,top);glTexCoord2f(u0,v0);glVertex2f(left,top);
+            glEnd();
+        }
         if (!runtime.library_view && runtime.has_game() && (!runtime.inspector_view || runtime.inspector_tab == 0)) {
             std::array<BYTE, 240*160*4> pixels{};
             for (unsigned i = 0; i < runtime.lcd_width()*runtime.lcd_height(); ++i) {
@@ -1104,7 +1126,7 @@ class Window {
             glBindTexture(GL_TEXTURE_2D, lcd_texture);
             if (texture_width != runtime.lcd_width() || texture_height != runtime.lcd_height()) {
                 texture_width = runtime.lcd_width(); texture_height = runtime.lcd_height();
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+                // Both console displays fit the fixed 256x256 backing texture.
             }
             glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, texture_width, texture_height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
             const double lcd_x = runtime.inspector_view ? 48 : runtime.lcd_left();
@@ -1113,9 +1135,10 @@ class Window {
             const double lcd_h = runtime.inspector_view ? (runtime.gba ? 427 : 576) : runtime.display_height();
             const float left = static_cast<float>(lcd_x)/canvas_width, right = static_cast<float>(lcd_x+lcd_w)/canvas_width;
             const float top = 1-static_cast<float>(lcd_y)/canvas_height, bottom = 1-static_cast<float>(lcd_y+lcd_h)/canvas_height;
+            const auto u=static_cast<float>(texture_width)/256.0F,v=static_cast<float>(texture_height)/256.0F;
             glBegin(GL_QUADS);
-            glTexCoord2f(0,1); glVertex2f(left,bottom); glTexCoord2f(1,1); glVertex2f(right,bottom);
-            glTexCoord2f(1,0); glVertex2f(right,top); glTexCoord2f(0,0); glVertex2f(left,top);
+            glTexCoord2f(0,v); glVertex2f(left,bottom); glTexCoord2f(u,v); glVertex2f(right,bottom);
+            glTexCoord2f(u,0); glVertex2f(right,top); glTexCoord2f(0,0); glVertex2f(left,top);
             glEnd();
         }
         glDisable(GL_TEXTURE_2D);
@@ -1307,14 +1330,29 @@ class Window {
         using SwapInterval = BOOL (WINAPI *)(int);
         const auto swap_interval = std::bit_cast<SwapInterval>(wglGetProcAddress("wglSwapIntervalEXT"));
         if (swap_interval) swap_interval(0);
-        glGenTextures(1, &texture);
+        GLint maximum_texture=0;glGetIntegerv(GL_MAX_TEXTURE_SIZE,&maximum_texture);
+        const auto *version=glGetString(GL_VERSION);
+        std::cerr<<"OpenGL renderer: "<<graphics_adapter.renderer<<"; version: "
+                 <<(version?reinterpret_cast<const char *>(version):"unknown")<<"; max texture: "<<maximum_texture<<'\n';
+        if(maximum_texture<256)throw std::runtime_error("OpenGL needs textures of at least 256x256 for the console display.");
+        tile_size=std::bit_floor(std::min(1024U,static_cast<unsigned>(maximum_texture)));
+        const unsigned content_size=tile_size-2;
+        for(unsigned y=0;y<canvas_height;y+=content_size)for(unsigned x=0;x<canvas_width;x+=content_size){
+            ChromeTile tile{};tile.x=x;tile.y=y;tile.width=std::min(content_size,canvas_width-x);tile.height=std::min(content_size,canvas_height-y);
+            glGenTextures(1,&tile.texture);chrome_tiles.push_back(tile);glBindTexture(GL_TEXTURE_2D,tile.texture);
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
+            glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,tile_size,tile_size,0,GL_RGBA,GL_UNSIGNED_BYTE,nullptr);
+        }
         glGenTextures(1, &lcd_texture);
         glBindTexture(GL_TEXTURE_2D, lcd_texture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 160, 144, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        if(const auto error=glGetError();error!=GL_NO_ERROR)
+            throw std::runtime_error(format("OpenGL texture initialization failed (0x%04X).",error));
         if (!window_test) {
             if (!audio.open()) {
                 ModifyMenuW(audio_menu, 1006, MF_BYCOMMAND | MF_STRING | MF_GRAYED, 1006, L"No audio device available");

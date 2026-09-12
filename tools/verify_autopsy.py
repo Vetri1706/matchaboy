@@ -113,7 +113,8 @@ def main():
                 result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=45, check=False)
             summary["commands"].append({"command": command, "exit_code": result.returncode})
             if result.returncode:
-                raise RuntimeError(f"{name} capture failed")
+                detail = (output/(name+".log")).read_text(errors="replace")[-4000:].strip()
+                raise RuntimeError(f"{name} capture failed (exit {result.returncode}): {detail}")
         cpu_state, gpu_state = [json.loads((output/(name+".png.json")).read_text()) for name in ("headless", "gpu")]
         if not gpu_state["gpu_readback"] or cpu_state["gpu_readback"]:
             raise RuntimeError("native capture was not read back from GPU")

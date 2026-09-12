@@ -56,10 +56,15 @@ def main():
                     raise TimeoutError('Library did not respond')
                 def find():user.EnumWindows(enum,0);return found[0] if found else None
                 hwnd=wait(find);wait(meta.exists)
-                def send(msg,value=0):
+                def send(msg,value=0,lp=0):
                     result=C.c_size_t()
-                    if not user.SendMessageTimeoutW(hwnd,msg,value,0,2,5000,C.byref(result)):raise RuntimeError('Window message failed')
-                def key(value,down=True):send(0x100 if down else 0x101,value)
+                    if not user.SendMessageTimeoutW(hwnd,msg,value,lp,2,5000,C.byref(result)):raise RuntimeError('Window message failed')
+                def key(value,down=True):
+                    scans={0x25:(0x4b,True),0x26:(0x48,True),0x27:(0x4d,True),0x28:(0x50,True),
+                           0x1b:(0x01,False),0x0d:(0x1c,False),0x09:(0x0f,False),0x7b:(0x58,False),ord('D'):(0x20,False)}
+                    scan,extended=scans[value]
+                    flags=1|(scan<<16)|(int(extended)<<24)|(0 if down else (1<<30)|(1<<31))
+                    send(0x100 if down else 0x101,value,flags)
                 def tap(value):key(value);key(value,False)
                 def snap(name=None):
                     old=meta.stat().st_mtime_ns
@@ -68,13 +73,21 @@ def main():
                         try:
                             if meta.stat().st_mtime_ns==old:return None
                             data=json.loads(meta.read_text())
-                            return data if data['gpu_readback'] else None
+                            return data if data['gpu_readback'] and 'keyboard_mapping' in data else None
                         except (OSError,json.JSONDecodeError):return None
                     state=wait(read)
                     if name:shutil.copy2(capture,out/(name+'.png'))
                     return state
+                def advance_until(target):
+                    deadline=time.monotonic()+15
+                    while time.monotonic()<deadline:
+                        state=snap()
+                        if state['frames']>=target:return state
+                        time.sleep(.02)
+                    raise TimeoutError(f"Game did not advance to frame {target}: {state}")
                 initial=snap('library');assert initial['platform']=='library' and initial['library_game']==-1
                 assert initial['frames']==0 and initial['library_view']
+                assert initial['keyboard_mapping']==[2,0,13,1,37,40,49,36,12,34]
                 checks.append('EXE-only Unicode directory opens real library without ROM chooser or external game files')
                 for i,game in enumerate(games):
                     send(0x111,1050)
@@ -87,12 +100,13 @@ def main():
                     before=selected['frames'];time.sleep(.1)
                     send(0x111,1013) # disabled frame command must not run an old game.
                     assert snap()['frames']==before
-                    send(0x111,1052);time.sleep(.35);tap(0x20)
+                    send(0x111,1052);advance_until(12);tap(0x1b)
                     title=snap(game['id']+'-title')
                     assert not title['library_view'] and title['library_game']==i and title['paused']
                     assert (title.get('platform')=='gba') == (game['system']=='GBA')
                     # Start is a real cartridge key, with held input across emulator frames.
-                    key(0x0d);tap(0x20);time.sleep(.18);key(0x0d,False);time.sleep(.25);tap(0x20)
+                    tap(0x1b);key(0x0d);advance_until(title['frames']+12)
+                    key(0x0d,False);advance_until(title['frames']+24);tap(0x1b)
                     play=snap(game['id']+'-play')
                     assert play['frames']>title['frames'] and play['paused']
                     w,h,a=png_rgb(out/(game['id']+'-title.png'));_,_,b=png_rgb(out/(game['id']+'-play.png'))
@@ -100,16 +114,16 @@ def main():
                     different=sum(a[(y*w+x)*3:(y*w+x)*3+3]!=b[(y*w+x)*3:(y*w+x)*3+3]
                         for y in range(300,750,3) for x in range(100,800,3))
                     assert different>50,(game['id'],'Start did not change game display',different)
-                    key(0x27);assert snap()['buttons']&1;key(0x27,False)
+                    key(ord('D'));assert snap()['buttons']&1;key(ord('D'),False)
                     tap(9);inspector=snap();assert inspector['inspector_view'] and inspector['frames']==play['frames']
                     send(0x111,1050);library=snap();assert library['library_view'] and library['buttons']==0
                     time.sleep(.15);assert snap()['frames']==library['frames']
                     send(0x111,1051);back=snap();assert back['paused'] and back['frames']==play['frames']
                     assert back['inspector_view'];tap(9)
                     # Running game is suspended in Library and resumes only on return.
-                    tap(0x20);time.sleep(.1);send(0x111,1050);held=snap()
+                    tap(0x1b);advance_until(play['frames']+3);send(0x111,1050);held=snap()
                     time.sleep(.15);assert snap()['frames']==held['frames']
-                    send(0x111,1051);time.sleep(.1);send(0x111,1050)
+                    send(0x111,1051);advance_until(held['frames']+3);send(0x111,1050)
                     assert snap()['frames']>held['frames']
                     prepared=isolated/'Matchaboy Data/Library'/Path(game['rom']).name
                     assert prepared.read_bytes()==(root/game['rom']).read_bytes()

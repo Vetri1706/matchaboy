@@ -70,6 +70,8 @@ def main():
                                 "--output", str(output / "windows-gba")])
             run("windows-controls", ["tools/test_autopsy_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
                                      "--output", str(output / "windows-controls")])
+            run("windows-arcade", ["tools/test_arcade_windows.py", "--binary", str(binaries / "Matchaboy.exe"),
+                                   "--output", str(output / "windows-arcade")])
         if sys.platform == "win32":
             run("windows-friend-player", ["tools/test_friend_player.py", "--binary", str(binaries / "Matchaboy.exe"),
                                           "--output", str(output / "windows-friend-player")])

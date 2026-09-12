@@ -162,7 +162,7 @@ Install LLVM, CMake, Ninja, and the Visual Studio C++ Build Tools/Windows SDK.
 Open an **x64 Native Tools Command Prompt for Visual Studio**, then run:
 
 ```bat
-cmake -S . -B build -G Ninja -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Release
 cmake --build build --parallel 4
 ctest --test-dir build --output-on-failure
 cmake --install build --prefix stage

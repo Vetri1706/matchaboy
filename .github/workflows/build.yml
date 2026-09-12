@@ -7,6 +7,12 @@ on:
   pull_request:
     branches: [master, main]
   workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform to verify and package
+        type: choice
+        default: all
+        options: [all, windows-x64, linux-x64, macos-arm64]
 
 permissions:
   contents: read
@@ -23,13 +29,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: windows-2022
-            name: windows-x64
-          - os: ubuntu-24.04
-            name: linux-x64
-          - os: macos-14
-            name: macos-arm64
+        include: >-
+          ${{ fromJSON(
+            inputs.platform == 'windows-x64' && '[{"os":"windows-2022","name":"windows-x64"}]' ||
+            inputs.platform == 'linux-x64' && '[{"os":"ubuntu-24.04","name":"linux-x64"}]' ||
+            inputs.platform == 'macos-arm64' && '[{"os":"macos-14","name":"macos-arm64"}]' ||
+            '[{"os":"windows-2022","name":"windows-x64"},{"os":"ubuntu-24.04","name":"linux-x64"},{"os":"macos-14","name":"macos-arm64"}]') }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -98,9 +103,9 @@ jobs:
             artifacts/ci/linux-player/*.png
             artifacts/ci/linux-player/*.json
             artifacts/ci/linux-player/*.log
-            artifacts/ci/windows-friend-ui/*.png
-            artifacts/ci/windows-friend-ui/*.json
-            artifacts/ci/windows-friend-ui/*.log
+            artifacts/ci/windows-*/*.png
+            artifacts/ci/windows-*/*.json
+            artifacts/ci/windows-*/*.log
             build/Testing/Temporary/LastTest.log
           if-no-files-found: warn
           retention-days: 14
