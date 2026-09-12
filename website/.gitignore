@@ -1,0 +1,5 @@
+.DS_Store
+.openai/
+# The static distribution is authored source and must be versioned.
+!dist/
+!dist/**

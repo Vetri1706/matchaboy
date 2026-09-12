@@ -1,0 +1,58 @@
+{
+  "static_checks": [
+    {
+      "page": "index.html",
+      "references": 58,
+      "images": 33,
+      "passed": true
+    },
+    {
+      "page": "credits.html",
+      "references": 14,
+      "images": 0,
+      "passed": true
+    }
+  ],
+  "release_targets": "three exact v0.1.0 assets",
+  "passed": true,
+  "browser_qa": {
+    "browser": "Codex in-app browser",
+    "viewports": [
+      [
+        1376,
+        768
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        1024
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "checks": [
+      "Hero rendered with WebGL and local assets",
+      "No horizontal page overflow at four widths",
+      "Headline remained visible after viewport change",
+      "Pause/resume controls worked",
+      "Rotation changed the rendered object",
+      "Assemble/explode button states worked",
+      "Library/Inspector screenshot switching worked",
+      "Internet disclosure expanded",
+      "Three download links matched the existing release assets",
+      "No new console warnings or errors during final pass"
+    ],
+    "screenshots": "qa/",
+    "reduced_motion": "Default preference wiring and static chapter poses reviewed; explicit pause exercised in browser. OS setting itself was not changed."
+  },
+  "limitations": [
+    "Visual interpretation of supplied concepts, not pixel-identical photography",
+    "Architecture canvas is a labeled illustration, not an embedded emulator",
+    "No full cross-browser/device performance or WCAG audit performed"
+  ]
+}
