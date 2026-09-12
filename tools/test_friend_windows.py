@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import traceback
 from test_gba_windows import fixture
 
 
@@ -31,6 +32,14 @@ def main():
     user.GetDlgItem.restype = W.HWND
     user.PostMessageW.argtypes = [W.HWND, W.UINT, W.WPARAM, W.LPARAM]
     user.IsWindow.argtypes = [W.HWND]
+    user.IsWindowVisible.argtypes = [W.HWND]
+    user.OpenClipboard.argtypes = [W.HWND]
+    user.GetClipboardData.argtypes = [W.UINT]
+    user.GetClipboardData.restype = W.HANDLE
+    kernel = C.WinDLL('kernel32', use_last_error=True)
+    kernel.GlobalLock.argtypes = [W.HANDLE]
+    kernel.GlobalLock.restype = C.c_void_p
+    kernel.GlobalUnlock.argtypes = [W.HANDLE]
     user.SendMessageTimeoutW.argtypes = [W.HWND, W.UINT, W.WPARAM, W.LPARAM, W.UINT, W.UINT, C.POINTER(C.c_size_t)]
     user.SendMessageTimeoutW.restype = C.c_ssize_t
     processes, logs, checks = [], [], []
@@ -54,7 +63,9 @@ def main():
             pid, label = W.DWORD(), C.create_unicode_buffer(128)
             user.GetWindowThreadProcessId(window, C.byref(pid))
             user.GetClassNameW(window, label, len(label))
-            if pid.value == process.pid and label.value == name:
+            # The custom dialog HWND exists before its child controls are
+            # initialized. ShowWindow follows initialization in the player.
+            if pid.value == process.pid and label.value == name and user.IsWindowVisible(window):
                 found.append(window)
             return True
         user.EnumWindows(inspect, 0)
@@ -62,18 +73,34 @@ def main():
 
     def send(window, message, wp=0, lp=0):
         result = C.c_size_t()
+        C.set_last_error(0)
         if not user.SendMessageTimeoutW(window, message, wp, lp, 2, 5000, C.byref(result)):
-            raise RuntimeError(f'window message {message:x} failed')
+            raise RuntimeError(f'window message {message:x} failed: HWND={window!r}, Win32 error={C.get_last_error()}')
         return result.value
 
     def set_field(dialog, ident, value):
         data = C.create_unicode_buffer(value)
-        send(user.GetDlgItem(dialog, ident), 0x0C, 0, C.addressof(data))
+        field = wait(lambda: user.GetDlgItem(dialog, ident))
+        send(field, 0x0C, 0, C.addressof(data))
 
-    def read_field(dialog, ident):
-        data = C.create_unicode_buffer(1024)
-        send(user.GetDlgItem(dialog, ident), 0x0D, len(data), C.addressof(data))
-        return data.value
+    def copy_room_code(dialog):
+        # Exercise the same explicit copy action a player uses, rather than
+        # reading a masked edit control from another process.
+        send(dialog, 0x111, 4)
+        wait(lambda: user.OpenClipboard(None))
+        try:
+            handle = user.GetClipboardData(13)  # CF_UNICODETEXT
+            if not handle:
+                raise RuntimeError('Copy room code did not publish Unicode text')
+            pointer = kernel.GlobalLock(handle)
+            if not pointer:
+                raise RuntimeError('Cannot read the copied room code')
+            try:
+                return C.wstring_at(pointer)
+            finally:
+                kernel.GlobalUnlock(handle)
+        finally:
+            user.CloseClipboard()
 
     def close_dialog(dialog):
         user.PostMessageW(dialog, 0x111, 2, 0)
@@ -99,7 +126,7 @@ def main():
                 port = allocation.getsockname()[1]
             user.PostMessageW(windows[0], 0x111, 1500, 0)
             host_dialog = wait(lambda: find_window(processes[0], 'MatchaboyFriendDialog'))
-            code = read_field(host_dialog, 12)
+            code = copy_room_code(host_dialog)
             assert len(code) == 32 and all(c in '0123456789abcdefABCDEF' for c in code)
             set_field(host_dialog, 11, '0')
             user.PostMessageW(host_dialog, 0x111, 1, 0)
@@ -170,7 +197,7 @@ def main():
                 assert process.wait(timeout=10) == 0
         report = dict(passed=True, checks=checks)
     except Exception as error:
-        report = dict(passed=False, checks=checks, error=str(error))
+        report = dict(passed=False, checks=checks, error=str(error), traceback=traceback.format_exc())
     finally:
         for process in processes:
             if process.poll() is None:

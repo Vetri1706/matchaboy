@@ -106,7 +106,9 @@ def main():
         for name, option in (("headless", "--headless"), ("gpu", "--window-test")):
             command = [str(binary), str(rom), option, "--frames", "120",
                        "--capture", str(output/(name+".png"))]
-            if not gba: command.extend(["--line", "48", "--dot", "115"])
+            # Positioning switches deliberately open Inspector in native
+            # players. Omit them when testing the actual game presentation.
+            if not gba and not args.player: command.extend(["--line", "48", "--dot", "115"])
             if sys.platform in ("win32", "darwin") and not args.player:
                 command.append("--inspector")
             with (output/(name+".log")).open("w") as log:
@@ -121,7 +123,9 @@ def main():
         for key in (("frames", "pc", "cpsr", "dispcnt", "inspector_view") if gba else ("frames", "cycles", "ly", "dot", "mode", "fifo_depth")):
             if cpu_state[key] != gpu_state[key]:
                 raise RuntimeError(f"capture machine states differ: {key}")
-        if not gba and (cpu_state["mode"] != 3 or cpu_state["fifo_depth"] == 0):
+        if args.player and (cpu_state.get("inspector_view") is not False or gpu_state.get("inspector_view") is not False):
+            raise RuntimeError("player capture unexpectedly opened Inspector")
+        if not gba and not args.player and (cpu_state["mode"] != 3 or cpu_state["fifo_depth"] == 0):
             raise RuntimeError("capture missed active mode-three FIFO")
         summary["machine"] = cpu_state
         summary["pixel_comparison"] = compare(output/"headless.png", output/"gpu.png")
