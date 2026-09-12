@@ -29,8 +29,9 @@ peers and Gym remain available separately. See [DOWNLOADS.md](DOWNLOADS.md) and
 the [Mac](MACOS.md), [Windows](WINDOWS.md) and [Linux](LINUX.md) guides. Each
 player statically bundles mGBA for GBA games; the original DMG core remains
 independent. Linux requires X11/Xft, with optional ALSA for sound. See THIRD_PARTY.md.
-The Windows keyboard/netplay and Linux desktop changes await native CI evidence
-for this revision; cross-compilation is not a runtime pass.
+Downloads are gated by native player, keyboard and networking checks. Each
+package records its exact evidence in `Extras/BUILD_INFO.json`;
+cross-compilation alone is not treated as a runtime pass.
 
 ## Snapshots
 

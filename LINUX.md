@@ -6,10 +6,11 @@ X11 drawing, Xft/Fontconfig text and the existing Matchaboy DMG and bundled mGBA
 introduce Qt, SDL or another emulator framework. A normal X11 desktop or an
 XWayland session with evdev-style keycodes is required for windowed play.
 
-This desktop is new in this revision. Strict source compilation and an Xvfb
-window test are useful checks, but do not prove physical audio playback or a
-particular Wayland compositor. Native Linux runtime evidence is pending until
-the workflow runs; the previous Linux headless package did not include this UI.
+The Ubuntu 24.04 native workflow verifies actual X11 input and rendering,
+mapping persistence, save-failure recovery and 1,200 linked frames, including
+12 seconds with Settings open. See the [native run](https://github.com/Vetri1706/matchaboy/actions/runs/34681561459)
+and the exact verification manifest in each download's `Extras/BUILD_INFO.json`.
+Xvfb checks do not prove physical audio playback or a particular Wayland compositor.
 
 ## Build and open
 
@@ -42,6 +43,8 @@ also pass a path directly:
 Bundled games are prepared in `$XDG_DATA_HOME/Matchaboy/Library`, falling back
 to `~/.local/share/Matchaboy/Library`, so their saves do not modify installed
 resources. Cartridge progress uses `<game>.matchaboy.sav` beside the writable ROM.
+If a save fails on quit, the game remains in memory. Fix the folder and retry,
+keep playing, or explicitly choose Quit without saving.
 
 ## Keyboard settings
 

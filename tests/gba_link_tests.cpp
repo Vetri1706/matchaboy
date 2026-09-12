@@ -125,7 +125,13 @@ void rtc(const std::filesystem::path &directory) {
         r.word(false,2,5,byte*4);
     }
     write(1,0);r.label("done");r.branch("done");r.save(path,"AXVE"); // selects the real RTC/flash cartridge hardware profile
+#ifdef _WIN32
+    char *prior=nullptr;std::size_t length=0;
+    if(_dupenv_s(&prior,&length,"TZ")!=0)throw std::runtime_error("Cannot preserve test timezone");
+    const std::string old=prior?prior:"";const bool had=prior!=nullptr;std::free(prior);
+#else
     const char *prior=std::getenv("TZ");const std::string old=prior?prior:"";const bool had=prior!=nullptr;
+#endif
     timezone("UTC0");GbaCore first(path),second(path);GbaLinkedPair one(first,second);one.run_frame();
     const auto baseline=one.digest();
     timezone("PST8PDT");GbaCore third(path),fourth(path);GbaLinkedPair two(third,fourth);two.run_frame();

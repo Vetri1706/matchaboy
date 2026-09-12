@@ -201,5 +201,7 @@ Windows and Linux carry the player workflow and shared keyboard/session model,
 not every other platform's implementation detail. Windows GPU selection remains
 Windows-only; Linux uses X11/Xft and optional ALSA. The Linux headless capture exports
 the real LCD, while a desktop capture observes the X11 window. No unrendered view
-is represented as a captured GUI. New Windows/Linux native runtime and accessibility
-checks are pending until their CI evidence is recorded.
+is represented as a captured GUI. Native Windows dialog tests and Linux X11
+input tests gate downloads, including keyboard navigation, saved mappings and
+live links during settings. Physical audio and compositor-specific behavior
+remain separate device checks.
