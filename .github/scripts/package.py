@@ -51,7 +51,7 @@ def main():
                                          ".github", "matcha_gym.py"], cwd=ROOT, text=True).strip())
     # A previous packaging run may have left its manifest in the staging tree.
     # The manifest cannot include its own hash.
-    if sys.platform == "win32":
+    if sys.platform in ("darwin", "win32"):
         sys.path.insert(0, str(ROOT / "tools"))
         from package_player import add_sources
         add_sources(stage)
@@ -114,6 +114,15 @@ with matcha_gym.NativeBatch(sys.argv[2], 16) as batch:
                            cwd=destination, check=True, stdout=subprocess.DEVNULL)
             if not (destination / "hud.png").read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
                 raise RuntimeError("packaged dashboard did not render")
+            if sys.platform == "darwin":
+                # Exercise bundled resources outside the checkout too. A library
+                # page alone would not prove that its selected ROM can load.
+                for game in ("matcha-garden", "drift-circuit"):
+                    capture = destination / (game + ".png")
+                    subprocess.run([str(app), "--game", game, "--headless", "--frames", "3", "--capture", str(capture)],
+                                   cwd=destination, check=True, stdout=subprocess.DEVNULL)
+                    if not capture.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
+                        raise RuntimeError("packaged arcade ROM did not render: " + game)
     (output / (archive.name + ".sha256")).write_text(sha(archive) + "  " + archive.name + "\n")
     print("Verified downloadable package: " + str(archive))
 

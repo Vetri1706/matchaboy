@@ -14,6 +14,7 @@
 #include "gba_core.hpp"
 #include "windows_audio.hpp"
 #include "arcade_library.hpp"
+#include "player_theme.hpp"
 #include "dmg/cpu.hpp"
 #include "dmg/mmu.hpp"
 #include <algorithm>
@@ -37,11 +38,7 @@ __declspec(dllexport) DWORD AmdPowerXpressRequestHighPerformance = 1;
 }
 namespace {
 constexpr unsigned canvas_width = 1280, canvas_height = 920;
-struct Color { double r, g, b; };
-constexpr Color foreground{0.85, 0.90, 0.94}, muted{0.48, 0.60, 0.67};
-constexpr Color cyan{0.25, 0.85, 0.94}, green{0.45, 0.90, 0.60}, orange{1.0, 0.65, 0.32};
-constexpr std::array<Color, 4> shades{{{0.80,0.87,0.61},{0.53,0.65,0.40},{0.29,0.43,0.31},{0.10,0.23,0.22}}};
-constexpr std::array<Color, 4> grayscale{{{1,1,1},{2.0/3,2.0/3,2.0/3},{1.0/3,1.0/3,1.0/3},{0,0,0}}};
+using namespace matcha::theme;
 constexpr auto frame_period = std::chrono::nanoseconds(16742706); // 70224 / 4194304 seconds
 std::wstring wide(const std::string &s) {
     if (s.empty()) return {};

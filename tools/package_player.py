@@ -22,7 +22,7 @@ def add_sources(destination):
                 relative=path.relative_to(ROOT)
                 if path.is_file() and not any(part in {'.git','__pycache__','cinema','build'} for part in relative.parts):
                     archive.write(path, relative.as_posix())
-        for name in ['LICENSE','CMakeLists.txt','README.md','DOWNLOADS.md','PLATFORM.md','PLATFORM_VERIFICATION.md',
+        for name in ['LICENSE','CMakeLists.txt','Makefile','DESIGN.md','MACOS.md','README.md','DOWNLOADS.md','PLATFORM.md','PLATFORM_VERIFICATION.md',
                      'VERIFICATION.md','MOONEYE.md','MEALYBUG.md','ARTIFACTS.md','THIRD_PARTY.md','matcha_gym.py']:
             archive.write(ROOT/name, name)
 

@@ -3,8 +3,9 @@
 Matcha extends the existing DMG CPU and pixel-FIFO core with deterministic
 snapshots, serial rollback over real UDP, native hardware instrumentation, and
 independent threaded learning environments. Core and network code use C++20,
-the standard library and operating-system sockets. The optional macOS HUD uses
-system AppKit/OpenGL frameworks; the Windows HUD uses Win32/GDI+/OpenGL.
+the standard library and operating-system sockets. The optional macOS player
+uses system AppKit/OpenGL and AudioToolbox frameworks; the Windows player uses
+Win32/GDI+/OpenGL and WinMM.
 The optional Python adapter uses ctypes,
 NumPy, and Gymnasium; none is linked into the emulator.
 
@@ -24,7 +25,9 @@ Every C++ target uses strict warnings. Release targets use `-O3`; the optional
 `build/gym_benchmark_lto` adds link-time optimization. The native HUD supports
 macOS and Windows; the headless core, telemetry tests, UDP peers and Gym also
 support Windows through CMake. See [DOWNLOADS.md](DOWNLOADS.md) for native
-Windows commands. The Windows player statically bundles mGBA for GBA games; the original DMG core remains independent. No external GUI toolkit or runtime installation is required. See THIRD_PARTY.md.
+Windows commands and [MACOS.md](MACOS.md) for the native Mac app. Both players
+statically bundle mGBA for GBA games; the original DMG core remains independent.
+No external GUI toolkit or runtime installation is required. See THIRD_PARTY.md.
 
 ## Snapshots
 
@@ -114,13 +117,16 @@ must be assessed from those measurements.
 
 ## Matchaboy Inspector
 
-On Windows use `build\Matchaboy.exe` with the same arguments below, or launch it
-without arguments to choose a ROM. F12 captures the live OpenGL viewport.
-The window scales the same 1280 by 920 dashboard with its aspect ratio intact.
+On Windows use `build\Matchaboy.exe`; on Mac open `build/MatchaAutopsy.app`.
+Without arguments, both open the original ten-game arcade. Opening a cartridge
+shows the large player view, with Inspector available through Tab. F12 captures
+the live OpenGL viewport. The window scales the same 1280 by 920 canvas with its
+aspect ratio intact. Native CMake builds place the app in the chosen build
+directory; the Makefile retains `build/autopsy` as a compatibility entry point.
 
 ```sh
-./build/autopsy roms/acid2/dmg-acid2.gb --paused --frames 120 --line 48 --dot 115
-./build/autopsy roms/acid2/dmg-acid2.gb --headless --frames 120 \
+./build/autopsy roms/acid2/dmg-acid2.gb --inspector --paused --frames 120 --line 48 --dot 115
+./build/autopsy roms/acid2/dmg-acid2.gb --inspector --headless --frames 120 \
   --line 48 --dot 115 --capture /absolute/path/autopsy.png
 ```
 
@@ -132,9 +138,10 @@ are atomic and decay once per emulated frame. The heatmap counts CPU bus
 accesses; it excludes DMA and PPU internal fetches. The displayed locks and
 FIFOs come from the live machine.
 
-Space pauses/resumes, S retires an instruction, F advances a frame, D advances
-one peripheral dot while paused, and scrolling moves through the instruction
-history. Arrow keys and Z/X/Enter/Shift provide joypad input. A requested
+Space pauses/resumes. In Inspector, S retires an instruction, F advances a
+frame, D advances one Game Boy peripheral dot while paused, and scrolling moves
+through the instruction history. Keys 1–4 select Video, CPU, Memory and Audio.
+Arrow keys and Z/X/Enter/Shift provide joypad input; Q/W add GBA L/R. A requested
 line/dot capture stops at the next CPU instruction boundary at or beyond the
 requested dot; the dashboard prints the actual position. D advances only
 peripherals for inspection and deliberately changes CPU/peripheral alignment.
@@ -149,13 +156,21 @@ Generate the included executable homebrew to exercise all four channels:
 
 ```sh
 python3 tools/make_audio_demo.py
-./build/autopsy roms/homebrew/silicon_audio.gb --frames 120
+./build/autopsy roms/homebrew/silicon_audio.gb --inspector --frames 120
 ```
 
 Its CPU writes the audio registers and triangle wave RAM. The dashboard shows
 the resulting hardware samples. `python3 tools/verify_autopsy.py --output
 artifacts/my-hud-test` also captures the real native OpenGL back buffer and
 compares it with the headless renderer at the same live FIFO position.
+
+Both native players output 48 kHz stereo through their operating system. Mac
+uses Audio Queue callbacks and Windows uses WinMM buffer completion. Library,
+pause and mute transitions clear playback; the scopes continue to represent
+actual hardware or PCM state. The GBA Inspector shows display registers,
+palette, ARM/Thumb registers, memory pages and final stereo samples. The GB
+dot-step and retired-instruction history do not apply to GBA. See
+[MACOS.md](MACOS.md) for Mac capture, relocated-bundle and audio checks.
 
 ## C and Python learning API
 

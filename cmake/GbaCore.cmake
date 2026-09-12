@@ -26,5 +26,5 @@ add_library(matcha_gba STATIC src/gba_core.cpp)
 target_include_directories(matcha_gba PUBLIC include)
 target_include_directories(matcha_gba SYSTEM PRIVATE
     third_party/mgba/include "${CMAKE_CURRENT_BINARY_DIR}/third_party/mgba/include")
-target_link_libraries(matcha_gba PRIVATE mgba)
+target_link_libraries(matcha_gba PRIVATE mgba matcha_options)
 target_compile_definitions(matcha_gba PRIVATE BUILD_STATIC NOMINMAX)

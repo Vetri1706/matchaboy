@@ -124,8 +124,14 @@ void GbaCore::flush_save() {
       out.write(current.data(), static_cast<std::streamsize>(current.size()));
       out.close();
       if (!out) throw std::runtime_error("Cannot save GBA progress. Move the game to a writable folder."); }
+#ifdef _WIN32
     if (!MoveFileExW(temporary.c_str(), impl->save_path.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
         throw std::runtime_error("Cannot replace GBA save file; the previous save was preserved.");
+#else
+    std::error_code error;
+    std::filesystem::rename(temporary, impl->save_path, error);
+    if (error) throw std::runtime_error("Cannot replace GBA save file; the previous save was preserved: " + error.message());
+#endif
     impl->previous_save = std::move(current);
 }
 

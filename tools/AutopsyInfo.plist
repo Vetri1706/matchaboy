@@ -7,5 +7,35 @@
 <key>CFBundleExecutable</key><string>autopsy</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleVersion</key><string>1</string>
+<key>CFBundleShortVersionString</key><string>0.1.0</string>
+<key>CFBundleIconFile</key><string>matchaboy.icns</string>
+<key>CFBundleDocumentTypes</key><array>
+<dict>
+<key>CFBundleTypeName</key><string>Game Boy cartridge</string>
+<key>CFBundleTypeRole</key><string>Viewer</string>
+<key>LSHandlerRank</key><string>Alternate</string>
+<key>LSItemContentTypes</key><array><string>org.matchaboy.gameboy-rom</string></array>
+</dict>
+<dict>
+<key>CFBundleTypeName</key><string>Game Boy Advance cartridge</string>
+<key>CFBundleTypeRole</key><string>Viewer</string>
+<key>LSHandlerRank</key><string>Alternate</string>
+<key>LSItemContentTypes</key><array><string>org.matchaboy.gameboy-advance-rom</string></array>
+</dict>
+</array>
+<key>UTImportedTypeDeclarations</key><array>
+<dict>
+<key>UTTypeIdentifier</key><string>org.matchaboy.gameboy-rom</string>
+<key>UTTypeDescription</key><string>Game Boy cartridge</string>
+<key>UTTypeConformsTo</key><array><string>public.data</string></array>
+<key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>gb</string></array></dict>
+</dict>
+<dict>
+<key>UTTypeIdentifier</key><string>org.matchaboy.gameboy-advance-rom</string>
+<key>UTTypeDescription</key><string>Game Boy Advance cartridge</string>
+<key>UTTypeConformsTo</key><array><string>public.data</string></array>
+<key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>gba</string></array></dict>
+</dict>
+</array>
 <key>NSHighResolutionCapable</key><true/>
 </dict></plist>

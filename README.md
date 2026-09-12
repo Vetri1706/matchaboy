@@ -2,15 +2,21 @@
 
 [Download builds or build with Clang on Windows, Linux, and macOS](DOWNLOADS.md).
 
-A C++20 Game Boy DMG engine built from scratch, with a portable Windows player
-and a bundled mGBA core for Game Boy Advance. The Windows player needs no
-installer or extra runtime-package setup. Its original arcade includes five
+A C++20 Game Boy DMG engine built from scratch, with native Windows and Mac
+players and a bundled mGBA core for Game Boy Advance. The players need no
+installer or extra runtime-package setup. Their original arcade includes five
 GB and five GBA mini-games with goals, controls, source and Inspector reading
 guides: see [the collection](games/README.md) and [authorship/credits](games/PROVENANCE.md).
-The original headless DMG engine uses the C++ standard library; the Windows
-frontend and GBA integration have the dependencies documented in THIRD_PARTY.md.
+The original headless DMG engine uses the C++ standard library; the native
+frontends and GBA integration have the dependencies documented in THIRD_PARTY.md.
 The optional verification scripts use Python's standard library to fetch
 external test binaries and preserve evidence.
+
+The [Mac guide](MACOS.md) explains the cartridge library, large player view,
+GB/GBA Inspector, speaker audio and Command-key shortcuts. Open
+`MatchaAutopsy.app` to launch Matchaboy; no ROM argument is needed for its
+bundled arcade. The [shared design](DESIGN.md) follows the Windows player on
+both platforms while keeping native window controls and menus.
 
 Run commands from the cloned repository root. Downloaded test ROMs and build
 products are generated locally; [ARTIFACTS.md](ARTIFACTS.md) describes the
@@ -142,7 +148,7 @@ unexercised hardware behavior; the report identifies the remaining scope limits.
 
 Matchaboy code and original artwork are licensed under GNU GPL version 3. See [LICENSE](LICENSE). Bundled third-party components retain their own licenses; see [THIRD_PARTY.md](THIRD_PARTY.md).
 
-The Windows Inspector has separate Video, CPU, Memory and Audio tabs (keys 1-4). Netplay currently provides an automated Game Boy serial rollback test harness, not an interactive Host/Join player or GBA netplay.
+The Windows and Mac Inspectors have separate Video, CPU, Memory and Audio tabs (keys 1-4). Netplay currently provides an automated Game Boy serial rollback test harness, not an interactive Host/Join player or GBA netplay.
 
 The Windows menus group controls under File, Emulation, Audio/Video and Tools. Inspector telemetry refreshes about 15 times per second while its game display remains at the hardware frame rate. Instruction text is decoded from recorded bytes only when capturing the bounded history. Windows audio uses continuous 10 ms packets and an 100 ms startup buffer; pause/mute still clear playback immediately.
 

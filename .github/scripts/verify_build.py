@@ -27,7 +27,9 @@ def main():
     paths = [emulator, netplay, library]
     if sys.platform == "win32":
         paths.append(binaries / "Matchaboy.exe")
-    before = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
+    if sys.platform == "darwin":
+        paths.append(binaries / "MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy")
+    before = {path.relative_to(binaries).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
     report = {"passed": False, "platform": sys.platform, "binaries": before, "checks": []}
     environment = dict(os.environ, MATCHA_LIBRARY=str(library), MATCHA_NETPLAY=str(netplay))
 
@@ -50,6 +52,9 @@ def main():
     save()
     try:
         run("python-gymnasium", ["-m", "unittest", "discover", "-s", "tests", "-p", "test_matcha_gym.py"])
+        if sys.platform == "darwin":
+            run("macos-player", ["tools/test_player_macos.py", "--binary", str(binaries / "MatchaAutopsy.app"),
+                                 "--dmg", str(emulator), "--output", str(output / "macos-player")])
         if sys.platform == "win32":
             run("windows-dashboard", ["tools/verify_autopsy.py", "--binary", str(binaries / "Matchaboy.exe"),
                                       "--output", str(output / "windows-dashboard")])
@@ -81,7 +86,7 @@ def main():
                              "--frames", "20", "--scenario", "idle-peer",
                              "--output", str(output / "netplay-idle")])
         report["binaries_unchanged"] = all(
-            hashlib.sha256(path.read_bytes()).hexdigest() == before[path.name] for path in paths)
+            hashlib.sha256(path.read_bytes()).hexdigest() == before[path.relative_to(binaries).as_posix()] for path in paths)
         report["passed"] = report["binaries_unchanged"]
     except (OSError, ValueError, RuntimeError) as error:
         report["error"] = str(error)

@@ -107,7 +107,7 @@ def main():
             command = [str(binary), str(rom), option, "--frames", "120",
                        "--capture", str(output/(name+".png"))]
             if not gba: command.extend(["--line", "48", "--dot", "115"])
-            if sys.platform == "win32" and not args.player:
+            if sys.platform in ("win32", "darwin") and not args.player:
                 command.append("--inspector")
             with (output/(name+".log")).open("w") as log:
                 result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=45, check=False)

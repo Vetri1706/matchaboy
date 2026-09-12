@@ -44,13 +44,22 @@ build/netplay_tests: src/netplay.cpp tests/netplay_tests.cpp include/dmg/netplay
 build/netplay: $(CORE) src/netplay.cpp src/netplay_main.cpp $(HEADERS) | build
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $(CORE) src/netplay.cpp src/netplay_main.cpp -o $@
 ifeq ($(UNAME_S),Darwin)
-build/autopsy: $(CORE) src/autopsy.cpp src/autopsy_main.mm $(HEADERS) | build
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DENABLE_AUTOPSY -pthread $(CORE) src/autopsy.cpp src/autopsy_main.mm -framework AppKit -framework OpenGL -framework CoreGraphics -framework CoreText -framework ImageIO -o $@
-build/MatchaAutopsy.app/Contents/MacOS/autopsy: build/autopsy tools/AutopsyInfo.plist
-	mkdir -p build/MatchaAutopsy.app/Contents/MacOS
-	cp build/autopsy $@
-	cp tools/AutopsyInfo.plist build/MatchaAutopsy.app/Contents/Info.plist
-platform: build/MatchaAutopsy.app/Contents/MacOS/autopsy
+CMAKE ?= $(if $(wildcard .venv/bin/cmake),$(CURDIR)/.venv/bin/cmake,cmake)
+.PHONY: mac-gui build/autopsy
+# The native player now includes bundled GBA, arcade resources and Audio Queue.
+# CMake owns that dependency graph; keep the legacy build/autopsy entry point
+# as a launcher for its complete app. A bare executable symlink prevents
+# NSBundle from finding the arcade resources when invoked directly.
+mac-gui: | build
+	"$(CMAKE)" -S . -B build/mac-gui -DCMAKE_CXX_COMPILER="$(CXX)" -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+	"$(CMAKE)" --build build/mac-gui --target autopsy --parallel 4
+	"$(CMAKE)" -E rm -rf build/MatchaAutopsy.app
+	"$(CMAKE)" -E copy_directory build/mac-gui/MatchaAutopsy.app build/MatchaAutopsy.app
+	"$(CMAKE)" -E rm -f build/autopsy
+	printf '#!/bin/sh\nexec "$$(dirname "$$0")/MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy" "$$@"\n' > build/autopsy
+	chmod +x build/autopsy
+build/autopsy: mac-gui
+platform: mac-gui
 endif
 build/autopsy_tests: $(CORE) src/autopsy.cpp tests/autopsy_tests.cpp $(HEADERS) | build
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DENABLE_AUTOPSY -pthread $(CORE) src/autopsy.cpp tests/autopsy_tests.cpp -o $@

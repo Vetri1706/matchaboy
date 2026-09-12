@@ -108,15 +108,40 @@ if(BUILD_TESTING)
         gym_tests netplay_tests autopsy_tests PROPERTIES TIMEOUT 180)
 endif()
 
+if((APPLE OR WIN32) AND MATCHA_BUILD_AUTOPSY)
+    include(cmake/GbaCore.cmake)
+    if(BUILD_TESTING)
+        matcha_executable(gba_arcade_probe tests/gba_arcade_probe.cpp)
+        target_link_libraries(gba_arcade_probe PRIVATE matcha_gba)
+        if(APPLE)
+            # Explicit device probe, deliberately excluded from unattended
+            # CTest: it requires a usable macOS speaker/output device.
+            matcha_executable(macos_audio_probe tests/macos_audio_probe.cpp src/macos_audio.cpp)
+            target_link_libraries(macos_audio_probe PRIVATE matcha_core matcha_gba "-framework AudioToolbox")
+        endif()
+    endif()
+endif()
+
 if(APPLE AND MATCHA_BUILD_AUTOPSY)
     enable_language(OBJCXX)
     set(CMAKE_OBJCXX_STANDARD 20)
     set(CMAKE_OBJCXX_STANDARD_REQUIRED ON)
     set(CMAKE_OBJCXX_EXTENSIONS OFF)
-    matcha_executable(autopsy src/autopsy_main.mm)
-    target_link_libraries(autopsy PRIVATE matcha_autopsy_core
+    set(MATCHA_MAC_ARCADE_ROMS
+        games/gb/roms/pocket-racer.gb games/gb/roms/moon-courier.gb
+        games/gb/roms/matcha-garden.gb games/gb/roms/signal-lost.gb
+        games/gb/roms/orbit-guard.gb games/gba/roms/drift-circuit.gba
+        games/gba/roms/cloud-pilot.gba games/gba/roms/prism-break.gba
+        games/gba/roms/tiny-tactics.gba games/gba/roms/parcel-dash.gba)
+    set_source_files_properties(${MATCHA_MAC_ARCADE_ROMS} PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources/Arcade HEADER_FILE_ONLY TRUE)
+    set_source_files_properties(assets/matchaboy.icns PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources HEADER_FILE_ONLY TRUE)
+    matcha_executable(autopsy src/autopsy_main.mm src/arcade_macos.mm src/macos_audio.cpp
+        ${MATCHA_MAC_ARCADE_ROMS} assets/matchaboy.icns)
+    target_link_libraries(autopsy PRIVATE matcha_autopsy_core matcha_gba
         "-framework AppKit" "-framework OpenGL" "-framework CoreGraphics"
-        "-framework CoreText" "-framework ImageIO")
+        "-framework CoreText" "-framework ImageIO" "-framework AudioToolbox")
     # Reuse the native application's checked-in metadata, with the executable
     # name CMake places inside this bundle rather than Makefile's plain binary.
     file(READ "${CMAKE_CURRENT_SOURCE_DIR}/tools/AutopsyInfo.plist" MATCHA_PLIST)
@@ -130,7 +155,6 @@ if(APPLE AND MATCHA_BUILD_AUTOPSY)
 endif()
 
 if(WIN32 AND MATCHA_BUILD_AUTOPSY)
-    include(cmake/GbaCore.cmake)
     enable_language(RC)
     configure_file(assets/arcade.rc.in "${CMAKE_CURRENT_BINARY_DIR}/arcade.rc" @ONLY)
     file(GLOB MATCHA_ARCADE_ROMS "${PROJECT_SOURCE_DIR}/games/gb/roms/*.gb" "${PROJECT_SOURCE_DIR}/games/gba/roms/*.gba")
@@ -141,14 +165,10 @@ if(WIN32 AND MATCHA_BUILD_AUTOPSY)
     target_link_libraries(autopsy PRIVATE matcha_autopsy_core matcha_gba gdiplus opengl32 shell32 ole32 user32 gdi32 comdlg32 winmm dxgi dxguid advapi32 avrt)
     set_target_properties(autopsy PROPERTIES WIN32_EXECUTABLE TRUE OUTPUT_NAME Matchaboy)
     install(TARGETS autopsy RUNTIME DESTINATION .)
-    if(BUILD_TESTING)
-        matcha_executable(gba_arcade_probe tests/gba_arcade_probe.cpp)
-        target_link_libraries(gba_arcade_probe PRIVATE matcha_gba)
-    endif()
 endif()
 
 install(TARGETS dmg netplay gym_benchmark matcha
     RUNTIME DESTINATION . LIBRARY DESTINATION . ARCHIVE DESTINATION lib)
-install(FILES LICENSE THIRD_PARTY.md matcha_gym.py README.md DOWNLOADS.md PLATFORM.md PLATFORM_VERIFICATION.md
+install(FILES LICENSE THIRD_PARTY.md matcha_gym.py README.md DOWNLOADS.md MACOS.md DESIGN.md PLATFORM.md PLATFORM_VERIFICATION.md
     VERIFICATION.md MOONEYE.md MEALYBUG.md ARTIFACTS.md DESTINATION .)
 install(FILES include/dmg/gym.h DESTINATION include/dmg)

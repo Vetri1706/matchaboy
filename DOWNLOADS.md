@@ -15,11 +15,12 @@ Gymnasium tests, real UDP replay, and extracted-package smoke tests pass.
 
 Each ZIP includes the headless emulator, UDP netplay runner, Gym benchmark,
 `libmatcha` shared library, Python wrapper, C header, and documentation. macOS
-also includes `MatchaAutopsy.app`; Windows includes `Matchaboy.exe`, the native
-Matchaboy Inspector dashboard. `BUILD_INFO.json` records the source commit,
+also includes `MatchaAutopsy.app` (displayed as Matchaboy); Windows includes
+`Matchaboy.exe`. Both native players open the original arcade and optional
+GB/GBA Inspector. `BUILD_INFO.json` records the source commit,
 compiler, test results and file hashes; the adjacent `.sha256` file checks the
-whole ZIP. Current Windows builds embed the ten original games under `games/`;
-their corresponding sources and redistribution notices accompany the player.
+whole ZIP. Current Windows and Mac builds include the ten original games under
+`games/`; their corresponding sources and redistribution notices accompany the players.
 Commercial games and Python packages are not bundled.
 
 The repository is public; Actions artifact downloads require GitHub sign-in.
@@ -46,9 +47,10 @@ Linux/macOS, from the extracted directory:
 
 `dmg` runs headlessly; it does not open a game window. The benchmark retains its
 50,000 aggregate FPS target and reports failure when the machine misses it.
-The native hardware dashboard is available on Windows and macOS. Linux remains
-headless. On Windows, double-click `Matchaboy.exe` to open the original arcade,
-select a game and Play. Use Open game to choose your own ROM, or run:
+The native players are available on Windows and macOS. Linux remains headless.
+Double-click `Matchaboy.exe` on Windows or `MatchaAutopsy.app` on Mac to open the
+original arcade, select a game and Play. Use Open game to choose your own ROM,
+or run:
 
 ```powershell
 .\Matchaboy.exe C:\roms\game.gb
@@ -57,20 +59,25 @@ select a game and Play. Use Open game to choose your own ROM, or run:
 On macOS:
 
 ```sh
+open MatchaAutopsy.app
 ./MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy /path/to/game.gb --paused
 ```
 
-In the Windows player, opening a ROM shows a clean view with a large LCD and optional keyboard
-controls. **Open game...** or **File > Open game** (Ctrl+O) loads a `.gb` or `.gba`
-ROM in the same window. Cancelling preserves the current game. **Ctrl+L** or
-**File > Game library** returns to the ten-game catalog and pauses the game.
+The [Mac guide](MACOS.md) covers the bundle, native menus, audio and controls.
+In either player, opening a ROM shows a clean view with a large LCD and optional
+keyboard controls. **Open game...** loads a `.gb` or `.gba` ROM in the same
+window: **File > Open game** (Ctrl+O) on Windows, **Game > Open Game** (Command-O)
+on Mac. Cancelling preserves the current game. **File > Game library** on
+Windows or **Game > Library** on Mac returns to the ten-game catalog and pauses
+the game (Ctrl+L on Windows, Command-L on Mac).
 The library shows each game's goal, controls and an Inspector reading guide.
 Color-only ROMs receive a clear unsupported-format message.
 **Inspector** or Tab toggles the hardware panels without restarting the game.
 Use `--inspector` to start directly in that view.
 
-The Windows player uses grayscale by default. **Audio/Video > Player palette** offers
-grayscale or original green, without restarting the game. The game texture uses
+Both players use grayscale by default. Windows **Audio/Video** palette options
+and Mac **View > Game Boy Green Palette** switch grayscale/green without
+restarting the game. The game texture uses
 nearest-neighbor scaling and a hardware-rate frame schedule (about 59.73 fps).
 The Inspector retains its diagnostic colors.
 
@@ -78,9 +85,13 @@ The optional Inspector preserves the address heatmap, LCD, live FIFO/fetcher,
 registers, instruction history and four digital APU scopes. Space pauses;
 S/F/D step one instruction/frame/peripheral dot in Inspector. Scroll moves through the trace.
 Arrows, Z/X, Enter and Shift supply joypad input. F12 saves the displayed OpenGL
-viewport to `autopsy-capture.png` and its hardware-state JSON in the working
-directory. Use `--capture PATH` to select another capture destination. The
-scopes inspect digital outputs. The Windows player outputs 48 kHz stereo through Windows itself; M or Audio > Sound on toggles playback.
+viewport and hardware-state JSON. Windows writes `autopsy-capture.png` in the
+working directory; Mac writes a timestamped `~/Pictures/Matchaboy-*.png` and
+also offers Command-Shift-S or **Game > Save Screenshot**. Use `--capture PATH`
+to select another capture destination. The
+scopes inspect digital outputs. Both players output 48 kHz stereo through their
+native operating-system audio APIs. M toggles playback; the menu is
+**Audio/Video > Sound on** on Windows and **Game > Sound** on Mac.
 
 These builds are not signed with a paid Windows publisher certificate or
 notarized with an Apple Developer identity. Operating-system trust prompts can
@@ -120,7 +131,8 @@ measurement uses the Windows process API. GNU-driver Clang uses
 `-std=c++20 -O3 -Wall -Wextra -Werror -Wpedantic`.
 
 The same CMake commands work with Clang on Linux/macOS. The original Makefile
-remains available on POSIX systems. WSL uses the Linux build and produces Linux
+remains available on POSIX systems; its Mac `platform` target delegates the
+complete native app's dependency graph to CMake. WSL uses the Linux build and produces Linux
 binaries; it does not produce a native Windows `.exe`.
 
 ## Verification scope
@@ -130,7 +142,12 @@ ROM executions, seven adversarial UDP protocol cases, and real two-process
 UDP replay with 100 ms one-way delay and 5% loss for 100 frames plus an idle-peer
 case. It also unpacks each ZIP into a different directory containing spaces,
 runs the packaged emulator, and steps 16 real VMs through the packaged DLL.
-Both Windows and macOS packaged dashboards must produce a real headless PNG.
+Both Windows and macOS packaged players must produce a real headless PNG.
+Mac additionally executes all ten bundled cartridges from a relocated app,
+checks title/gameplay LCD pixels, compares GB output with separate core CLI
+runs, inspects both machines, and verifies GBA hardware input and save/reload.
+Optional local native GPU parity checks use the app's `--window-test` capture mode. See
+[MACOS.md](MACOS.md) for local commands and separately measured speaker playback.
 Windows additionally checks native OpenGL readback against the headless render
 at the same emulated state and exercises its real window message handlers for
 pause, stepping, joypad, trace scroll, resizing, capture and closing. Run those
@@ -161,9 +178,9 @@ Official references: [artifact downloads](https://docs.github.com/en/actions/how
 [hosted runner platforms](https://docs.github.com/en/actions/reference/runners/github-hosted-runners),
 and the [Windows runner toolchain](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md).
 
-## Portable Windows GBA player
+## Native GB/GBA players
 
-The Windows player accepts `.gb` and `.gba` files. Game Boy games use the
+The Windows and Mac players accept `.gb` and `.gba` files. Game Boy games use the
 original Matchaboy engine; GBA games use the statically bundled mGBA 0.10.5 core.
 No separate emulator, external BIOS, Qt, SDL or runtime installation is needed.
 GBA adds Q/W for L/R shoulder buttons. Tab opens its Video, CPU, Memory and Audio
@@ -171,10 +188,12 @@ Inspector panels. S/F step instructions/frames; memory pages use PgUp/PgDn or
 the mouse wheel. The player supports speaker playback; GBA netplay is not implemented.
 
 GBA cartridge saves use `<game>.matchaboy.sav` beside the ROM, flushed on normal
-close or game switch. Keep games in a writable folder. Existing mGBA `.sav`
+close or game switch. Keep games in a writable folder. The Mac arcade prepares
+its writable games under `~/Library/Application Support/Matchaboy/Library`,
+leaving the app bundle unchanged. Existing mGBA `.sav`
 files are not overwritten. Source and license notices accompany portable builds;
 see THIRD_PARTY.md. To build explicitly select both `clang` for C and `clang++`
-for C++, with the static MSVC runtime already configured by CMake.
+for C++, with the static MSVC runtime already configured by CMake on Windows.
 
 `python tools/test_gba_windows.py --binary build/Matchaboy.exe --output artifacts/gba`
 checks an authored ARM ROM, actual A/L/R hardware input, and save/reload from
@@ -188,3 +207,5 @@ available, the game continues silently and the Audio menu reports it.
 `test_audio_windows.py --require-device` verifies nonzero GB/GBA PCM and actual
 Windows buffer consumption, plus pause/mute. Without that flag CI records device
 availability and still checks PCM generation. F12 writes `.audio.json` diagnostics.
+Mac playback uses the system Audio Queue API with completed-buffer telemetry;
+its device probes are described in [MACOS.md](MACOS.md).
