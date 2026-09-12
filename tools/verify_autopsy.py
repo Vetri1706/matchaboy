@@ -65,30 +65,49 @@ def png_rgb(path):
     return width, height, result
 
 
-def compare(headless, gpu):
+def compare(headless, gpu, lcd=None):
     sw, sh, source = png_rgb(headless)
     dw, dh, target = png_rgb(gpu)
     if abs(sw / sh - dw / dh) > 0.001:
         raise ValueError("native window aspect ratio differs from HUD")
-    # OpenGL uses linear texture filtering. Test actual pixel centers against
-    # that interpolation, preserving orientation, instead of accepting a PNG
-    # merely because its file exists. Sample 1/16 of output pixels.
+    # The HUD uses linear filtering; Windows draws the console LCD separately
+    # with nearest filtering to keep game pixels sharp. Model both operations
+    # at output pixel centers, including fractional window scaling.
     total = maximum = samples = 0
+    lcd_total = lcd_maximum = lcd_samples = 0
     for y in range(0, dh, 4):
         fy = max(0.0, min(sh-1.0, (y+.5)*sh/dh-.5))
         y0 = int(fy); y1 = min(y0+1, sh-1); wy = fy-y0
         for x in range(0, dw, 4):
             fx = max(0.0, min(sw-1.0, (x+.5)*sw/dw-.5))
             x0 = int(fx); x1 = min(x0+1, sw-1); wx = fx-x0
+            lcd_pixel = None
+            if lcd is not None:
+                left, top, width, height, native_width, native_height = lcd
+                if left <= fx+.5 < left+width and top <= fy+.5 < top+height:
+                    column = int((fx+.5-left)*native_width/width)
+                    row = int((fy+.5-top)*native_height/height)
+                    # Read each original console pixel from the center of its
+                    # nearest-filtered block in the independent headless image.
+                    sx = int(left+(column+.5)*width/native_width)
+                    sy = int(top+(row+.5)*height/native_height)
+                    lcd_pixel = (sy*sw+sx)*3
             for c in range(3):
                 upper = source[(y0*sw+x0)*3+c]*(1-wx) + source[(y0*sw+x1)*3+c]*wx
                 lower = source[(y1*sw+x0)*3+c]*(1-wx) + source[(y1*sw+x1)*3+c]*wx
                 expected = upper*(1-wy) + lower*wy
+                if lcd_pixel is not None:
+                    expected = source[lcd_pixel+c]
                 error = abs(target[(y*dw+x)*3+c] - expected)
                 total += error; maximum = max(maximum, error); samples += 1
+                if lcd_pixel is not None:
+                    lcd_total += error; lcd_maximum = max(lcd_maximum, error); lcd_samples += 1
     return {"samples": samples, "mean_channel_error": total/samples,
             "maximum_channel_error": maximum, "source_dimensions": [sw, sh],
-            "gpu_dimensions": [dw, dh], "passed": total/samples <= 2.0}
+            "gpu_dimensions": [dw, dh],
+            "lcd_samples": lcd_samples, "lcd_mean_channel_error": lcd_total/lcd_samples if lcd_samples else None,
+            "lcd_maximum_channel_error": lcd_maximum if lcd_samples else None,
+            "passed": total/samples <= 2.0 and (lcd is None or (lcd_samples > 0 and lcd_maximum <= 1))}
 
 
 def main():
@@ -128,7 +147,16 @@ def main():
         if not gba and not args.player and (cpu_state["mode"] != 3 or cpu_state["fifo_depth"] == 0):
             raise RuntimeError("capture missed active mode-three FIFO")
         summary["machine"] = cpu_state
-        summary["pixel_comparison"] = compare(output/"headless.png", output/"gpu.png")
+        lcd = None
+        if sys.platform == "win32":
+            native_width, native_height = (240, 160) if gba else (160, 144)
+            if args.player:
+                height = 533 if gba else 720
+                left = 48 if cpu_state["controls_visible"] else 240
+                lcd = (left, 136+(720-height)//2, 800, height, native_width, native_height)
+            else:
+                lcd = (48, 232, 640, 427 if gba else 576, native_width, native_height)
+        summary["pixel_comparison"] = compare(output/"headless.png", output/"gpu.png", lcd)
         summary["binary_unchanged"] = sha(binary) == summary["binary_sha256"]
         summary["rom_unchanged"] = sha(rom) == summary["rom_sha256"]
         summary["passed"] = summary["pixel_comparison"]["passed"] and summary["binary_unchanged"] and summary["rom_unchanged"]

@@ -32,7 +32,7 @@ def main():
     if sys.platform == "darwin":
         paths.append(binaries / "MatchaAutopsy.app/Contents/MacOS/MatchaAutopsy")
     before = {path.relative_to(binaries).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
-    report = {"passed": False, "platform": sys.platform, "binaries": before, "checks": []}
+    report = {"passed": False, "platform": sys.platform, "binaries": before, "checks": [], "failures": []}
     environment = dict(os.environ, MATCHA_LIBRARY=str(library), MATCHA_NETPLAY=str(netplay))
 
     def save():
@@ -49,7 +49,10 @@ def main():
         save()
         if completed.returncode:
             print((output / (name + ".log")).read_text(encoding="utf-8"), flush=True)
-            raise RuntimeError("failed " + name)
+            report["failures"].append(name)
+            save()
+            return False
+        return True
 
     save()
     try:
@@ -90,11 +93,16 @@ def main():
             ("acid2", "verify_ppu.py", []),
             ("mealybug", "verify_mealybug.py", []),
         ):
-            run(name, ["tools/" + script, "--binary", str(emulator),
-                       "--output", str(output / name), *options])
-            verdict = json.loads((output / name / "summary.json").read_text())
-            if verdict.get("passed") is not True:
-                raise RuntimeError("missing passing original-oracle verdict: " + name)
+            successful = run(name, ["tools/" + script, "--binary", str(emulator),
+                                    "--output", str(output / name), *options])
+            try:
+                verdict = json.loads((output / name / "summary.json").read_text())
+                oracle_passed = verdict.get("passed") is True
+            except (OSError, ValueError):
+                oracle_passed = False
+            if successful and not oracle_passed:
+                report["failures"].append(name + ": missing passing original-oracle verdict")
+                save()
         run("protocol-rejection", ["tools/test_netplay_protocol.py"])
         run("netplay", ["tools/verify_netplay.py", "--binary", str(netplay),
                         "--frames", "100", "--output", str(output / "netplay")])
@@ -103,7 +111,7 @@ def main():
                              "--output", str(output / "netplay-idle")])
         report["binaries_unchanged"] = all(
             hashlib.sha256(path.read_bytes()).hexdigest() == before[path.relative_to(binaries).as_posix()] for path in paths)
-        report["passed"] = report["binaries_unchanged"]
+        report["passed"] = report["binaries_unchanged"] and not report["failures"]
     except (OSError, ValueError, RuntimeError) as error:
         report["error"] = str(error)
     save()
