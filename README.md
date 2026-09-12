@@ -1,6 +1,7 @@
 # Matchaboy
 
-[Download builds or build with Clang on Windows, Linux, and macOS](DOWNLOADS.md).
+[Download Matchaboy v0.1.0 for Mac, Windows or Linux](https://github.com/Vetri1706/matchaboy/releases/tag/v0.1.0).
+[Build and installation instructions](DOWNLOADS.md).
 
 A C++20 Game Boy DMG engine built from scratch, with Windows, Mac and Linux desktop
 players and a bundled mGBA core for Game Boy Advance. Windows and Mac players

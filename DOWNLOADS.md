@@ -1,5 +1,13 @@
 # Download and build Matchaboy
 
+**Ready-to-run downloads:** [Matchaboy v0.1.0](https://github.com/Vetri1706/matchaboy/releases/tag/v0.1.0).
+Choose your platform's ZIP under **Assets**; unzip and follow `Start Here.txt`.
+These release downloads do not require GitHub Actions artifact access.
+The release is built from tag `v0.1.0` at `c2da3a6`, including the previously
+verified app code and its updated documentation.
+All three native builds and extracted-package checks passed in
+[release run 34686860543](https://github.com/Vetri1706/matchaboy/actions/runs/34686860543).
+
 The licensed homebrew update (`370bfee`) passed all native Windows, Linux and Mac
 checks, including extracted-package tests, in
 [run 34683563203](https://github.com/Vetri1706/matchaboy/actions/runs/34683563203).
