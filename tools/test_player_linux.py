@@ -53,7 +53,9 @@ def window_icon(display_name, window):
             ctypes.byref(remaining), ctypes.byref(data))
         assert result == 0 and actual.value == cardinal and fmt.value == 32 and not remaining.value
         values = ctypes.cast(data, ctypes.POINTER(ctypes.c_ulong))
-        return list(values[:count.value])
+        # Xlib expands 32-bit properties to native longs; LP64 builds can
+        # sign-extend opaque ARGB pixels. Compare their protocol-width values.
+        return [value & 0xffffffff for value in values[:count.value]]
     finally:
         if data: x11.XFree(data)
         x11.XCloseDisplay(display)
@@ -272,7 +274,7 @@ def main():
             library = snapshot('homebrew-library')
             icon = window_icon(env['DISPLAY'], window)
             assert icon[:2] == [80, 80] and len(icon) == 6402
-            assert {0, 0xff718958, 0xfff4f2df} == set(icon[2:])
+            assert {0, 0xff718958, 0xfff4f2df} == set(icon[2:]), sorted(set(icon[2:]))
             logo_pixels = crop(capture, (28, 52, 76, 104))
             colours = [tuple(logo_pixels[i:i+3]) for i in range(0, len(logo_pixels), 3)]
             assert colours.count((121, 149, 94)) > 100 and colours.count((228, 236, 224)) > 100
