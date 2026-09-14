@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Verify the real Linux X11 player, persistent keyboard editor and live UDP link."""
 import argparse
+import ctypes
+import ctypes.util
 import hashlib
 import json
 import os
@@ -21,6 +23,42 @@ BALANCED = [2, 0, 13, 1, 37, 40, 49, 36, 12, 34]
 CLASSIC = [124, 123, 126, 125, 6, 7, 56, 36, 12, 13]
 ORDER = [2, 1, 3, 0, 4, 5, 8, 9, 7, 6]
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def window_icon(display_name, window):
+    """Read the icon from the test's isolated X server without extra tools."""
+    x11 = ctypes.CDLL(ctypes.util.find_library('X11'))
+    x11.XOpenDisplay.argtypes = [ctypes.c_char_p]
+    x11.XOpenDisplay.restype = ctypes.c_void_p
+    x11.XCloseDisplay.argtypes = [ctypes.c_void_p]
+    x11.XInternAtom.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
+    x11.XInternAtom.restype = ctypes.c_ulong
+    byte_pointer = ctypes.POINTER(ctypes.c_ubyte)
+    x11.XGetWindowProperty.argtypes = [ctypes.c_void_p, ctypes.c_ulong, ctypes.c_ulong,
+        ctypes.c_long, ctypes.c_long, ctypes.c_int, ctypes.c_ulong,
+        ctypes.POINTER(ctypes.c_ulong), ctypes.POINTER(ctypes.c_int),
+        ctypes.POINTER(ctypes.c_ulong), ctypes.POINTER(ctypes.c_ulong),
+        ctypes.POINTER(byte_pointer)]
+    x11.XFree.argtypes = [ctypes.c_void_p]
+    display = x11.XOpenDisplay(display_name.encode())
+    assert display, 'cannot open isolated branding-test display'
+    data = byte_pointer()
+    try:
+        atom = x11.XInternAtom(display, b'_NET_WM_ICON', 1)
+        cardinal = x11.XInternAtom(display, b'CARDINAL', 1)
+        actual, count, remaining = ctypes.c_ulong(), ctypes.c_ulong(), ctypes.c_ulong()
+        fmt = ctypes.c_int()
+        result = x11.XGetWindowProperty(display, int(window), atom, 0, 10000, 0, cardinal,
+            ctypes.byref(actual), ctypes.byref(fmt), ctypes.byref(count),
+            ctypes.byref(remaining), ctypes.byref(data))
+        assert result == 0 and actual.value == cardinal and fmt.value == 32 and not remaining.value
+        values = ctypes.cast(data, ctypes.POINTER(ctypes.c_ulong))
+        # Xlib expands 32-bit properties to native longs; LP64 builds can
+        # sign-extend opaque ARGB pixels. Compare their protocol-width values.
+        return [value & 0xffffffff for value in values[:count.value]]
+    finally:
+        if data: x11.XFree(data)
+        x11.XCloseDisplay(display)
 
 
 def main():
@@ -234,6 +272,13 @@ def main():
 
             launch('homebrew-library', '--library', '--frames', '0')
             library = snapshot('homebrew-library')
+            icon = window_icon(env['DISPLAY'], window)
+            assert icon[:2] == [80, 80] and len(icon) == 6402
+            assert {0, 0xff718958, 0xfff4f2df} == set(icon[2:]), sorted(set(icon[2:]))
+            logo_pixels = crop(capture, (28, 52, 76, 104))
+            colours = [tuple(logo_pixels[i:i+3]) for i in range(0, len(logo_pixels), 3)]
+            assert colours.count((121, 149, 94)) > 100 and colours.count((228, 236, 224)) > 100
+            checks.append('Sprout logo appears in the native header and EWMH window icon')
             ids = [game['id'] for game in catalog]
             assert library['library_view'] and library['library_selected'] == ids[0]
             entries = library['library_games']
