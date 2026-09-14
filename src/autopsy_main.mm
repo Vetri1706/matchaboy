@@ -1,3 +1,4 @@
+#include "matchaboy_logo.hpp"
 #import <AppKit/AppKit.h>
 #import <CoreText/CoreText.h>
 #import <ImageIO/ImageIO.h>
@@ -171,12 +172,16 @@ void wrapped_text(MacGraphics::Graphics *context, double x, double y, const char
     if (!row.empty() && line < lines) text(context, x, y + line*(size+4), row, size, color);
 }
 void draw_logo(MacGraphics::Graphics *context, double x, double y, double size) {
-    fill(context, x, y, size, size, {0.15,0.32,0.31});
-    fill(context, x+size*.20, y+size*.14, size*.60, size*.70, {0.78,0.90,0.70});
-    fill(context, x+size*.29, y+size*.23, size*.42, size*.28, {0.035,0.09,0.10});
-    fill(context, x+size*.29, y+size*.64, size*.20, size*.06, {0.035,0.09,0.10});
-    fill(context, x+size*.36, y+size*.57, size*.06, size*.20, {0.035,0.09,0.10});
-    fill(context, x+size*.61, y+size*.62, size*.08, size*.08, {0.035,0.09,0.10});
+    const double pixel = size / 28.0;
+    for (unsigned row = 0; row < 26; ++row) {
+        for (unsigned col = 0; col < 24; ++col) {
+            const char cell = matcha::logo_rows[row][col];
+            if (cell == '.') continue;
+            const Color color = cell == 'g' ? Color{0.45,0.55,0.35} :
+                cell == 'd' ? Color{0.94,0.95,0.88} : Color{0.13,0.22,0.19};
+            fill(context, x + (col+2)*pixel, y + (row+1)*pixel, pixel, pixel, color);
+        }
+    }
 }
 // Host preferences are deliberately outside deterministic machine state.
 matcha::keyboard::Mapping keyboard_mapping=matcha::keyboard::balanced();

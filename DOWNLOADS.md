@@ -1,18 +1,18 @@
 # Download and build Matchaboy
 
-The licensed homebrew update (`370bfee`) passed all native Windows, Linux and Mac
-checks, including extracted-package tests, in
-[run 34683563203](https://github.com/Vetri1706/matchaboy/actions/runs/34683563203).
-Download that run's `matchaboy-windows-x64`, `matchaboy-linux-x64`, or
-`matchaboy-macos-arm64` artifact. The included games and notices are described in
-[HOMEBREW.md](HOMEBREW.md).
+**Ready-to-run downloads:** [Matchaboy v0.1.1](https://github.com/Vetri1706/matchaboy/releases/tag/v0.1.1).
+Choose your platform's ZIP under **Assets**, unzip and follow `Start Here.txt`.
+This branding update applies the sprout mark to Windows, macOS and Linux app
+headers and icons. It adds no runtime dependency. The included games and their
+notices are described in [HOMEBREW.md](HOMEBREW.md).
 
 The **Build and Package Binaries** workflow builds Windows x64 with native
 `clang++`, Linux x64 with Clang, and macOS Apple Silicon with Apple Clang.
 The workflow gates packages on native tests, original ROM checks, Gymnasium
-tests, real UDP replay, and extracted-package smoke tests. The Windows
-settings/netplay and Linux desktop changes in this revision still await native
-CI evidence; use a successful run containing these changes, not an older ZIP.
+tests, real UDP replay, extracted-package smoke tests and packaged-icon checks.
+All three platform jobs must succeed before the release workflow attaches the
+download ZIPs and checksums. Each ZIP's `Extras/BUILD_INFO.json` records the exact
+source revision and verification results.
 
 ## Download from GitHub
 

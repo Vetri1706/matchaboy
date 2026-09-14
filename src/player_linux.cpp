@@ -8,6 +8,7 @@
 #include "keyboard_mapping.hpp"
 #include "linux_audio.hpp"
 #include "linux_keyboard_preferences.hpp"
+#include "matchaboy_logo.hpp"
 #include "player_theme.hpp"
 #include <X11/XKBlib.h>
 #include <X11/Xatom.h>
@@ -944,8 +945,15 @@ class Player {
                              pane_ == Pane::Closed});
         }
         rect(0, 46, 1280, 64, 0x0e242c);
-        text(32, 85, "MATCHABOY", cyan);
-        text(180, 85, "GB + GBA", muted);
+        for (int row = 0; row < 26; ++row)
+            for (int col = 0; col < 24; ++col) {
+                const auto cell = matcha::logo_rows[row][col];
+                if (cell == 'g' || cell == 'd' || cell == 'w')
+                    rect(28 + col * 2, 52 + row * 2, 2, 2,
+                         cell == 'g' ? 0x79955e : cell == 'd' ? 0xe4ece0 : 0x0e242c);
+            }
+        text(90, 85, "MATCHABOY", cyan);
+        text(238, 85, "GB + GBA", muted);
         button(675, 57, 118, "Library", Library, allowed(Library));
         button(807, 57, 148, "Open game...", Open, allowed(Open));
         button(969, 57, 277, "Keyboard settings...", Settings, allowed(Settings));
@@ -1936,6 +1944,29 @@ class Player {
         identity.res_name = const_cast<char *>("matchaboy");
         identity.res_class = const_cast<char *>("Matchaboy");
         XSetClassHint(display_, window_, &identity);
+        // EWMH icons are ARGB CARDINALs, stored in native longs by Xlib.
+        // Use the same sprout grid and app-icon colours as Windows and macOS.
+        constexpr unsigned icon_size = 80;
+        std::array<unsigned long, 2 + icon_size * icon_size> icon{};
+        icon[0] = icon[1] = icon_size;
+        for (unsigned y = 0; y < icon_size; ++y)
+            for (unsigned x = 0; x < icon_size; ++x) {
+                const int corner_x = std::max({18 - static_cast<int>(x),
+                                               static_cast<int>(x) - 61, 0});
+                const int corner_y = std::max({18 - static_cast<int>(y),
+                                               static_cast<int>(y) - 61, 0});
+                auto pixel = corner_x * corner_x + corner_y * corner_y > 18 * 18
+                                 ? 0UL : 0xff718958UL;
+                if (x >= 16 && x < 64 && y >= 14 && y < 66) {
+                    const auto cell = matcha::logo_rows[(y - 14) / 2][(x - 16) / 2];
+                    if (cell == 'g' || cell == 'd') pixel = 0xfff4f2dfUL;
+                }
+                icon[2 + y * icon_size + x] = pixel;
+            }
+        XChangeProperty(display_, window_, XInternAtom(display_, "_NET_WM_ICON", False),
+                        XA_CARDINAL, 32, PropModeReplace,
+                        reinterpret_cast<const unsigned char *>(icon.data()),
+                        static_cast<int>(icon.size()));
         XSizeHints hints{};
         hints.flags = PMinSize;
         hints.min_width = 1000;

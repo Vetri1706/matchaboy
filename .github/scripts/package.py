@@ -8,6 +8,7 @@ from pathlib import Path
 import platform
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -18,6 +19,25 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def verify_branding(installed):
+    """Reject a stale installed icon even when the source asset was updated."""
+    assets = ROOT / "assets"
+    if sys.platform == "win32":
+        icon, executable = (assets / "matchaboy.ico").read_bytes(), (installed / "Matchaboy.exe").read_bytes()
+        count = struct.unpack_from('<H', icon, 4)[0]
+        for entry in range(count):
+            size, offset = struct.unpack_from('<II', icon, 6 + entry * 16 + 8)
+            if not size or icon[offset:offset + size] not in executable:
+                raise RuntimeError("Windows download embeds a stale or missing app icon")
+    elif sys.platform == "darwin":
+        if (installed / "Matchaboy.app/Contents/Resources/matchaboy.icns").read_bytes() != (assets / "matchaboy.icns").read_bytes():
+            raise RuntimeError("Mac download contains a stale app icon")
+    else:
+        if (installed / "assets/matchaboy.svg").read_bytes() != (assets / "matchaboy.svg").read_bytes():
+            raise RuntimeError("Linux download contains a stale app icon")
+    print("Verified sprout branding in extracted " + sys.platform + " package")
 
 
 def main():
@@ -145,6 +165,7 @@ def main():
                 for entry in package.infolist():
                     (destination / entry.filename).chmod((entry.external_attr >> 16) & 0o777)
         installed = destination / args.name
+        verify_branding(installed)
         for name, digest in build_info["files"].items():
             if sha(installed / name) != digest: raise RuntimeError("archive member hash mismatch")
         if sys.platform == "darwin":
