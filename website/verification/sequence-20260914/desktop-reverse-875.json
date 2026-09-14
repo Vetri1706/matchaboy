@@ -1,0 +1,102 @@
+{
+  "progress": 0.875,
+  "direction": "reverse",
+  "viewport": [
+    1672,
+    940
+  ],
+  "documentWidth": 1657,
+  "title": "See whathappens next.",
+  "copy": "03 / FOLLOW THE FRAMESee whathappens next.Pause the desktop game. Step through an instruction. Watch the registers, tiles and sound channels reveal how a moment is made.Inspect a recorded moment →CPUMEMORYPICTURESOUND",
+  "copyRect": {
+    "x": 80.25,
+    "y": 202,
+    "width": 571.0250244140625,
+    "height": 460.7875061035156,
+    "top": 202,
+    "right": 651.2750244140625,
+    "bottom": 662.7875061035156,
+    "left": 80.25
+  },
+  "sceneRect": {
+    "x": 679.2875366210938,
+    "y": 56.400001525878906,
+    "width": 977.5125122070312,
+    "height": 714.4000244140625,
+    "top": 56.400001525878906,
+    "right": 1656.800048828125,
+    "bottom": 770.8000259399414,
+    "left": 679.2875366210938
+  },
+  "navigationRect": {
+    "x": 80.25,
+    "y": 844,
+    "width": 1496.300048828125,
+    "height": 68,
+    "top": 844,
+    "right": 1576.550048828125,
+    "bottom": 912,
+    "left": 80.25
+  },
+  "canvasSize": [
+    977,
+    714
+  ],
+  "pose": {
+    "front": {
+      "position": [
+        -1.6,
+        0,
+        3.655
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "board": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rear": {
+      "position": [
+        1.6,
+        0,
+        -3.595
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotation": [
+      0.025,
+      -0.55,
+      0.067
+    ],
+    "interaction": [
+      0,
+      0,
+      0
+    ],
+    "camera": [
+      3.12055575442606,
+      3.0999999999999996,
+      18
+    ],
+    "reveal": 1,
+    "settle": 0.598147485246466
+  },
+  "background": "rgb(238, 241, 230)",
+  "timestamp": "2026-09-14T16:41:55.807Z"
+}

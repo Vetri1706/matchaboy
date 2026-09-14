@@ -1,0 +1,103 @@
+{
+  "progress": 0.75,
+  "actualProgress": 0.7498,
+  "direction": "forward",
+  "viewport": [
+    375,
+    667
+  ],
+  "documentWidth": 360,
+  "title": "There’s moreto the magic.",
+  "copy": "02 / UNDER THE SHELLThere’s moreto the magic.Every jump begins with an instruction. Memory holds the world. The picture and sound bring it to life.01 The shell Feel02 The board Think03 The screen PlayAn illustrated view of handheld hardware.",
+  "copyRect": {
+    "x": 22,
+    "y": 52,
+    "width": 316,
+    "height": 251.5749969482422,
+    "top": 52,
+    "right": 338,
+    "bottom": 303.5749969482422,
+    "left": 22
+  },
+  "sceneRect": {
+    "x": 32.400001525878906,
+    "y": 310,
+    "width": 295.20001220703125,
+    "height": 217.1999969482422,
+    "top": 310,
+    "right": 327.60001373291016,
+    "bottom": 527.1999969482422,
+    "left": 32.400001525878906
+  },
+  "navigationRect": {
+    "x": 14,
+    "y": 576.7000122070312,
+    "width": 332,
+    "height": 78.5,
+    "top": 576.7000122070312,
+    "right": 346,
+    "bottom": 655.2000122070312,
+    "left": 14
+  },
+  "canvasSize": [
+    295,
+    217
+  ],
+  "pose": {
+    "front": {
+      "position": [
+        -1.6,
+        0,
+        3.655
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "board": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rear": {
+      "position": [
+        1.6,
+        0,
+        -3.595
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotation": [
+      0.025,
+      -0.5499999985513242,
+      0.06699999968129133
+    ],
+    "interaction": [
+      0,
+      0,
+      0
+    ],
+    "camera": [
+      3.300000005215232,
+      3.0999999895695343,
+      18
+    ],
+    "reveal": 0.999999994205297,
+    "settle": 0
+  },
+  "background": "rgb(238, 241, 230)",
+  "timestamp": "2026-09-14T16:47:49.577Z"
+}

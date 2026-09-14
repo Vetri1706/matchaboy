@@ -218,6 +218,8 @@ if(WIN32 AND MATCHA_BUILD_AUTOPSY)
     configure_file(assets/arcade.rc.in "${CMAKE_CURRENT_BINARY_DIR}/arcade.rc" @ONLY)
     set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/arcade.rc" PROPERTIES
         OBJECT_DEPENDS "${MATCHA_ARCADE_ROMS};${PROJECT_SOURCE_DIR}/games/homebrew/CREDITS.txt")
+    set_source_files_properties(assets/matchaboy.rc PROPERTIES
+        OBJECT_DEPENDS "${PROJECT_SOURCE_DIR}/assets/matchaboy.ico")
     matcha_executable(autopsy src/autopsy_windows.cpp src/windows_audio.cpp src/arcade_library.cpp src/windows_keyboard_settings.cpp
         assets/matchaboy.rc "${CMAKE_CURRENT_BINARY_DIR}/arcade.rc")
     target_compile_definitions(autopsy PRIVATE UNICODE _UNICODE)

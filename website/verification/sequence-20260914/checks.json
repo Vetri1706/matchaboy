@@ -1,0 +1,66 @@
+{
+  "frames": 36,
+  "positionsPerDirection": 9,
+  "maxPoseDifference": 0.004339443800279952,
+  "minDesktopClearance": 28,
+  "minMobileClearance": 6.4250030517578125,
+  "profiles": {
+    "desktop": {
+      "samples": 119,
+      "frameMsP50": 11,
+      "frameMsP95": 16.400000002235174,
+      "cpuSubmitMsP50": 3.699999999254942,
+      "cpuSubmitMsP95": 7.599999997764826,
+      "drawCalls": 337,
+      "triangles": 163784,
+      "geometries": 193,
+      "textures": 25,
+      "drawingBuffer": [
+        977,
+        714
+      ],
+      "dpr": 1.0000000149011612,
+      "renderer": "WebKit WebGL"
+    },
+    "mobile": {
+      "samples": 119,
+      "frameMsP50": 7.199999999254942,
+      "frameMsP95": 10.199999999254942,
+      "cpuSubmitMsP50": 4.199999999254942,
+      "cpuSubmitMsP95": 7.100000001490116,
+      "drawCalls": 337,
+      "triangles": 163784,
+      "geometries": 193,
+      "textures": 25,
+      "drawingBuffer": [
+        295,
+        207
+      ],
+      "dpr": 1.0000000149011612,
+      "renderer": "WebKit WebGL"
+    }
+  },
+  "assets": {
+    "posters": {
+      "closed": 31506,
+      "opened": 67222
+    },
+    "bundles": [
+      {
+        "name": "HandheldScene-zWUaSAZP.js",
+        "bytes": 980675,
+        "gzip": 263258
+      },
+      {
+        "name": "index-D3UYL9tO.css",
+        "bytes": 33753,
+        "gzip": 8568
+      },
+      {
+        "name": "index-DXDVeZ7t.js",
+        "bytes": 356689,
+        "gzip": 119123
+      }
+    ]
+  }
+}

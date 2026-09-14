@@ -1,0 +1,112 @@
+[
+  {
+    "system": "GB",
+    "controls": "Left/Right: change lane. Enter (Start) or Z (A): start/restart.",
+    "title": "Pocket Racer",
+    "source": "games/gb/build_games.py",
+    "native": false,
+    "image": "/games/pocket-racer.png",
+    "learn": "A scrolling road, lane decisions and rectangle collision.",
+    "id": "pocket-racer",
+    "goal": "Pass 20 rival cars before your three shields are gone."
+  },
+  {
+    "system": "GB",
+    "controls": "Left/Right: walk. Z (A): jump. Enter (Start) or Z: start/restart.",
+    "title": "Moon Courier",
+    "source": "games/gb/build_games.py",
+    "native": false,
+    "image": "/games/moon-courier.png",
+    "learn": "Signed vertical velocity, gravity, ground checks, parcels and delivery state.",
+    "id": "moon-courier",
+    "goal": "Pick up a parcel and reach the moon base on each of three routes."
+  },
+  {
+    "system": "GB",
+    "controls": "Arrows: move/push. X (B): reset this puzzle. Enter (Start) or Z (A): start/restart.",
+    "title": "Matcha Garden",
+    "source": "games/gb/build_games.py",
+    "native": false,
+    "image": "/games/matcha-garden.png",
+    "learn": "Grid movement, checking the next two cells, and a mutable tile board.",
+    "id": "matcha-garden",
+    "goal": "Push the tea crate onto the flower in three compact garden puzzles."
+  },
+  {
+    "system": "GB",
+    "controls": "Arrows: explore. Enter (Start) or Z (A): start/restart.",
+    "title": "Signal Lost",
+    "source": "games/gb/build_games.py",
+    "native": false,
+    "image": "/games/signal-lost.png",
+    "learn": "A connected maze, collectible state, timed objectives and input repeat.",
+    "id": "signal-lost",
+    "goal": "Collect all three beacons, then find the exit before the 90-second battery runs out."
+  },
+  {
+    "system": "GB",
+    "controls": "Left/Right: move. Hold Z (A): fire. Enter (Start) or Z: start/restart.",
+    "title": "Orbit Guard",
+    "source": "games/gb/build_games.py",
+    "native": false,
+    "image": "/games/orbit-guard.png",
+    "learn": "Independent player, projectile and enemy motion with AABB hits and enemy waves.",
+    "id": "orbit-guard",
+    "goal": "Defeat 15 approaching drones before three reach your orbit."
+  },
+  {
+    "system": "GBA",
+    "controls": "Enter: Start/restart; Left/Right: steer; Z (A): boost; X (B): brake; Shift (Select): title.",
+    "title": "Drift Circuit",
+    "source": "games/gba/src/game.c",
+    "native": true,
+    "image": "/games/drift-circuit.png",
+    "learn": "A changing road centre, collision rectangles, a fixed frame clock and a three-speed car create a time trial.",
+    "id": "drift-circuit",
+    "goal": "Finish a 3600-metre time trial within 40 seconds. Dodge traffic and stay inside the road; three hits end the round."
+  },
+  {
+    "system": "GBA",
+    "controls": "Enter: Start/restart; Up/Down: fly; Z (A): speed up; Shift (Select): title.",
+    "title": "Cloud Pilot",
+    "source": "games/gba/src/game.c",
+    "native": true,
+    "image": "/games/cloud-pilot.png",
+    "learn": "Recycled obstacle slots, scrolling scenery and gap collision checks make a compact flying course.",
+    "id": "cloud-pilot",
+    "goal": "Fly through 24 moving gates before the 55-second timer expires. Three wall collisions end the round."
+  },
+  {
+    "system": "GBA",
+    "controls": "Enter: Start/restart; Left/Right: paddle; Z (A): launch; Shift (Select): title.",
+    "title": "Prism Break",
+    "source": "games/gba/src/game.c",
+    "native": true,
+    "image": "/games/prism-break.png",
+    "learn": "Ball velocity reflects from walls and the paddle; a 24-cell array tracks remaining bricks.",
+    "id": "prism-break",
+    "goal": "Break all 24 coloured bricks in 100 seconds. Aim the ball with the paddle edge. You have three balls."
+  },
+  {
+    "system": "GBA",
+    "controls": "Enter: Start/restart; Arrows: move one tile; Z (A): attack within 2 tiles; X (B): select enemy; Shift (Select): title.",
+    "title": "Tiny Tactics",
+    "source": "games/gba/src/game.c",
+    "native": true,
+    "image": "/games/tiny-tactics.png",
+    "learn": "A small turn-based state machine combines board occupancy, attack range, enemy movement and health.",
+    "id": "tiny-tactics",
+    "goal": "Defeat three sentries with nine health points and at most 40 turns. Every successful move or attack lets surviving enemies act."
+  },
+  {
+    "system": "GBA",
+    "controls": "Enter: Start/restart; Arrows: move; Z (A): pick up/drop parcel; X (B): slow walk; Shift (Select): title.",
+    "title": "Parcel Dash",
+    "source": "games/gba/src/game.c",
+    "native": true,
+    "image": "/games/parcel-dash.png",
+    "learn": "Pickup and delivery states, waypoint arrays and moving hazard rectangles form a delivery score attack.",
+    "id": "parcel-dash",
+    "goal": "Pick up at POST and deliver to the gold address. Complete five deliveries in 60 seconds while avoiding three traffic hazards."
+  }
+]

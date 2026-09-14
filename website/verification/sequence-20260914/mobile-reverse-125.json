@@ -1,0 +1,103 @@
+{
+  "progress": 0.125,
+  "actualProgress": 0.1252,
+  "direction": "reverse",
+  "viewport": [
+    375,
+    667
+  ],
+  "documentWidth": 360,
+  "title": "Play it.Open it up.",
+  "copy": " SMALL MACHINE. ENDLESS CURIOSITY.Play it.Open it up.Your favourite handheld worlds, right at home on your desktop. Play Game Boy and Game Boy Advance. Then discover what makes them tick.A desktop emulator for Game Boy and Game Boy Advance. Play, pause and look inside.Download Matchaboy ↗Explore ↓Windows · macOS · Linux / Free & open source",
+  "copyRect": {
+    "x": 22,
+    "y": 86,
+    "width": 316,
+    "height": 223.90000915527344,
+    "top": 86,
+    "right": 338,
+    "bottom": 309.90000915527344,
+    "left": 22
+  },
+  "sceneRect": {
+    "x": 32.400001525878906,
+    "y": 320,
+    "width": 295.20001220703125,
+    "height": 207.1999969482422,
+    "top": 320,
+    "right": 327.60001373291016,
+    "bottom": 527.1999969482422,
+    "left": 32.400001525878906
+  },
+  "navigationRect": {
+    "x": 14,
+    "y": 576.7000122070312,
+    "width": 332,
+    "height": 78.5,
+    "top": 576.7000122070312,
+    "right": 346,
+    "bottom": 655.2000122070312,
+    "left": 14
+  },
+  "canvasSize": [
+    295,
+    207
+  ],
+  "pose": {
+    "front": {
+      "position": [
+        0,
+        0,
+        0.44
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "board": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rear": {
+      "position": [
+        0,
+        0,
+        -0.38
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotation": [
+      0.025,
+      -0.3,
+      0.012
+    ],
+    "interaction": [
+      0,
+      0,
+      0
+    ],
+    "camera": [
+      1.2,
+      0.7,
+      18
+    ],
+    "reveal": 0,
+    "settle": 0
+  },
+  "background": "rgb(23, 38, 31)",
+  "timestamp": "2026-09-14T16:47:02.064Z"
+}

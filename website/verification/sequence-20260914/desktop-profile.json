@@ -1,0 +1,17 @@
+{
+  "samples": 119,
+  "frameMsP50": 11,
+  "frameMsP95": 16.400000002235174,
+  "cpuSubmitMsP50": 3.699999999254942,
+  "cpuSubmitMsP95": 7.599999997764826,
+  "drawCalls": 337,
+  "triangles": 163784,
+  "geometries": 193,
+  "textures": 25,
+  "drawingBuffer": [
+    977,
+    714
+  ],
+  "dpr": 1.0000000149011612,
+  "renderer": "WebKit WebGL"
+}

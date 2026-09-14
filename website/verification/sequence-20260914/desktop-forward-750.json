@@ -1,0 +1,102 @@
+{
+  "progress": 0.75,
+  "direction": "forward",
+  "viewport": [
+    1672,
+    940
+  ],
+  "documentWidth": 1657,
+  "title": "There’s moreto the magic.",
+  "copy": "02 / UNDER THE SHELLThere’s moreto the magic.Every jump begins with an instruction. Memory holds the world. The picture and sound bring it to life.01 The shell Feel02 The board Think03 The screen PlayAn illustrated view of handheld hardware.",
+  "copyRect": {
+    "x": 80.25,
+    "y": 184.4250030517578,
+    "width": 571.0250244140625,
+    "height": 495.95001220703125,
+    "top": 184.4250030517578,
+    "right": 651.2750244140625,
+    "bottom": 680.3750152587891,
+    "left": 80.25
+  },
+  "sceneRect": {
+    "x": 679.2875366210938,
+    "y": 56.400001525878906,
+    "width": 977.5125122070312,
+    "height": 714.4000244140625,
+    "top": 56.400001525878906,
+    "right": 1656.800048828125,
+    "bottom": 770.8000259399414,
+    "left": 679.2875366210938
+  },
+  "navigationRect": {
+    "x": 80.25,
+    "y": 844,
+    "width": 1496.300048828125,
+    "height": 68,
+    "top": 844,
+    "right": 1576.550048828125,
+    "bottom": 912,
+    "left": 80.25
+  },
+  "canvasSize": [
+    977,
+    714
+  ],
+  "pose": {
+    "front": {
+      "position": [
+        -1.6,
+        0,
+        3.655
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "board": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rear": {
+      "position": [
+        1.6,
+        0,
+        -3.595
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotation": [
+      0.025,
+      -0.5499999999997381,
+      0.0669999999999424
+    ],
+    "interaction": [
+      0,
+      0,
+      0
+    ],
+    "camera": [
+      3.3000000000009417,
+      3.099999999998115,
+      18
+    ],
+    "reveal": 0.9999999999989527,
+    "settle": 0
+  },
+  "background": "rgb(238, 241, 230)",
+  "timestamp": "2026-09-14T16:41:23.131Z"
+}

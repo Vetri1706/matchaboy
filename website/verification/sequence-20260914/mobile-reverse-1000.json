@@ -1,0 +1,103 @@
+{
+  "progress": 1,
+  "actualProgress": 1,
+  "direction": "reverse",
+  "viewport": [
+    375,
+    667
+  ],
+  "documentWidth": 360,
+  "title": "See whathappens next.",
+  "copy": "03 / FOLLOW THE FRAMESee whathappens next.Pause the desktop game. Step through an instruction. Watch the registers, tiles and sound channels reveal how a moment is made.Pause a game. Follow its instructions, picture and sound in the desktop Inspector.Inspect a recorded moment →CPUMEMORYPICTURESOUND",
+  "copyRect": {
+    "x": 22,
+    "y": 51.03750228881836,
+    "width": 316,
+    "height": 252.27500915527344,
+    "top": 51.03750228881836,
+    "right": 338,
+    "bottom": 303.3125114440918,
+    "left": 22
+  },
+  "sceneRect": {
+    "x": 32.400001525878906,
+    "y": 319.0375061035156,
+    "width": 295.20001220703125,
+    "height": 207.1999969482422,
+    "top": 319.0375061035156,
+    "right": 327.60001373291016,
+    "bottom": 526.2375030517578,
+    "left": 32.400001525878906
+  },
+  "navigationRect": {
+    "x": 14,
+    "y": 575.7374877929688,
+    "width": 332,
+    "height": 78.5,
+    "top": 575.7374877929688,
+    "right": 346,
+    "bottom": 654.2374877929688,
+    "left": 14
+  },
+  "canvasSize": [
+    295,
+    207
+  ],
+  "pose": {
+    "front": {
+      "position": [
+        -1.6,
+        0,
+        3.655
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "board": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rear": {
+      "position": [
+        1.6,
+        0,
+        -3.595
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotation": [
+      0.025,
+      -0.55,
+      0.067
+    ],
+    "interaction": [
+      0,
+      0,
+      0
+    ],
+    "camera": [
+      2.9999999999999996,
+      3.0999999999999996,
+      18
+    ],
+    "reveal": 1,
+    "settle": 1
+  },
+  "background": "rgb(238, 241, 230)",
+  "timestamp": "2026-09-14T16:46:53.863Z"
+}

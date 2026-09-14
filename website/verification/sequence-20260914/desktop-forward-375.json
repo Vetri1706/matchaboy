@@ -1,0 +1,102 @@
+{
+  "progress": 0.375,
+  "direction": "forward",
+  "viewport": [
+    1672,
+    940
+  ],
+  "documentWidth": 1657,
+  "title": "A little screen.A whole world.",
+  "copy": "01 / PICK IT UPA little screen.A whole world.A familiar set of buttons. A world waiting on the other side. Drag the console to look around, or try the little jumping game on its screen.Try the screen ↗Browser mini-game · The desktop app runs your ROMs.",
+  "copyRect": {
+    "x": 80.25,
+    "y": 211.72500610351562,
+    "width": 620,
+    "height": 441.3374938964844,
+    "top": 211.72500610351562,
+    "right": 700.25,
+    "bottom": 653.0625,
+    "left": 80.25
+  },
+  "sceneRect": {
+    "x": 770.7250366210938,
+    "y": 56.400001525878906,
+    "width": 886.0750122070312,
+    "height": 714.4000244140625,
+    "top": 56.400001525878906,
+    "right": 1656.800048828125,
+    "bottom": 770.8000259399414,
+    "left": 770.7250366210938
+  },
+  "navigationRect": {
+    "x": 80.25,
+    "y": 844,
+    "width": 1496.300048828125,
+    "height": 68,
+    "top": 844,
+    "right": 1576.550048828125,
+    "bottom": 912,
+    "left": 80.25
+  },
+  "canvasSize": [
+    886,
+    714
+  ],
+  "pose": {
+    "front": {
+      "position": [
+        0,
+        0,
+        0.44
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "board": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rear": {
+      "position": [
+        0,
+        0,
+        -0.38
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotation": [
+      0.025,
+      -0.3,
+      0.012
+    ],
+    "interaction": [
+      0,
+      0,
+      0
+    ],
+    "camera": [
+      2.99940027643924,
+      0.99985006910981,
+      18
+    ],
+    "reveal": 0,
+    "settle": 0
+  },
+  "background": "rgb(23, 38, 31)",
+  "timestamp": "2026-09-14T16:41:18.669Z"
+}

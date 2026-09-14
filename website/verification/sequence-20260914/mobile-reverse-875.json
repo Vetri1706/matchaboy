@@ -1,0 +1,103 @@
+{
+  "progress": 0.875,
+  "actualProgress": 0.8751,
+  "direction": "reverse",
+  "viewport": [
+    375,
+    667
+  ],
+  "documentWidth": 360,
+  "title": "See whathappens next.",
+  "copy": "03 / FOLLOW THE FRAMESee whathappens next.Pause the desktop game. Step through an instruction. Watch the registers, tiles and sound channels reveal how a moment is made.Pause a game. Follow its instructions, picture and sound in the desktop Inspector.Inspect a recorded moment →CPUMEMORYPICTURESOUND",
+  "copyRect": {
+    "x": 22,
+    "y": 52,
+    "width": 316,
+    "height": 252.27500915527344,
+    "top": 52,
+    "right": 338,
+    "bottom": 304.27500915527344,
+    "left": 22
+  },
+  "sceneRect": {
+    "x": 32.400001525878906,
+    "y": 320,
+    "width": 295.20001220703125,
+    "height": 207.1999969482422,
+    "top": 320,
+    "right": 327.60001373291016,
+    "bottom": 527.1999969482422,
+    "left": 32.400001525878906
+  },
+  "navigationRect": {
+    "x": 14,
+    "y": 576.7000122070312,
+    "width": 332,
+    "height": 78.5,
+    "top": 576.7000122070312,
+    "right": 346,
+    "bottom": 655.2000122070312,
+    "left": 14
+  },
+  "canvasSize": [
+    295,
+    207
+  ],
+  "pose": {
+    "front": {
+      "position": [
+        -1.6,
+        0,
+        3.655
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "board": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rear": {
+      "position": [
+        1.6,
+        0,
+        -3.595
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotation": [
+      0.025,
+      -0.55,
+      0.067
+    ],
+    "interaction": [
+      0,
+      0,
+      0
+    ],
+    "camera": [
+      3.120406741570185,
+      3.0999999999999996,
+      18
+    ],
+    "reveal": 1,
+    "settle": 0.5986441947660488
+  },
+  "background": "rgb(238, 241, 230)",
+  "timestamp": "2026-09-14T16:46:55.043Z"
+}
